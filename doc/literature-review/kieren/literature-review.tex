@@ -1,0 +1,224 @@
+%TC:macro \subtitle [header]
+%TC:macro \numberofauthors [text]
+%TC:newcounter todo Number of TODOs
+%TC:macro \todo [ignore]
+%TC:macrocount \todo [todo]
+
+\documentclass{sig-alternate}
+
+\usepackage{enumitem}
+\usepackage{tabularx}
+
+\usepackage{ifdraft}
+\usepackage{xifthen}
+\usepackage{soul}
+\usepackage{xcolor}
+\newcommand{\todo}[1][]{\ifdraft{\ifthenelse{\isempty{#1}}{\hl{(TODO)}}{\hl{(TODO: #1)}}}{}}
+
+\newcommand{\oclass}[1]{\ensuremath{\mathtt{#1}}}
+\newcommand{\osub}{\sqsubseteq}
+
+% This has to go in the preamble to not get counted by texcount
+\numberofauthors{1}
+
+\begin{document}
+
+\title{Test-Driven Development for Ontology Engineering}
+\subtitle{Literature Review}
+\author{
+  \alignauthor
+  Kieren Davies\\
+   \affaddr{University of Cape Town}\\
+   \email{kieren@kdavi.es}
+}
+\date{5 May 2016}
+\maketitle
+
+\begin{abstract}
+Ontologies are a subject of active research, yet they see little adoption in business and industry.  A contributing factor is that ontology engineering methodologies have not reached a state of maturity.  Test-Driven Development (TDD) is a software engineering methodology with proven success, in which new code is written only when an automated test fails.  We propose that TDD should be incorporated into ontology engineering methodologies.  In this paper we review prior work on methodologies, testing ontologies, and applying TDD to ontologies.  We identify that much future work is needed, particularly in analysing performance of different test implementations, and formalising a new methodology and evaluating its effectiveness.
+\end{abstract}
+
+%TC:ignore
+% http://dl.acm.org/ccs.cfm
+\begin{CCSXML}
+<ccs2012>
+  <concept>
+    <concept_id>10010147.10010178.10010187.10010195</concept_id>
+    <concept_desc>Computing methodologies~Ontology engineering</concept_desc>
+    <concept_significance>500</concept_significance>
+  </concept>
+  <concept>
+    <concept_id>10011007.10011074.10011081.10011082</concept_id>
+    <concept_desc>Software and its engineering~Software development methods</concept_desc>
+    <concept_significance>300</concept_significance>
+  </concept>
+  <concept>
+    <concept_id>10011007.10011074.10011099.10011102.10011103</concept_id>
+    <concept_desc>Software and its engineering~Software testing and debugging</concept_desc>
+    <concept_significance>300</concept_significance>
+  </concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Computing methodologies~Ontology engineering}
+\ccsdesc[300]{Software and its engineering~Software development methods}
+\ccsdesc[300]{Software and its engineering~Software testing and debugging}
+
+\printccsdesc
+
+\keywords{Ontology engineering, test-driven development, development methodology}
+%TC:endignore
+
+\section{Introduction}
+
+Ontologies, and ontology engineering, have become increasingly relevant in the past decade.  They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
+% Ashburner:GeneOntology
+
+The value of ontologies is seen by considering their use cases, which generally fall into three categories \cite{Uschold:Ontologies}:
+\begin{itemize}
+  \item Communication.  An ontology serves as a shared understanding of some system, be it software or a domain, with assumptions made explicit.  This allows different people in the same organisation, or working on the same project, to better understand each other and make more consistent decisions.  The field of enterprise modelling concerns itself with this problem, but the tools and techniques currently in use have known shortcomings which are addressed by ontologies \cite{Kaczmarek:EnterpriseModelling}.
+  \item Interoperability.  Ontologies can be used as a translation layer which allows different pieces of software to integrate with each other.  This is especially relevant because businesses often use software from different vendors who do not agree on terminology and do not use any common protocol or API.  They can also be applied to data in heterogeneous representations to achieve a unified view.
+  \item Systems engineering.  When building a new system or application, an ontology can serve as a specification, which can aid in requirements gathering or even declaratively specify the design of the system.  An ontology which describes an application can be used to manually or automatically find internal inconsistencies, thereby improving reliability.  It can also be applied to ensure data integrity, in the application or between it and any data sources.
+\end{itemize}
+
+Despite this, they have so far seen disappointingly little adoption within business and industry \cite{Cardoso:SemanticWebVision,Kaczmarek:EnterpriseModelling}.  This is clearly a problem with complex causes, but in this paper we will focus on one contributing factor: a lack of mature engineering practices.
+
+In Section \ref{sec:methodologies} we examine the methodologies popularly used to author ontologies, and where they fall short.
+In Section \ref{sec:tdd} we discuss the software engineering practice of test-driven development and how it applies to ontology engineering.
+In Section \ref{sec:cqd} we discuss the established practice of competency-question-driven ontology authoring, and how it can be combined with test-driven development.
+Finally we conclude in Section \ref{sec:conclusion} with a summary of areas identified for future work.
+
+\section{Ontology Engineering Methodologies}
+\label{sec:methodologies}
+
+Adoption of methodologies has been crucial to the commercial success of software engineering.  As understanding of the software development process has improved, methodologies have been established to address many known of the known risks.  This has improved software reliability and allowed the scope and scale of software projects to grow enormously.
+
+Just like software engineering, ontology engineering is a difficult and cumbersome process.  It seems natural that some approaches to problems should be applicable to both domains, and so methodologies have been designed for and applied to ontology engineering.
+
+In ontology engineering, a methodology typically describes
+\begin{itemize}[nosep]
+  \item a set of tools and techniques to use,
+  \item stages in which they should be applied, and
+  \item goals which should be achieved at each stage.
+\end{itemize}
+
+The earliest fully-fledged methodologies arose out of the Toronto Virtual Enterprise (TOVE) Project \cite{Gruninger:Methodology} and the Enterprise Project \cite{Uschold:Methodology}, based on the personal experience of the creators.  They were shortly followed by many others, notably including \textsc{Methontology} \cite{Fernandez:Methontology} which remains popular nearly twenty years later.  A recent analysis and comparison of methodologies \cite{Iqbal:Methodologies} has identified a total of fifteen which are currently in use, excluding the NeOn methodology framework \cite{Suarez:NeOn}.
+
+According to the aforementioned analysis, none of the existing methodologies are mature.  That is, each of them is in some way inadequate for widespread adoption.  \textsc{Methontology} is the only one that provides sufficient details of the techniques involved for a user to clearly understand and apply them, but it particularly falls short by not accounting for collaboration.  The Ontolingua Server \cite{Farquhar:Ontolingua}, for example, supports collaboration by providing an online development environment which allows an ontology to be modified by multiple users simultaneously, and also by providing a repository of ontologies for reuse.
+
+It is clear that the shortcomings of current methodologies need to be addressed, and this needs to be supported by new tools and techniques.  We propose that one aspect that should be integrated is Test-Driven Development, introduced in Section \ref{sec:tdd}.
+
+\subsection{User Testing}
+
+The use of methodologies is generally accepted as a good idea, but no work has been done on verifying their effectiveness with user tests.
+
+Related testing is scarce in the literature.  One experiment was done on GINO \cite{Bernstein:GINO}, a system for using natural language to modify or query an ontology.  The focus was usability of the interface, so it timed users as they completed predetermined tasks and afterwards performed the SUS usability test \cite{Brooke:SUS}.  When considering methodologies, we are primarily interested in the quality of the resultant ontology, so it is not useful to apply these same methods---at least not until the effect of methodologies on quality is understood.
+
+Another experiment was done on the effectiveness of foundational ontologies \cite{Keet:Foundational}.  Participants were gathered from a series of courses on introductory ontology engineering, totalling 52 postgraduate students, lecturers, and researchers.  They were instructed on the purpose and usage of foundational ontologies, then split into 18 groups and tasked with developing a new ontology in the span of 24 hours, with the choice of using a foundational ontology or not.  Comparison was done quantitatively by counting the number of entities and classes added, and qualitatively by manually inspecting for certain patterns of mistake.
+
+This kind of experiment can be simply adapted to test methodologies.  An effective methodology should improve efficiency and reduce mistakes, so the same measurements are applicable.  A suitable experiment would be structured as follows:
+\begin{enumerate}[noitemsep]
+  \item Divide participants into test groups for each methodology under study, and a control group.
+  \item Train the test groups on the importance and usage of the assigned methodology.
+  \item Instruct every participant:
+  \begin{enumerate}[nosep]
+    \item Develop a new ontology in a specified domain.
+    \item Submit it at the end of a specified time frame.
+    \item Make use of provided knowledge sources for elicitation, if appropriate.
+  \end{enumerate}
+  \item Evaluate the ontologies by counting the number of classes, properties, and axioms created, and inspecting for identifiable mistakes.
+\end{enumerate}
+
+The biggest concern is the difficulty of finding participants.  The experiment failed to achieve statistical significance with four out of its five variables, so perhaps many more than 50 participants are required.  They must also all be of a novice level so that members of the control group do not inadvertently apply any methodologies.
+
+The domain in which participants are instructed to build an ontology must be chosen carefully.  If it is very familiar to many or all participants, they will likely consider themselves domain experts and ignore knowledge elicitation components of the methodologies.  If it is too foreign and difficult to understand, too much time may be lost trying to understand the domain instead of applying methodological techniques and building the ontology.
+
+Despite the difficulties, this is a valuable avenue for future work.
+
+\section{Test-Driven Development}
+\label{sec:tdd}
+
+Test-Driven Development (TDD) is a software development methodology which was popularised by Kent Beck in 2003 \cite{Beck:TDD}, although it can be traced in some form back to at least 1957 \cite[p.~159--160]{McCracken:Programming}.  Its essence is two rules:
+\begin{itemize}[nosep]
+  \item Write new code only if an automated test has failed.
+  \item Eliminate duplication.
+\end{itemize}
+This induces a ``red-green-refactor'' pattern of development: first write a new test which fails, then write code which makes it pass with minimal effort, then remove resultant duplication and restructure if necessary.  The process is usually facilitated with a test harness which runs tests automatically and generates reports.
+
+The rationale behind TDD is primarily that it engenders trust in the quality of the software.  Observing that the entire test suite has passed provides assurance that the software does what it should, ostensibly without defects.  The hope is that this results in increased programmer morale, less time spent correcting defects, and therefore increased productivity and code quality.
+
+A meta-analysis has shown that TDD improves code quality, especially in more complex projects, but does not significantly affect productivity \cite{Rafique:TDD}.
+
+A related methodology is Behaviour-Driven Development (BDD) \cite{Chelimsky:RSpec}, which differs principally in what constitutes a test.  It permits individual tests which cover many components of the system, thereby testing ``behaviours'' rather than the conventional small ``units''.  It also advocates that they be given natural-language names which describe the behaviour they test.  Lastly, it suggests that any gathered requirements be directly recorded as tests.
+
+\subsection{Ontology Unit Testing}
+
+An ontology is a ``white box''---that is, all of its internals are visible---so it may seem odd to employ automated tests at all.  However there are cases where an author, especially an experienced one, may easily make a mistake without noticing.  Consider an author who creates the following classes:
+\[ \oclass{Giraffe} \osub \oclass{Herbivore} \osub \oclass{Mammal} \osub \oclass{Animal} \]
+The author then realises that not all herbivores are mammals, so changes \oclass{Herbivore} to be a subclass only of \oclass{Animal}.  But now \oclass{Giraffe} is no longer a subclass of \oclass{Mammal}, and an application which uses this ontology to enumerate mammals would erroneously miss giraffe.  This mistake could be caught by a suitable test.
+
+From this follows another question: why add a test which asserts an inferred axiom, instead of just adding that axiom directly to the ontology?  Doing so introduces redundancy, making modification of the ontology more difficult, and in some circumstances increases the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
+
+Very little work has been done on unit testing ontologies.
+Vrande\v{c}i\'c and Gangemi \cite{Vrandecic:UnitTestsOntologies} propose it be accomplished by accompanying the ontology under test with two others, the ``positive'' and ``negative'' test ontologies.  The positive test ontology should contain axioms which must be derivable from the ontology under test, and the negative should contain axioms which must not be.  There is no discussion of how such a mechanism might be implemented.
+
+Warrender and Lord \cite{Warrender:HowWhatWhyTest} present a tool called Tawny-OWL.  It uses the OWL API to provide tests which can query the TBox, either directly or with a reasoner, and make changes to the ontology before querying and revert them afterwards.  It can only test knowledge in the TBox.  It has the disadvantage of requiring tests to be written in Clojure, a programming language with little adoption.
+
+{\L}awrynowicz and Keet \cite{Lawrynowicz:TDDontoTool} present TDDOnto, a plugin for Prot\'eg\'e with three kinds of tests:
+\begin{itemize}[nosep]
+  \item TBox query with OWL-BGP through SPARQL,
+  \item TBox query with OWL API, and
+  \item ABox query with ``mock individuals'' with OWL API.
+\end{itemize}
+OWL-BGP relies on HermiT, and the other two on any standard reasoner.
+The paper notes the possibility of TBox queries with SPARQL-DL.
+A performance analysis was done but results are not clear.  Each of the types of test performed well in different circumstances.
+
+The following areas are open to future work:
+\begin{itemize}[nosep]
+  \item Alternative test implementations.
+  \item Thorough comparison of performance between existing implementations.
+  \item Implementation of non-functional tests, such as reasoning time.
+  \item Assessment and improvement of interfaces.
+\end{itemize}
+
+\subsection{Applying TDD to Ontology Engineering}
+
+Since there is so little literature on testing ontologies, it is not surprising that there is even less on applying TDD---we could find only one paper which directly addresses the matter.
+
+Keet and {\L}awrynowicz \cite{Keet:TDDOntologies} investigate how TDD can be transferred from software to ontology engineering, and suggest a sequence of high-level steps which should form part of a methodology.  The methodology is described in very little detail, so considerable refinement is necessary before this produces a methodology which can be considered mature.
+
+A new tool in development, named \textsc{Scone} \cite{Scone:UserGuide,Scone:Bitbucket}, provides a framework and accompanying methodology for BDD of ontologies using natural-language specifications.  Again, the methodology is not described in sufficient detail.
+
+As of yet, there is no accepted set of tools for testing ontologies, which is a major obstacle to promotion of TDD.
+
+Future work is needed in the following areas:
+\begin{itemize}[nosep]
+  \item Implementation and assessment of a full toolchain to support TDD.
+  \item Formalisation of a methodology which incorporates\\TDD.
+  \item Evaluation of such a methodology with user tests.
+\end{itemize}
+
+\section{\tolerance=10000 Competency-Question-Driven Authoring}
+\label{sec:cqd}
+
+A Competency Question (CQ) is a natural-language question which represents a query, or set of queries, an ontology is expected to be able to answer \cite{Gruninger:Methodology}.  CQ-Driven Authoring (CQDA) is a proposed methodology in which CQs are identified and used to produce tests, ideally automatically \cite{Ren:CQDrivenAuthoring}.  Knowledge should then only be added to the ontology in order to make a test pass.  The methodology has not been fully developed and formalised.
+
+The chief difficulty in this is automatically translating a natural-language CQ into a SPARQL query.  Some work has been done on this \cite{Ferre:SQUALL,Wang:PANTO}, but there are many competing technologies which should be assessed for their suitability.
+
+Another problem is the constraint on the kind of test which can be automatically produced from a CQ.  Such a test cannot, for example, assert that a query answer contains a given element or subset.
+
+There is plenty of room for future work on this topic:
+\begin{itemize}[nosep]
+  \item Formalisation and evaluation of a CQ-driven methodology.
+  \item Evaluation of technologies for translating natural language to SPARQL.
+  \item Development of a framework similar to Tawny-OWL or \textsc{Scone} which allows CQs to be combined with more expressive assertions.
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Test-Driven Development seems to be a promising solution to the immaturity of ontology engineering methodologies.  We have identified future work which should be done in assessment of ontology engineering methodologies, unit testing, and application of TDD.  We believe the most pressing need is for a mature TDD toolchain which can be easily adopted by many users, and a full formalisation of a methodology based on TDD.
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+\end{document}
