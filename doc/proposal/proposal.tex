@@ -1,0 +1,98 @@
+%TC:macro \subtitle [header]
+%TC:newcounter todo Number of TODOs
+%TC:macro \todo [option:ignore]
+%TC:macrocount \todo [todo]
+
+\documentclass[draft]{sig-alternate}
+
+\usepackage{ifdraft}
+\usepackage{xifthen}
+\usepackage{soul}
+\usepackage{xcolor}
+\newcommand{\todo}[1][]{\ifdraft{\ifthenelse{\isempty{#1}}{\hl{(TODO)}}{\hl{(TODO: #1)}}}{}}
+
+% This has to go in the preamble to not get counted by texcount
+\numberofauthors{2}
+
+\begin{document}
+
+\title{Test-Driven Development for Ontology Engineering}
+\subtitle{Project Proposal}
+\author{
+  \alignauthor
+  Ameerah Allie\\
+    \affaddr{University of Cape Town}\\
+    \email{ameerah.allie@gmail.com}
+  \alignauthor
+  Kieren Davies\\
+   \affaddr{University of Cape Town}\\
+   \email{kieren@kdavi.es}
+}
+\date{5 May 2016}
+\maketitle
+
+\begin{abstract}
+  \todo
+\end{abstract}
+
+%TC:ignore
+% http://dl.acm.org/ccs.cfm
+\begin{CCSXML}
+<ccs2012>
+  <concept>
+    <concept_id>10010147.10010178.10010187.10010195</concept_id>
+    <concept_desc>Computing methodologies~Ontology engineering</concept_desc>
+    <concept_significance>500</concept_significance>
+  </concept>
+  <concept>
+    <concept_id>10011007.10011074.10011081.10011082</concept_id>
+    <concept_desc>Software and its engineering~Software development methods</concept_desc>
+    <concept_significance>300</concept_significance>
+  </concept>
+  <concept>
+    <concept_id>10011007.10011074.10011099.10011102.10011103</concept_id>
+    <concept_desc>Software and its engineering~Software testing and debugging</concept_desc>
+    <concept_significance>300</concept_significance>
+  </concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Computing methodologies~Ontology engineering}
+\ccsdesc[300]{Software and its engineering~Software development methods}
+\ccsdesc[300]{Software and its engineering~Software testing and debugging}
+
+\printccsdesc
+
+\keywords{Ontology engineering, test-driven development, development methodology}
+%TC:endignore
+
+\section{Project Description}
+
+\todo
+
+\section{Project Statement}
+
+\todo
+
+\section{Procedures and Methods}
+
+\todo
+
+\section{Ethical, Professional and Legal Issues}
+
+\todo
+
+\section{Related Work}
+
+\todo
+
+\section{Anticipated Outcomes}
+
+\todo
+
+\section{Project Plan}
+
+\todo
+
+% \bibliographystyle{abbrv}
+% \bibliography{references}
+\end{document}
