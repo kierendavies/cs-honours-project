@@ -1,6 +1,9 @@
 rootdir = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 latex = TEXINPUTS="$(rootdir):" lualatex --halt-on-error
-references =
+pdfdeps = %.tex
+ifdef references
+pdfdeps := $(pdfdeps) %.bbl
+endif
 
 .PHONY: default
 default:
@@ -11,7 +14,7 @@ default:
 %.bbl: $(references) %.tex | %.aux
 	bibtex $(basename $@)
 
-%.pdf: %.tex %.bbl
+%.pdf: $(pdfdeps)
 	output=$$($(latex) $(basename $@) | tee /dev/tty); \
 	if (grep Rerun <<< $$output > /dev/null); then \
 		$(latex) $(basename $@); \
