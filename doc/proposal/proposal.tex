@@ -40,15 +40,13 @@
 
 Test-driven development is an Extreme Programming methodology for development. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, is desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
 
-Test-driven development for ontologies was introduced by Keet and Ławrynowicz as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Protégé. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminalogical data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
-
-\todo[add references]
+Test-driven development for ontologies was introduced by Keet and Lawrynowicz\cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Protégé\cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminalogical data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
 
 \subsection{Project Significance}
 
 Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, it test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems.
 
-Our project in particular does not change the methodology laid out by Keet and Ławrynowicz but refines and extends some of the ideas within it.
+Our project in particular does not change the methodology laid out by Keet and Ławrynowicz\cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it.
 
 \todo[our particular project(s) and  what sort of impact it/they will have]
 
@@ -105,6 +103,6 @@ Our project in particular does not change the methodology laid out by Keet and �
 \todo[milestones?]
 \todo[work allocation]
 
-% \bibliographystyle{abbrv}
-% \bibliography{references}
+\bibliographystyle{abbrv}
+\bibliography{references}
 \end{document}
