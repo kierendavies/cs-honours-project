@@ -8,6 +8,9 @@
 \def\@copyrightspace{\relax}
 \makeatother
 
+\usepackage{pgfgantt}
+\usepackage[figuresright]{rotating}
+
 \usepackage{ifdraft}
 \usepackage{xifthen}
 \usepackage{soul}
@@ -102,6 +105,18 @@ Our project in particular does not change the methodology laid out by Keet and Å
 \todo[deliverables]
 \todo[milestones?]
 \todo[work allocation]
+
+\subsection{Timeline}
+
+Figure \ref{fig:gantt}
+
+\begin{sidewaysfigure}
+  \caption{Timeline Gantt chart}
+  \label{fig:gantt}
+  \vspace{6pt}
+  % \centering
+  \input{gantt}
+\end{sidewaysfigure}
 
 \bibliographystyle{abbrv}
 \bibliography{references}

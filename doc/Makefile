@@ -1,6 +1,6 @@
 rootdir = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 latex = TEXINPUTS="$(rootdir):" lualatex --halt-on-error
-pdfdeps = %.tex
+pdfdeps = %.tex $(latexinputs)
 ifdef references
 pdfdeps := $(pdfdeps) %.bbl
 endif

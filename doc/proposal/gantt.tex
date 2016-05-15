@@ -1,0 +1,22 @@
+\newcounter{Week}
+\stepcounter{Week}
+\begin{ganttchart}[
+    time slot format = isodate,
+    calendar week text = {\theWeek\stepcounter{Week}},
+    title height = 1,
+    y unit title = 0.5cm,
+    % y unit chart = 1cm,
+    x unit = 0.1cm,
+    vgrid = {*6{draw=none}, dotted},
+    hgrid,
+    group peaks width = 1.5,
+    group left shift = -0.5,
+    group right shift = 0.5,
+    milestone left shift = -2,
+    milestone right shift = 1,
+    link bulge = 3,
+    link tolerance = 4,
+  ]{2016-05-16}{2016-11-20}
+  \gantttitlecalendar{month=name, week} \\
+  \ganttmilestone{Final proposal}{2016-06-08}
+\end{ganttchart}
