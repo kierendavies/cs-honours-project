@@ -8,6 +8,8 @@
 \def\@copyrightspace{\relax}
 \makeatother
 
+\usepackage{enumitem}
+
 \usepackage{pgfgantt}
 \usepackage[figuresright]{rotating}
 
@@ -66,7 +68,11 @@ The second part of the project concerns itself primarily with benchmarking vario
 \todo[correctness]
 \todo[``analytical research problem'', not a question]
 \begin{quote}
-  Only a small set of unit tests have been described and implemented; it is desirable to have many more.  Proof of correctness does not exist for any unit test algorithms.
+  \begin{itemize}[leftmargin=0pt]
+    \item Only a small set of unit tests have been described and implemented; it is desirable to have many more in order to test more complex scenarios.
+    \item Existing implementations can only pass or fail; it is desirable to have more states to indicate missing vocabulary and possible inconsistencies.
+    \item Proof of correctness does not exist for any unit test algorithms.
+  \end{itemize}
 \end{quote}
 
 \todo[benchmarking]
@@ -78,8 +84,35 @@ The second part of the project concerns itself primarily with benchmarking vario
 
 \todo[correctness]
 \todo[methods of analysis]
+\todo[this is only an outline]
+\begin{enumerate}[noitemsep]
+  \item Create formal model of test assertions
+  \item Prove correctness of an already-described test
+  \item Describe new tests
+  \item Prove correctness of new tests
+  \item Implement
+  \item Verify empirically---``test the tests''
+\end{enumerate}
 
 \todo[benchmarking]
+\todo[this is only an outline]
+\begin{enumerate}[noitemsep]
+  \item Gather ontologies
+  \item Implement automatic unit test generation (use Agnieszka's)---use valid vocabulary, pick axioms which are known to hold (or not)
+  \item Run with default reasoner etc.\ to ensure it works and produces reasonable numbers
+  \item Identify independent variables: reasoner, test type, ontology size, DL profile, \dots
+  \item Iterate benchmark scipt over some or all combinations; ensure it runs within a reasonable amount of time---if not, tactfully prune variables
+  \item Revise independent variables?
+  \item Collate and analyse data
+\end{enumerate}
+If you want to be clever and propose/prototype a system to run tests with the best reasoner:
+\begin{enumerate}[noitemsep,resume]
+  \item Measure startup times of reasoners
+  \item Measure initial classification times of ontologies with different size, DL profile, etc.
+  \item Create lookup table of expected startup/classification times
+  \item Design algorithm to minimise total time taken
+  \item Implement
+\end{enumerate}
 
 \section{Ethical, Professional and Legal Issues}
 
