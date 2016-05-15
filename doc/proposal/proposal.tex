@@ -116,10 +116,20 @@ If you want to be clever and propose/prototype a system to run tests with the be
 
 \section{Ethical, Professional and Legal Issues}
 
-\todo[software licenses]
-\todo[permission from Maria etc]
-\todo[getting sample ontologies]
-\todo[user evaluation?]
+\subsection{Software}
+
+We plan to use both Prot{'e}g{'e'}\footnote{http://protege.stanford.edu/} and the TDDonto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot{'e}g{'e'} was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. This requires no license to use. TDDonto is a plugin for Prot{'e}g{'e'} made available online. It is not open source but is available for use. Verbal permission was given by Dr C. M. Keet, co-creator of the tool and the supervisor for this project, to use the software.
+
+Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. To assist with this, we will ask for permission of Dr A. {\L}awrynowicz to use and modify the script she used for the TDDonto tests\cite{DBLP:conf/dlog/LawrynowiczK16}. If this is not a possibility, these will have to be written by ourselves. This is possible but more time-consuming. It also requires the use of reasoners, like HermiT or Konclude. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
+
+No additional software is currently expected to be used. Given that all the software we intend to use is open source or proprietary with permission granted, there are no issues regarding licensing. It presents no ethical, professional or legal issues.
+
+\subsection{Data}
+
+The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies that the original TDDonto experiment used\cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatability issues. By necessity, it removes ontologies with datatypes that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
+
+\subsection{Publishing Work}
+
 \todo[publishing data]
 \todo[publishing code]
 
