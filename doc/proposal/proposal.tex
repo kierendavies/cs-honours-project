@@ -63,22 +63,18 @@ The second part of the project concerns itself primarily with benchmarking vario
 
 \section{Problem Statement}
 
-\todo[central issue: aims, research questions/problems]
+The aim of this project is to refine and extend the unit testing in the test-driven development methodology applied to ontology engineering. An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This project aims to extend the test suite and prove correctness for the new unit tests added to the test suite and a test in the original test suite as correctness was not theoretically proven. This project also aims to address the question of which reasoner is the best reasoner to use for a given type of axiom. This includes benchmarking (testing and measuring performance) of various reasoners to improve speed of the unit tests in the test-driven development methodology applied to ontology development.
 
-\todo[correctness]
-\todo[``analytical research problem'', not a question]
-\begin{quote}
-  \begin{itemize}[leftmargin=0pt]
-    \item Only a small set of unit tests have been described and implemented; it is desirable to have many more in order to test more complex scenarios.
-    \item Existing implementations can only pass or fail; it is desirable to have more states to indicate missing vocabulary and possible inconsistencies.
-    \item Proof of correctness does not exist for any unit test algorithms.
-  \end{itemize}
-\end{quote}
+This aims to solve the problems of:
+\begin{enumerate}
+  \item Correctness of unit tests
+  \item Limited number of unit tests or types of axioms they cover
+  \item Reasoner performance in unit testing
+\end{enumerate}
 
-\todo[benchmarking]
-\begin{quote}
-  Which reasoner has the best performance on each of the unit test implementations?
-\end{quote}
+Currently, only a small number of unit tests have been defined at all. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
+
+For benchmarking, this helps inform choices of reasoner not just within the scope of test-driven development but also ontology development. It also helps to improve the speed performance of the unit tests by matching reasoners to axioms more appropriately.
 
 \section{Procedures and Methods}
 
