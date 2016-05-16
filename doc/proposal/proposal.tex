@@ -49,7 +49,7 @@ Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz
 
 \subsection{Project Significance}
 
-Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, it test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems. Unit testing for ontologies in particular has been said by Vrandecic and Gangemi \cite{DBLP:conf/otm/VrandecicG06} to make the code less tightly-coupled and easier to integrate and refactor.
+Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, it test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems. Unit testing for ontologies in particular has been said by Vrande{\v{c}}i{\'c} and Gangemi \cite{DBLP:conf/otm/VrandecicG06} to make the code less tightly-coupled and easier to integrate and refactor.
 
 Our project in particular does not change the methodology laid out by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it. Part of the project includes extending the set of tests defined for TDDOnto. This includes proving correctness for these tests. If successful, it has the impact of more unit tests being made available for more types of axioms. This allows ontology developers to test for correctness of more types of axioms and apply the test-driven development methodology more broadly to their ontologies. It has the possibility of facilitating regression testing of ontologies and allow for testing of ontologies in a manner that is well-defined and simple to use \cite{DBLP:conf/otm/VrandecicG06}.
 
@@ -152,14 +152,41 @@ As there is no user testing involved in the project, no ethical clearance of the
 
 \section{Project Plan}
 
+\subsection{Risks}
+
 \todo[risks]
-\todo[timeline, Gantt chart]
-\todo[resources: people, software]
+
+\subsection{Resources Required}
+
+The project requires the following software:
+\begin{itemize}
+  \item Prot{\'e}g{\'e} ontology editor
+  \item TDDOnto plugin for Prot{\'e}g{\'e}
+  \item Various reasoners
+  \item Scripts for automated testing
+\end{itemize}
+
+Prot{\'e}g{\'e} is requiring for editing ontologies. This may include the addition and removal of axioms. TDDOnto is the basis for this project. The original software will be used as the basis of the test suite extension, including its source code. Reasoners, like HermiT and Konclude, will also be used in benchmarking and their performance will be measured but will not require editing of the original source code. The scripts for automated test execution would need to be obtained from Dr A. {\L}awrynowicz or written by ourselves. There is no other human participation in the project. This limits the human or labour resources required.
+
+The data used will be ontologies that are extracted from the TONES mirror from the OntoHub repository. These ontologies will be the 82 ontologies from the original TDDOnto tests whose features are OWL 2 compliant.
+
+If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's GPU cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
+
+\subsection{Deliverables}
+
 \todo[deliverables]
+
+\subsection{Milestones}
+
 \todo[milestones?]
+
+\subsection{Work Allocation}
+
 \todo[work allocation]
 
 \subsection{Timeline}
+
+\todo[timeline, Gantt chart]
 
 Figure \ref{fig:gantt}
 
