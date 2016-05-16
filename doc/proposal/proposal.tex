@@ -143,12 +143,22 @@ As there is no user testing involved in the project, no ethical clearance of the
 
 \section{Anticipated Outcomes}
 
-\todo[impact (towards TDD?)]
-\todo[measuring success]
+Here we state the outcomes we anticipate for the project. They will serve as means of measuring the success of the final outcomes of the project.
 
-\todo[correctness]
+\subsection{Project Outcome}
 
-\todo[benchmarking]
+As stated previously, the project consists of extending the test suite of unit tests that can be applied to ontologies for unit testing. This is not a software development project so it cannot be measured by number and quality of deliverables successfully developed. Instead, we expect that correctness will be proven which has not been done yet for any unit tests for ontologies. This will be done for an already-described test and also for the new tests in the extended test suite for tests we have devised.
+
+Benchmarking also does not produce a software deliverable. Instead, it produces a set of data on reasoner performance for specific types of unit tests. This data will be analysed to test for statistically signicant results. This informs choices for reasoners in test-driven development for ontologies for specific unit tests and may improve test speeds. There may be scope to prototype a system that incorporates running the best reasoner for a specific unit test and, despite start-up time of reasoners increasing, decrease overall runtime. This is left as an additional but not necessary task.
+
+Overall, this has the effect of improving the test-driven development for ontology engineering methodology with a greater test suite (with proven correctness) and measured reasoner performance. We hope this will provide some encouragement to ontology developers to employ the test-driven development methodology which may improve their ontologies. 
+
+\subsection{Success Factors}
+
+Success for correctness will be measured simply by whether or correctness has been sufficiently proven and if the proof is conclusive and correct itself. It cannot be flawed. A number of new tests should be defined for unit testing. This will include composition of different types of axioms. This will be successful if the test suite is sufficiently expanded.
+
+The outcome of the benchmarking tests will prove if, at all, there is a best (fastest) reasoner for a specific type of axiom. This is measured by speed of the reasoner. Success of the project does not depend on whether or not the results prove, with statistical significance, that one reasoner is better than another for reasoning over a specific type of axiom. If reasoners are found to be equal in performance then this still proves that choice of reasoner in ontology development is not affected by speed. Success of the project is instead measured by whether or not these tests are successfully carried out and analysed. This can be ensured by making fair, unbiased tests by blocking for the identified independent variables (for example, reasoners used) to ensure that the tests are valid.
+
 
 \section{Project Plan}
 
@@ -188,7 +198,7 @@ The project requires the following software:
   \item Scripts for automated testing
 \end{itemize}
 
-Prot\'eg\'e is requiring for editing ontologies. This may include the addition and removal of axioms. TDDOnto is the basis for this project. The original software will be used as the basis of the test suite extension, including its source code. Reasoners, like HermiT and Konclude, will also be used in benchmarking and their performance will be measured but will not require editing of the original source code. The scripts for automated test execution would need to be obtained from Dr.\ A.\ {\L}awrynowicz or written by ourselves. There is no other human participation in the project. This limits the human or labour resources required.
+Prot\'eg\'e is required for editing ontologies. This may include the addition and removal of axioms. TDDOnto is the basis for this project. The original software will be used as the basis of the test suite extension, including its source code. Reasoners, like HermiT and Konclude, will also be used in benchmarking and their performance will be measured but will not require editing of the original source code. The scripts for automated test execution would need to be obtained from Dr.\ A.\ {\L}awrynowicz or written by ourselves. There is no other human participation in the project. This limits the human or labour resources required.
 
 The data used will be ontologies that are extracted from the TONES mirror from the OntoHub repository. These ontologies will be the 82 ontologies from the original TDDOnto tests whose features are OWL 2 compliant.
 
