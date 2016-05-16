@@ -152,43 +152,23 @@ As there is no user testing involved in the project, no ethical clearance of the
 
 \section{Project Plan}
 
-\subsection{Risks}
-
-\todo[risks]
-
-\subsection{Resources Required}
-
-The project requires the following software:
-\begin{itemize}
-  \item Prot{\'e}g{\'e} ontology editor
-  \item TDDOnto plugin for Prot{\'e}g{\'e}
-  \item Various reasoners
-  \item Scripts for automated testing
-\end{itemize}
-
-Prot{\'e}g{\'e} is requiring for editing ontologies. This may include the addition and removal of axioms. TDDOnto is the basis for this project. The original software will be used as the basis of the test suite extension, including its source code. Reasoners, like HermiT and Konclude, will also be used in benchmarking and their performance will be measured but will not require editing of the original source code. The scripts for automated test execution would need to be obtained from Dr A. {\L}awrynowicz or written by ourselves. There is no other human participation in the project. This limits the human or labour resources required.
-
-The data used will be ontologies that are extracted from the TONES mirror from the OntoHub repository. These ontologies will be the 82 ontologies from the original TDDOnto tests whose features are OWL 2 compliant.
-
-If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's GPU cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
-
-\subsection{Deliverables}
-
-\todo[deliverables]
-
-\subsection{Milestones}
-
-\todo[milestones?]
-
-\subsection{Work Allocation}
-
-\todo[work allocation]
-
 \subsection{Timeline}
 
-\todo[timeline, Gantt chart]
-
-Figure \ref{fig:gantt}
+The project consists of the following primary tasks:
+\begin{enumerate}[noitemsep]
+  \item Finalise proposal
+  \item Create website
+  \item Demonstrate feasibility of
+  \begin{enumerate}[nosep]
+    \item new unit tests with proofs of correctness
+    \item benchmarking reasoners
+  \end{enumerate}
+  \item Create comprehensive collection of new unit tests, with proofs and implementation.
+  \item Benchmark reasoners with new and existing unit tests
+  \item Perform statistical analysis on benchmark results
+  \item Write paper
+\end{enumerate}
+The full list of tasks and subtasks has been scheduled in a Gantt chart in Figure \ref{fig:gantt}.
 
 \begin{sidewaysfigure*}
   \caption{Timeline Gantt chart}
@@ -197,6 +177,35 @@ Figure \ref{fig:gantt}
   \hspace{-1.5cm}
   \input{gantt}
 \end{sidewaysfigure*}
+
+\subsection{Resources}
+
+The project requires the following software:
+\begin{itemize}[noitemsep]
+  \item Prot\'eg\'e ontology editor
+  \item TDDOnto plugin for Prot\'eg\'e
+  \item Various reasoners
+  \item Scripts for automated testing
+\end{itemize}
+
+Prot\'eg\'e is requiring for editing ontologies. This may include the addition and removal of axioms. TDDOnto is the basis for this project. The original software will be used as the basis of the test suite extension, including its source code. Reasoners, like HermiT and Konclude, will also be used in benchmarking and their performance will be measured but will not require editing of the original source code. The scripts for automated test execution would need to be obtained from Dr.\ A.\ {\L}awrynowicz or written by ourselves. There is no other human participation in the project. This limits the human or labour resources required.
+
+The data used will be ontologies that are extracted from the TONES mirror from the OntoHub repository. These ontologies will be the 82 ontologies from the original TDDOnto tests whose features are OWL 2 compliant.
+
+If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's GPU cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
+
+\subsection{Deliverables and Milestones}
+
+\todo[deliverables]
+\todo[milestones?]
+
+\subsection{Work Allocation}
+
+\todo[work allocation]
+
+\subsection{Risks}
+
+\todo[risks]
 
 \bibliographystyle{abbrv}
 \bibliography{references}
