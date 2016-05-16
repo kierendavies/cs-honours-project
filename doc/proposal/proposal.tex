@@ -45,7 +45,7 @@
 
 Test-driven development is an Extreme Programming methodology for development. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, is desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
 
-Test-driven development for ontologies was introduced by Keet and Lawrynowicz\cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Protégé\cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminalogical data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
+Test-driven development for ontologies was introduced by Keet and Lawrynowicz\cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Prot{\'e}g{\'e}\cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminalogical data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
 
 \subsection{Project Significance}
 
@@ -118,7 +118,7 @@ If you want to be clever and propose/prototype a system to run tests with the be
 
 \subsection{Software}
 
-We plan to use both Prot{'e}g{'e'}\footnote{http://protege.stanford.edu/} and the TDDonto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot{'e}g{'e'} was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. This requires no license to use. TDDonto is a plugin for Prot{'e}g{'e'} made available online. It is not open source but is available for use. Verbal permission was given by Dr C. M. Keet, co-creator of the tool and the supervisor for this project, to use the software.
+We plan to use both Prot{\'e}g{\'e}\footnote{http://protege.stanford.edu/} and the TDDonto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot{\'e}g{\'e} was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. It is open source under the BSD-2 clause license\footnote{https://github.com/protegeproject/webprotege/blob/master/license.txt}. We will use Prot{\'e}g{\'e} within the terms specified. TDDonto is a plugin for Prot{\'e}g{\'e} made available online. It is not open source but is available for use. Verbal permission was given by Dr C. M. Keet, co-creator of the tool and the supervisor for this project, to use the software.
 
 Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. To assist with this, we will ask for permission of Dr A. {\L}awrynowicz to use and modify the script she used for the TDDonto tests\cite{DBLP:conf/dlog/LawrynowiczK16}. If this is not a possibility, these will have to be written by ourselves. This is possible but more time-consuming. It also requires the use of reasoners, like HermiT or Konclude. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
 
@@ -130,8 +130,7 @@ The tests for the benchmarking part of the project require a sample set of ontol
 
 \subsection{Publishing Work}
 
-\todo[publishing data]
-\todo[publishing code]
+It is the policy of the University of Cape Town that all software produced within the capacity of the project is the copyright of the university. It also must be published under a Creative Commons license. We will adhere to the university's Intellectual Property policy. This includes publishing the results of the performance test data.
 
 \section{Related Work}
 
