@@ -8,10 +8,14 @@
 \def\@copyrightspace{\relax}
 \makeatother
 
-\usepackage{enumitem}
-
+\usepackage[inline]{enumitem}
 \usepackage{pgfgantt}
 \usepackage[figuresright]{rotating}
+\usepackage{tabularx}
+
+\usepackage[english]{babel}
+\usepackage[english]{isodate}
+\cleanlookdateon
 
 \usepackage{ifdraft}
 \usepackage{xifthen}
@@ -36,16 +40,16 @@
    \affaddr{University of Cape Town}\\
    \email{kieren@kdavi.es}
 }
-\date{5 May 2016}
+\date{17 May 2016}
 \maketitle
 
 \section{Project Description}
 
 \subsection{Project Background}
 
-Test-driven development is an Extreme Programming methodology for development. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, is desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
+Test-driven development is an methodology derived from Extreme Programming. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, is desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
 
-Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Prot\'eg\'e \cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminalogical data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
+Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDonto tool was developed as a plugin to Prot\'eg\'e \cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox (terminological data) and ABox (assertional data). No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
 
 \subsection{Project Significance}
 
@@ -78,42 +82,22 @@ Benchmarking would help to inform choices of reasoner not just within the scope 
 
 \section{Procedures and Methods}
 
-\subsection{Proof of Correctness}
+To devise new unit tests, we will draw inspiration from TDDOnto.  We will include some of those which TDDOnto explicitly excludes, such as RBox tests, and also extrapolate to more complex compound axioms.  We will also introduce more unit test outcomes by characterising failure modes; for example, when vocabulary is missing, or when the missing axiom may be added to the ontology without causing inconsistency.
 
-\todo[review: is this an appropriate heading for your section?]
+In order to prove the correctness of unit tests, we must first develop a formal model, and then identify which questions can be directly answered by a reasoner in terms of this model.  The model will then be used to prove the correctness and completeness of each test algorithm.
 
-\todo[correctness]
-\todo[methods of analysis]
-\todo[this is only an outline]
+After this, each test will be implemented as an addition to TDDOnto.  They can then be further verified empirically.
+
+Benchmarking of reasoners will employ the following experimental method:
 \begin{enumerate}[noitemsep]
-  \item Create formal model of test assertions
-  \item Prove correctness of an already-described test
-  \item Describe new tests
-  \item Prove correctness of new tests
-  \item Implement
-  \item Verify empirically---``test the tests''
-\end{enumerate}
-
-\subsection{Benchmarking}
-
-\todo[benchmarking]
-\todo[this is only an outline]
-\begin{enumerate}[noitemsep]
-  \item Gather ontologies
-  \item Implement automatic unit test generation (use Agnieszka's)---use valid vocabulary, pick axioms which are known to hold (or not)
-  \item Run with default reasoner etc.\ to ensure it works and produces reasonable numbers
-  \item Identify independent variables: reasoner, test type, ontology size, DL profile, \dots
-  \item Iterate benchmark scipt over some or all combinations; ensure it runs within a reasonable amount of time---if not, tactfully prune variables
-  \item Revise independent variables?
-  \item Collate and analyse data
-\end{enumerate}
-If you want to be clever and propose/prototype a system to run tests with the best reasoner:
-\begin{enumerate}[noitemsep,resume]
-  \item Measure startup times of reasoners
-  \item Measure initial classification times of ontologies with different size, DL profile, etc.
-  \item Create lookup table of expected startup/classification times
-  \item Design algorithm to minimise total time taken
-  \item Implement
+  \item Gather ontologies to be used for testing
+  \item Implement or obtain algorithm to automatically generate unit tests
+  \item Implement or obtain benchmark wrapper script
+  \item Check script and unit test generation by benchmarking one test type in one ontology
+  \item Identify and select independent variables to control, e.g.\ DL profile, ontology size
+  \item Modify script to benchmark every combination of chosen variables
+  \item Perform benchmarks and record results
+  \item Perform an analysis of variables on the resulting data
 \end{enumerate}
 
 \section{Ethical, Professional and Legal Issues}
@@ -128,7 +112,7 @@ No additional software is currently expected to be used. Given that all the soft
 
 \subsection{Data}
 
-The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatability issues. By necessity, it removes ontologies with datatypes that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
+The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatibility issues. By necessity, it removes ontologies with data types that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
 
 \subsection{Publishing Work}
 
@@ -138,10 +122,15 @@ As there is no user testing involved in the project, no ethical clearance of the
 
 \section{Related Work}
 
-\todo[efforts towards TDD]
-\todo[unit test implementations]
-\todo[correctness]
-\todo[benchmarking]
+The literature contains only three prior attempts to implement unit tests for ontologies.  We will be basing our work off TDDOnto, as it is the only suitable implementation.
+
+Tawny-OWL is a library which includes programmatic ontology testing \cite{DBLP:journals/corr/WarrenderL15}.  We do not consider it because it implements only a very small set of tests, and in isolation they offer little abstraction over the OWL API.
+
+\textsc{Scone} is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
+
+Vrande\v{c}i\'c and Gangemi \cite{DBLP:conf/otm/VrandecicG06} propose a means of testing ontologies but do not present an implementation.  They do however suggest the beginnings of a formal model of testing.  It will need to be extensively developed to be useful to this project.  One possible extension is the use of autoepistemic operators, which have been use to perform closed-world reasoning within ontologies \cite{DBLP:conf/owled/GrimmM05}.
+
+Parsia et al.\ \cite{DBLP:conf/semweb/ParsiaMGGS15} compared 14 reasoners by measuring performance of classification, consistency checking, and realisation in OWL 2 DL and EL.  The results of this inform the choice of reasoners for benchmarking.
 
 \section{Anticipated Outcomes}
 
@@ -151,9 +140,9 @@ Here we state the outcomes we anticipate for the project. They will serve as mea
 
 As stated previously, the project consists of extending the test suite of unit tests that can be applied to ontologies for unit testing. This is not a software development project so it cannot be measured by number and quality of deliverables successfully developed. Instead, we expect that correctness will be proven which has not been done yet for any unit tests for ontologies. This will be done for an already-described test and also for the new tests in the extended test suite for tests we have devised.
 
-Benchmarking also does not produce a software deliverable. Instead, it produces a set of data on reasoner performance for specific types of unit tests. This data will be analysed to test for statistically signicant results. This informs choices for reasoners in test-driven development for ontologies for specific unit tests and may improve test speeds. There may be scope to prototype a system that incorporates running the best reasoner for a specific unit test and, despite start-up time of reasoners increasing, decrease overall runtime. This is left as an additional but not necessary task.
+Benchmarking also does not produce a software deliverable. Instead, it produces a set of data on reasoner performance for specific types of unit tests. This data will be analysed to test for statistically significant results. This informs choices for reasoners in test-driven development for ontologies for specific unit tests and may improve test speeds. There may be scope to prototype a system that incorporates running the best reasoner for a specific unit test and, despite start-up time of reasoners increasing, decrease overall runtime. This is left as an additional but not necessary task.
 
-Overall, this has the effect of improving the test-driven development for ontology engineering methodology with a greater test suite (with proven correctness) and measured reasoner performance. We hope this will provide some encouragement to ontology developers to employ the test-driven development methodology which may improve their ontologies. 
+Overall, this has the effect of improving the test-driven development for ontology engineering methodology with a greater test suite (with proven correctness) and measured reasoner performance. We hope this will provide some encouragement to ontology developers to employ the test-driven development methodology which may improve their ontologies.
 
 \subsection{Success Factors}
 
@@ -161,34 +150,43 @@ Success for correctness will be measured simply by whether or correctness has be
 
 The outcome of the benchmarking tests will prove if, at all, there is a best (fastest) reasoner for a specific type of axiom. This is measured by speed of the reasoner. Success of the project does not depend on whether or not the results prove, with statistical significance, that one reasoner is better than another for reasoning over a specific type of axiom. If reasoners are found to be equal in performance then this still proves that choice of reasoner in ontology development is not affected by speed. Success of the project is instead measured by whether or not these tests are successfully carried out and analysed. This can be ensured by making fair, unbiased tests by blocking for the identified independent variables (for example, reasoners used) to ensure that the tests are valid.
 
-
 \section{Project Plan}
 
-\subsection{Timeline}
+\subsection{Deliverables and Milestones}
 
-The project consists of the following primary tasks:
+The following deliverables have been prescribed:
+\printyearoff
+\begin{description}[noitemsep,font=\normalfont,labelwidth=60pt,leftmargin=64.5pt]
+  \item[\printdate{2016-05-17}] Proposal
+  \item[\printdate{2016-06-08}] Revised proposal
+  \item[\printdate{2016-06-10}] Web presence
+  \item[\printdate{2016-07-18}] Initial feasibility demonstration
+  \item[\printdate{2016-07-22}] Background section of paper
+  \item[\printdate{2016-08-29}] Paper plan
+  \item[\printdate{2016-09-20}] First experiment, with section in paper
+  \item[\printdate{2016-09-29}] Final experiment, with section in paper
+  \item[\printdate{2016-10-04}] Final implementation and testing, with \\ sections in paper
+  \item[\printdate{2016-10-11}] Complete outline of paper
+  \item[\printdate{2016-10-18}] Final draft of paper
+  \item[\printdate{2016-10-28}] Final submission of paper
+  \item[\printdate{2016-10-31}] Final source code
+  \item[\printdate{2016-10-31}] Final demonstration
+  \item[\printdate{2016-11-07}] Poster
+  \item[\printdate{2016-11-11}] Website
+  \item[\printdate{2016-11-14}] Reflection paper
+\end{description}
+
+In addition, we have set the following milestones, which approximately describe the sequence in which work must be done:
 \begin{enumerate}[noitemsep]
-  \item Finalise proposal
-  \item Create website
-  \item Demonstrate feasibility of
-  \begin{enumerate}[nosep]
-    \item new unit tests with proofs of correctness
-    \item benchmarking reasoners
-  \end{enumerate}
-  \item Create comprehensive collection of new unit tests, with proofs and implementation.
-  \item Benchmark reasoners with new and existing unit tests
-  \item Perform statistical analysis on benchmark results
-  \item Write paper
+  \item Formal model of ontology unit tests
+  \item First proof of correctness (of new or existing test)
+  \item First new test implementation
+  \item Final suite of new tests, with implementation and proof of correctness
+  \item Reproducible benchmark of one reasoner against one test
+  \item Final choice of controlled independent variables for benchmarking
+  \item Completion of benchmarks over all variables
+  \item Completion of data analysis
 \end{enumerate}
-The full list of tasks and subtasks has been scheduled in a Gantt chart in Figure \ref{fig:gantt}.
-
-\begin{sidewaysfigure*}
-  \caption{Timeline Gantt chart}
-  \label{fig:gantt}
-  \vspace{6pt}
-  \hspace{-1.5cm}
-  \input{gantt}
-\end{sidewaysfigure*}
 
 \subsection{Resources}
 
@@ -204,20 +202,71 @@ Prot\'eg\'e is required for editing ontologies. This may include the addition an
 
 The data used will be ontologies that are extracted from the TONES mirror from the OntoHub repository. These ontologies will be the 82 ontologies from the original TDDOnto tests whose features are OWL 2 compliant.
 
-If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's GPU cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
+If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's grid cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
 
-\subsection{Deliverables and Milestones}
+\subsection{Timeline}
 
-\todo[deliverables]
-\todo[milestones?]
+The project consists of the following primary tasks:
+\begin{enumerate}[noitemsep]
+  \item Finalise proposal
+  \item Create website
+  \item Demonstrate feasibility of
+  \begin{enumerate}[nosep]
+    \item new unit tests with proofs of correctness
+    \item benchmarking reasoners
+  \end{enumerate}
+  \item Create comprehensive suite of new unit tests, with proofs and implementation.
+  \item Benchmark reasoners with new and existing unit tests
+  \item Perform statistical analysis on benchmark results
+  \item Write paper
+\end{enumerate}
+The full list of tasks and subtasks has been scheduled in a Gantt chart in Figure \ref{fig:gantt}.
+
+\begin{sidewaysfigure*}
+  \caption{Timeline Gantt chart}
+  \label{fig:gantt}
+  \vspace{6pt}
+  \hspace{-1.5cm}
+  \input{gantt}
+\end{sidewaysfigure*}
 
 \subsection{Work Allocation}
 
-The project is separated into two distinct parts: (a) the addition of unit tests to the test suite and proof of its correctness, and (b) benchmarking of reasoner performance against the ontologies and the original test suite. The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no inter-project dependencies. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
+The project is separated into two distinct parts:
+\begin{enumerate*}[label=(\arabic*)]
+  \item the addition of unit tests to the test suite and proof of their correctness, and
+  \item benchmarking of reasoner performance against the ontologies and the original test suite.
+\end{enumerate*}
+The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no inter-project dependencies. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
 
 \subsection{Risks}
 
-\todo[risks]
+An analysis of risks is presented in Table \ref{tab:risks}.
+
+\begin{table*}
+  \caption{Analysis of risks}
+  \label{tab:risks}
+  \vspace{6pt}
+  \setlength{\extrarowheight}{4pt}
+  \begin{tabularx}{\textwidth}{XcX}
+    Risk & Likelihood & Mitigation \\ \hline
+    Benchmarking is too slow to run on a desktop computer. &
+    High &
+    Use high-performance hardware in the UCT grid cluster, and run benchmarks in parallel. \\
+    Developing a formal model of ontology unit tests is too difficult. &
+    Medium &
+    Seek help from experts in description logic and model theory. \\
+    Benchmarking scripts are not available from Dr.\ {\L}awrynowicz. &
+    Low &
+    Write scripts from scratch, and reduce the scope of the experiment if necessary due to time constraints. \\
+    Benchmarking scripts cannot be adapted to accomodate desired controlled variables. &
+    Low &
+    Consult Dr.\ {\L}awrynowicz.  If necessary, rewrite the scripts or reduce the scope of the experiment. \\
+    New unit tests cannot be implemented with the same technologies used in TDDOnto. &
+    Low &
+    Investigate using another tool such as Tawny-OWL, or developing a new tool.
+  \end{tabularx}
+\end{table*}
 
 \bibliographystyle{abbrv}
 \bibliography{references}
