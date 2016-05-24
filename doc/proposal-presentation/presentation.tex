@@ -28,12 +28,17 @@
 
 \section{Context}
 
-\begin{frame}{Context}
+\begin{frame}{Ontology engineering}
   \begin{itemize}
-    \item Test-driven development
-    \begin{itemize}
-      \item Successful in software engineering
-    \end{itemize}
+    \item Formal representation of knowledge
+  \end{itemize}
+  \centering
+  \includegraphics[width=0.6\textwidth]{pizza}
+\end{frame}
+
+\begin{frame}{Test-driven development}
+  \begin{itemize}
+    \item Successful in software engineering
     \item Ontology engineering less mature
     \begin{itemize}
       \item First test harnesses, 2015
@@ -50,6 +55,27 @@
     \item code quality
     \item reliability: external tests passed
   \end{itemize}
+}
+
+\begin{frame}[t]{Why test?}
+  \begin{align*}
+    \oclass{Giraffe} &\osub \oclass{Herbivore} \\
+    \oclass{Herbivore} &\osub \oclass{Mammal} \\
+    \oclass{Mammal} &\osub \oclass{Animal}
+  \end{align*}
+\end{frame}
+
+\begin{frame}[t]{Why test?}
+  \begin{align*}
+    \oclass{Giraffe} &\osub \oclass{Herbivore} \\
+    \oclass{Herbivore} &\osub \oclass{Animal} \\
+    \oclass{Mammal} &\osub \oclass{Animal} \\
+    \\
+    \oclass{Herbivore} &\onsub \oclass{Mammal}
+  \end{align*}
+\end{frame}
+\note{
+  Listing mammals misses giraffe
 }
 
 \begin{frame}{Related work}
@@ -99,26 +125,41 @@ Scenario: Relative age between family members
   \includegraphics[width=\textwidth]{tddonto}
 \end{frame}
 
-\begin{frame}[t]{Example}
-  \begin{align*}
-    \oclass{Giraffe} &\osub \oclass{Herbivore} \\
-    \oclass{Herbivore} &\osub \oclass{Mammal} \\
-    \oclass{Mammal} &\osub \oclass{Animal}
-  \end{align*}
+\begin{frame}{OWL Reasoner Evaluation}
+  \begin{itemize}
+    \item Comparison of reasoner performance
+    \item 14 reasoners tested
+    \item Only OWL 2 DL and EL
+  \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{Example}
-  \begin{align*}
-    \oclass{Giraffe} &\osub \oclass{Herbivore} \\
-    \oclass{Herbivore} &\osub \oclass{Animal} \\
-    \oclass{Mammal} &\osub \oclass{Animal} \\
-    \\
-    \oclass{Herbivore} &\onsub \oclass{Mammal}
-  \end{align*}
+\section{Problem}
+
+\begin{frame}{Problem}
+  \begin{itemize}
+    \item Available tools don't support comprehensive tests
+    \begin{itemize}
+      \item No ABox or RBox
+    \end{itemize}
+    \item Not formally verified
+    \begin{itemize}
+      \item Only empirically
+    \end{itemize}
+    \item Performance of reasoner-based tests poorly understood
+  \end{itemize}
 \end{frame}
-\note{
-  Listing mammals misses giraffe
-}
+
+\begin{frame}{New tests: Problem statement}
+  \begin{itemize}
+    \item Previously described and implemented unit tests are not comprehensive
+    \item No proof of correctness for any unit test algorithms
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Benchmarking: Research question}
+  \centering
+  Which reasoner has the best performance on each of the unit test implementations?
+\end{frame}
 
 \section{New unit tests}
 
