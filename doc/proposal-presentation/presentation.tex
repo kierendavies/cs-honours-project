@@ -3,36 +3,40 @@
 \usecolortheme{orchid}
 \AtBeginSection{\frame{\sectionpage}}
 
-\usepackage{listings}
-
 \usepackage[english]{babel}
 \usepackage[english]{isodate}
 \cleanlookdateon
 
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage[thicklines]{cancel}
+\usepackage{pgfgantt}
+\usepackage{array}
+\usepackage{calc}
+
 \newcommand{\oclass}[1]{\ensuremath{\mathtt{#1}}}
 \newcommand{\osub}{\sqsubseteq}
-\newcommand{\onsub}{\not\sqsubseteq}
 
 \begin{document}
 
 \title{Ontology Unit Testing}
-\subtitle{Project Proposal}
+\subtitle{Towards Test-Driven Development}
 \author{Ameerah Allie \and Kieren Davies}
 \institute[UCT]{University of Cape Town}
 \date{\printdate{2016-05-25}}
 \titlepage
 
-% \begin{frame}
-%   \frametitle{Outline}
-%   \tableofcontents
-% \end{frame}
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents
+\end{frame}
 
 \section{Context}
 
 \begin{frame}{Ontology engineering}
   \begin{itemize}
     \item Formal representation of knowledge
-    \item Automatic reasoning
+    \item Automated reasoning
   \end{itemize}
   \centering
   \includegraphics[width=0.5\textwidth]{pizza}
@@ -43,9 +47,9 @@
     \item Successful in software engineering
     \item Ontology engineering less mature
     \begin{itemize}
+      \item Test-last
+      \item ``Try-and-see'' with reasoner
       \item First test harnesses in 2015
-      \item Reliant on reasoner
-      \item Test-first
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -59,22 +63,22 @@
   \end{itemize}
 }
 
-\begin{frame}[t]{Why test?}
+\begin{frame}{Why test?}
   \begin{align*}
     \oclass{Giraffe} &\osub \oclass{Herbivore} \\
-    \oclass{Herbivore} &\osub \oclass{Mammal} \\
+    \oclass{Herbivore} &\osub \oclass{Mammal} \phantom{\; \oclass{Animal}} \\
     \oclass{Mammal} &\osub \oclass{Animal}
   \end{align*}
+  \[ \mathrm{mammals} = \{\dots, \oclass{Giraffe} ,\dots\} \]
 \end{frame}
 
-\begin{frame}[t]{Why test?}
+\begin{frame}{Why test?}
   \begin{align*}
     \oclass{Giraffe} &\osub \oclass{Herbivore} \\
-    \oclass{Herbivore} &\osub \oclass{Animal} \\
-    \oclass{Mammal} &\osub \oclass{Animal} \\
-    \\
-    \oclass{Herbivore} &\onsub \oclass{Mammal}
+    \oclass{Herbivore} &\osub \cancel{\oclass{Mammal}} \; \oclass{Animal} \\
+    \oclass{Mammal} &\osub \oclass{Animal}
   \end{align*}
+  \[ \mathrm{mammals} = \{\dots, \cancel{\oclass{Giraffe}} ,\dots\} \]
 \end{frame}
 \note{
   Listing mammals misses giraffe
@@ -92,8 +96,8 @@
 
 \begin{frame}{Vrande\v{c}i\'c and Gangemi}
   \begin{align*}
-    O &\models A_i^{+} \forall A_i^{+} \in T^{+} \\
-    O &\not\models A_i^{-} \forall A_i^{-} \in T^{-}
+    O &\models A_i^{+} \quad \forall A_i^{+} \in T^{+} \\
+    O &\not\models A_i^{-} \quad \forall A_i^{-} \in T^{-}
   \end{align*}
 \end{frame}
 \note{
@@ -124,6 +128,9 @@ Scenario: Relative age between family members
 \end{frame}
 
 \begin{frame}{TDDOnto}
+  \begin{itemize}
+    \item Prot\'eg\'e plugin
+  \end{itemize}
   \includegraphics[width=\textwidth]{tddonto}
 \end{frame}
 
@@ -141,7 +148,8 @@ Scenario: Relative age between family members
   \begin{itemize}
     \item Available tools don't support comprehensive tests
     \begin{itemize}
-      \item No ABox or RBox
+      \item No systematic coverage of OWL features
+      \item e.g.\ ABox assertions, RBox
     \end{itemize}
     \item Not formally verified
     \begin{itemize}
@@ -151,16 +159,20 @@ Scenario: Relative age between family members
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Problem statement: New tests}
+\begin{frame}{Task: New tests}
   \begin{itemize}
-    \item Previously described and implemented unit tests are not comprehensive
-    \item No proof of correctness for any unit test algorithms
+    \item Describe and implement new unit tests
+    \begin{itemize}
+      \item Systematically address OWL features
+      \item Complex axioms
+    \end{itemize}
+    \item Prove correctness of algorithms
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Research question: Benchmarking}
   \centering
-  Which reasoner has the best performance on each of the unit test implementations?
+  Which reasoner performs best on each of the unit test implementations in real ontologies?
 \end{frame}
 
 \begin{frame}{Aims}
@@ -171,6 +183,11 @@ Scenario: Relative age between family members
       \item proving their correctness
       \item determining test performance of reasoners
     \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Benefits}
+  \begin{itemize}
     \item Improve ontology quality, reduce complexity, improve understandability
     \item Encourage wider adoption of ontologies
   \end{itemize}
@@ -181,7 +198,7 @@ Scenario: Relative age between family members
 \begin{frame}{New tests}
   \begin{enumerate}
     \item Create formal model
-    \item Prove correctness of test from TDDOnto
+    \item Prove correctness of a test implemented in TDDOnto
     \item Describe new tests
     \item Prove correctness
     \item Implement
@@ -197,7 +214,7 @@ Scenario: Relative age between family members
     \item Identify independent variables
     \item Modify script to do every combination of chosen variables
     \item Perform benchmarks, record results
-    \item ANOVA on resulting data
+    \item Statistical tests on resulting data
   \end{enumerate}
 \end{frame}
 \note{
@@ -230,12 +247,33 @@ Scenario: Relative age between family members
 
 \section{Plan}
 
+\begin{frame}{Division of work}
+  \begin{itemize}
+    \item Kieren: new tests
+    \item Ameerah: benchmarking
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Timeline}
-  (Gantt chart)
+  \resizebox{\textwidth}{!}{\input{gantt}}
 \end{frame}
 
 \begin{frame}{Risks}
-  (Risk table)
+  \hyphenpenalty=10000
+  \footnotesize
+  \renewcommand{\arraystretch}{2}
+  \begin{tabular}{@{}>{\raggedright}p{0.5\textwidth-\tabcolsep}>{\raggedright\arraybackslash}p{0.5\textwidth-\tabcolsep}@{}}
+    BM on desktop too slow &
+    UCT grid cluster, parallelise \\ \hline
+    Formal model too difficult &
+    Get help from DL experts \\ \hline
+    BM scripts not available &
+    Write from scratch, reduce scope \\ \hline
+    BM scripts can't be adapted &
+    Help from Dr.\ {\L}awrynowicz, rewrite scripts, reduce scope \\ \hline
+    Can't implement tests in {TDDOnto} &
+    Use another tool, develop new tool
+  \end{tabular}
 \end{frame}
 
 \begin{frame}{Ethical, legal, professional}

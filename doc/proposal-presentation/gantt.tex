@@ -1,0 +1,39 @@
+\begin{ganttchart}[
+  time slot format = isodate,
+  calendar week text = \currentweek,
+  title height = 1,
+  y unit title = 0.8cm,
+  y unit chart = 0.8cm,
+  x unit = 0.1cm,
+  vgrid = {*6{draw=none}, {gray!40}},
+  hgrid = gray!40,
+  group peaks width = 1.5,
+  group left shift = -0.5,
+  group right shift = 0.5,
+  bar/.append style = {fill=gray!20},
+  ]{2016-05-02}{2016-10-30}
+  \gantttitle{Block 2}{40} \gantttitle{Vacation}{37} \gantttitle{Block 3}{19} \gantttitle{Block 4}{86} \\
+  \gantttitlecalendar{month=name, week} \\
+
+  \ganttbar{Proposal}{2016-05-04}{2016-06-10} \\[hgrid style/.style=solid]
+
+  \ganttgroup{New tests feasibility}{2016-06-11}{2016-07-17} \\
+  \ganttbar{Formal model}{2016-06-11}{2016-06-19} \\
+  \ganttbar{Prove an existing test}{2016-06-20}{2016-06-23} \\
+  \ganttbar{Describe/prove new tests}{2016-06-24}{2016-07-10} \\
+  \ganttbar{Implement one test}{2016-07-11}{2016-07-17} \\[hgrid style/.style=solid]
+
+  \ganttgroup{Benchmarking feasibility}{2016-06-11}{2016-07-17} \\
+  \ganttbar{Gather ontologies and scripts}{2016-06-11}{2016-06-13} \\
+  \ganttbar{Adapt benchmark scripts}{2016-06-14}{2016-06-26} \\
+  \ganttbar{Experiment with parameters}{2016-06-27}{2016-07-03} \\
+  \ganttbar{Run subset of benchmarks}{2016-07-04}{2016-07-05} \\
+  \ganttbar{Analyse data}{2016-07-06}{2016-07-17} \\[hgrid style/.style=solid]
+
+  \ganttgroup{Further development}{2016-07-23}{2016-09-19} \\
+  \ganttbar{Prove/implement further tests}{2016-07-23}{2016-09-19} \\
+  \ganttbar{Extend benchmarks}{2016-07-23}{2016-09-19} \\
+  \ganttbar{Benchmark new tests}{2016-08-22}{2016-09-19} \\[hgrid style/.style=solid]
+
+  \ganttbar{Paper write-up}{2016-07-11}{2016-10-27}
+\end{ganttchart}
