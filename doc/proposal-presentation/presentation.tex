@@ -1,6 +1,7 @@
 \documentclass[17pt,mathserif]{beamer}
 \usetheme{Singapore}
 \usecolortheme{orchid}
+\AtBeginSection{\frame{\sectionpage}}
 
 \usepackage{listings}
 
@@ -31,9 +32,10 @@
 \begin{frame}{Ontology engineering}
   \begin{itemize}
     \item Formal representation of knowledge
+    \item Automatic reasoning
   \end{itemize}
   \centering
-  \includegraphics[width=0.6\textwidth]{pizza}
+  \includegraphics[width=0.5\textwidth]{pizza}
 \end{frame}
 
 \begin{frame}{Test-driven development}
@@ -41,7 +43,7 @@
     \item Successful in software engineering
     \item Ontology engineering less mature
     \begin{itemize}
-      \item First test harnesses, 2015
+      \item First test harnesses in 2015
       \item Reliant on reasoner
       \item Test-first
     \end{itemize}
@@ -80,13 +82,23 @@
 
 \begin{frame}{Related work}
   \begin{itemize}
+    \item Vrande\v{c}i\'c and Gangemi
     \item Tawny-OWL (Warrender and Lord)
     \item SCONE (Neuhaus)
-    \item Vrande\v{c}i\'c and Gangemi
     \item TDDOnto ({\L}awrynowicz and Keet)
     \item OWL Reasoner Evaluation competition
   \end{itemize}
 \end{frame}
+
+\begin{frame}{Vrande\v{c}i\'c and Gangemi}
+  \begin{align*}
+    O &\models A_i^{+} \forall A_i^{+} \in T^{+} \\
+    O &\not\models A_i^{-} \forall A_i^{-} \in T^{-}
+  \end{align*}
+\end{frame}
+\note{
+  No implementation
+}
 
 \begin{frame}[fragile]{Tawny-OWL}
   \begin{lstlisting}[language=Lisp,basicstyle=\normalsize\ttfamily]
@@ -110,16 +122,6 @@ Scenario: Relative age between family members
   And don’t infer Dora is older than Dora.
   \end{lstlisting}
 \end{frame}
-
-\begin{frame}{Vrande\v{c}i\'c and Gangemi}
-  \begin{align*}
-    O &\models A_i^{+} \forall A_i^{+} \in T^{+} \\
-    O &\not\models A_i^{-} \forall A_i^{-} \in T^{-}
-  \end{align*}
-\end{frame}
-\note{
-  No implementation
-}
 
 \begin{frame}{TDDOnto}
   \includegraphics[width=\textwidth]{tddonto}
@@ -149,38 +151,103 @@ Scenario: Relative age between family members
   \end{itemize}
 \end{frame}
 
-\begin{frame}{New tests: Problem statement}
+\begin{frame}{Problem statement: New tests}
   \begin{itemize}
     \item Previously described and implemented unit tests are not comprehensive
     \item No proof of correctness for any unit test algorithms
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Benchmarking: Research question}
+\begin{frame}{Research question: Benchmarking}
   \centering
   Which reasoner has the best performance on each of the unit test implementations?
 \end{frame}
 
-\section{New unit tests}
-
-\begin{frame}{Available unit tests}
+\begin{frame}{Aims}
   \begin{itemize}
-    \item TDDOnto supports few assertions
-    \item Need more
+    \item Improve ontology engineering process by
+    \begin{itemize}
+      \item defining and implementing more tests
+      \item proving their correctness
+      \item determining test performance of reasoners
+    \end{itemize}
+    \item Improve ontology quality, reduce complexity, improve understandability
+    \item Encourage wider adoption of ontologies
   \end{itemize}
 \end{frame}
 
-\begin{frame}{New unit tests}
-  \begin{itemize}
-    \item Derive new tests, style of TDDOnto
+\section{Methods}
+
+\begin{frame}{New tests}
+  \begin{enumerate}
+    \item Create formal model
+    \item Prove correctness of test from TDDOnto
+    \item Describe new tests
     \item Prove correctness
-    \item Requires formal model
-  \end{itemize}
+    \item Implement
+  \end{enumerate}
 \end{frame}
 
-\section{Benchmarking}
+\begin{frame}[allowframebreaks]{Benchmarking}
+  \begin{enumerate}
+    \item Gather ontologies
+    \item Implement/obtain algorithm to generate unit tests
+    \item Implement/obtain benchmark wrapper script
+    \item Benchmarking one test type in one ontology
+    \item Identify independent variables
+    \item Modify script to do every combination of chosen variables
+    \item Perform benchmarks, record results
+    \item ANOVA on resulting data
+  \end{enumerate}
+\end{frame}
+\note{
+  \begin{itemize}
+    \item First benchmark to check script and test generation
+    \item Independent variables e.g.\ DL profile, ontology size
+  \end{itemize}
+}
 
-\begin{frame}{Benchmarking}
+\section{Outcomes}
+
+\begin{frame}{Expected outcomes}
+  \begin{itemize}
+    \item Create suite of tests
+    \begin{itemize}
+      \item Approaching comprehensiveness
+      \item Proven correct
+    \end{itemize}
+    \item Benchmark reasoners
+    \begin{itemize}
+      \item Statistically significant differences
+      \item Better understand reasoner performance
+      \item Inform choice of reasoners for future work
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+\note{
+  If not significant, still fine
+}
+
+\section{Plan}
+
+\begin{frame}{Timeline}
+  (Gantt chart)
+\end{frame}
+
+\begin{frame}{Risks}
+  (Risk table)
+\end{frame}
+
+\begin{frame}{Ethical, legal, professional}
+  \begin{itemize}
+    \item Software licensing
+    \begin{itemize}
+      \item Prot\'eg\'e, TDDOnto, reasoners, scripts
+      \item Our implementations
+      \item Gathered ontologies
+    \end{itemize}
+    \item UCT IP policies
+  \end{itemize}
 \end{frame}
 
 \end{document}
