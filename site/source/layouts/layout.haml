@@ -1,0 +1,39 @@
+!!! 5
+%html{lang: 'en'}
+  %head
+    %meta{charset: 'utf-8'}
+    %meta{:'http-equiv' => 'X-UA-Compatible', content: 'IE=edge'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1'}
+
+    %title= current_page.data.title || 'Middleman'
+
+    -# jQuery
+    %script{src:'https://code.jquery.com/jquery-2.2.4.min.js', integrity: 'sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=', crossorigin: 'anonymous'}
+
+    -# Bootstrap
+    %link{rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', integrity: 'sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7', crossorigin: 'anonymous'}
+    %script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', integrity: 'sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS', crossorigin: 'anonymous'}
+
+    -# Font Awesome
+    %link{rel: 'stylesheet', href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', integrity: 'sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1', crossorigin: 'anonymous'}
+
+    = stylesheet_link_tag :site
+    = javascript_include_tag :all
+
+  %body
+    %nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          %button{type: 'button', class: 'navbar-toggle collapsed', data: {toggle: 'collapse', target: '#navbar-collapse'}, aria: {expanded: 'false'}}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          = link_to 'TDDON', '/index.html', class: 'navbar-brand'
+        #navbar-collapse.navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            - nav_resources.each do |resource|
+              %li{class: ('active' if resource == current_resource)}
+                = link_to (resource.data.nav_title || resource.data.title), resource
+
+    = yield
