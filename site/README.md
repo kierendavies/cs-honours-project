@@ -11,5 +11,5 @@ $ bundle exec middleman server
 
 ```
 $ bundle install
-$ bundle exec middleman ...
+$ bundle exec middleman deploy
 ```

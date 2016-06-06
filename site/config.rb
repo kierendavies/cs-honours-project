@@ -36,9 +36,20 @@ end
 
 # Build-specific configuration
 configure :build do
+  set :http_prefix, '/~dvskie001'
+
   # Minify CSS on build
   # activate :minify_css
 
   # Minify Javascript on build
   # activate :minify_javascript
+end
+
+activate :deploy do |deploy|
+  deploy.deploy_method = :rsync
+  deploy.host = 'nightmare.cs.uct.ac.za'
+  deploy.path = '/home/system/www/public_html/dvskie001'
+  deploy.user = 'dvskie001'
+  deploy.build_before = true
+  deploy.clean = true
 end
