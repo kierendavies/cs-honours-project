@@ -3,7 +3,7 @@
 %TC:macro \todo [option:ignore]
 %TC:macrocount \todo [todo]
 
-\documentclass{sig-alternate}
+\documentclass[draft]{sig-alternate}
 \makeatletter
 \def\@copyrightspace{\relax}
 \makeatother
@@ -65,6 +65,18 @@ The difficulty in the first part of the project, extending the testbed, is forma
 
 The second part of the project concerns itself primarily with benchmarking various reasoners. The difficulty around this problem would be integrating different reasoners for use with the current TDDOnto infrastructure and set-up, including the OWL API and OWL-BGP. This may limit the number of reasoners chosen to ones that are compliant, reducing the set of reasoners tested and the impact of the experiment. Controlling for variables like the reasoner or types of test or axiom when running the test over a large set of ontologies would necessitate scripting to make the running of tests and collection of its data manageable. It may also be resource-heavy and time-consuming which could be solved by possibly negotiating time on faster resources of the University of Cape Town.
 
+\section{Related Work}
+
+The literature contains only three prior attempts to implement unit tests for ontologies.  We will be basing our work off TDDOnto, as it is the only suitable implementation.
+
+Tawny-OWL is a library which includes programmatic ontology testing \cite{DBLP:journals/corr/WarrenderL15}.  We do not consider it because it implements only a very small set of tests, and in isolation they offer little abstraction over the OWL API.
+
+\textsc{Scone} is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
+
+Vrande\v{c}i\'c and Gangemi \cite{DBLP:conf/otm/VrandecicG06} propose a means of testing ontologies but do not present an implementation.  They do however suggest the beginnings of a formal model of testing.  It will need to be extensively developed to be useful to this project.  One possible extension is the use of autoepistemic operators, which have been use to perform closed-world reasoning within ontologies \cite{DBLP:conf/owled/GrimmM05}.
+
+Parsia et al.\ \cite{DBLP:conf/semweb/ParsiaMGGS15} compared 14 reasoners by measuring performance of classification, consistency checking, and realisation in OWL 2 DL and EL.  The results of this inform the choice of reasoners for benchmarking.
+
 \section{Problem Statement}
 
 The aim of this project is to refine and extend the unit testing in the test-driven development methodology applied to ontology engineering. An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This project aims to extend the test suite and prove correctness for the new unit tests added to the test suite and a test in the original test suite as correctness was not theoretically proven. This project also aims to address the question of which reasoner is the best reasoner to use for a given type of axiom. This includes benchmarking (testing and measuring performance) of various reasoners to improve speed of the unit tests in the test-driven development methodology applied to ontology development.
@@ -79,6 +91,9 @@ This aims to solve the problems of:
 Currently, only a small number of unit tests have been defined at all. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
 
 Benchmarking would help to inform choices of reasoner not just within the scope of test-driven development but also ontology development. It also helps to improve the speed performance of the unit tests by matching reasoners to axioms more appropriately.
+
+\section{Aims and Solutions}
+\todo[See if this needs to be done at all; may not be necessary as it might be covered under the headings we already have]
 
 \section{Procedures and Methods}
 
@@ -99,38 +114,6 @@ Benchmarking of reasoners will employ the following experimental method:
   \item Perform benchmarks and record results
   \item Perform an analysis of variables on the resulting data
 \end{enumerate}
-
-\section{Ethical, Professional and Legal Issues}
-
-\subsection{Software}
-
-We plan to use both Prot\'eg\'e\footnote{http://protege.stanford.edu/} and the TDDOnto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot\'eg\'e was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. It is open source under the BSD-2 clause license\footnote{https://github.com/protegeproject/webprotege/blob/master/license.txt}. We will use Prot\'eg\'e within the terms specified. TDDOnto is a plugin for Prot\'eg\'e made available online. It is not open source but is available for use. Verbal permission was given by Dr.\ C.\ M.\ Keet, co-creator of the tool and the supervisor for this project, to use the software.
-
-Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. To assist with this, we will ask for permission of Dr.\ A.\ {\L}awrynowicz to use and modify the script she used for the TDDOnto tests \cite{DBLP:conf/dlog/LawrynowiczK16}. If this is not a possibility, these will have to be written by ourselves. This is possible but more time-consuming. It also requires the use of reasoners, like HermiT or Konclude. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
-
-No additional software is currently expected to be used. Given that all the software we intend to use is open source or proprietary with permission granted, there are no issues regarding licensing. It presents no ethical, professional or legal issues.
-
-\subsection{Data}
-
-The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatibility issues. By necessity, it removes ontologies with data types that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
-
-\subsection{Publishing Work}
-
-It is the policy of the University of Cape Town that all software produced within the capacity of the project is the copyright of the university. It also must be published under a Creative Commons license. We will adhere to the university's Intellectual Property policy. This includes publishing the results of the performance test data.
-
-As there is no user testing involved in the project, no ethical clearance of the involvement of test subjects is required.
-
-\section{Related Work}
-
-The literature contains only three prior attempts to implement unit tests for ontologies.  We will be basing our work off TDDOnto, as it is the only suitable implementation.
-
-Tawny-OWL is a library which includes programmatic ontology testing \cite{DBLP:journals/corr/WarrenderL15}.  We do not consider it because it implements only a very small set of tests, and in isolation they offer little abstraction over the OWL API.
-
-\textsc{Scone} is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
-
-Vrande\v{c}i\'c and Gangemi \cite{DBLP:conf/otm/VrandecicG06} propose a means of testing ontologies but do not present an implementation.  They do however suggest the beginnings of a formal model of testing.  It will need to be extensively developed to be useful to this project.  One possible extension is the use of autoepistemic operators, which have been use to perform closed-world reasoning within ontologies \cite{DBLP:conf/owled/GrimmM05}.
-
-Parsia et al.\ \cite{DBLP:conf/semweb/ParsiaMGGS15} compared 14 reasoners by measuring performance of classification, consistency checking, and realisation in OWL 2 DL and EL.  The results of this inform the choice of reasoners for benchmarking.
 
 \section{Anticipated Outcomes}
 
@@ -267,6 +250,26 @@ An analysis of risks is presented in Table \ref{tab:risks}.
     Investigate using another tool such as Tawny-OWL, or developing a new tool.
   \end{tabularx}
 \end{table*}
+
+\section{Ethical, Professional and Legal Issues}
+
+\subsection{Software}
+
+We plan to use both Prot\'eg\'e\footnote{http://protege.stanford.edu/} and the TDDOnto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot\'eg\'e was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. It is open source under the BSD-2 clause license\footnote{https://github.com/protegeproject/webprotege/blob/master/license.txt}. We will use Prot\'eg\'e within the terms specified. TDDOnto is a plugin for Prot\'eg\'e made available online. It is not open source but is available for use. Verbal permission was given by Dr.\ C.\ M.\ Keet, co-creator of the tool and the supervisor for this project, to use the software.
+
+Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. To assist with this, we will ask for permission of Dr.\ A.\ {\L}awrynowicz to use and modify the script she used for the TDDOnto tests \cite{DBLP:conf/dlog/LawrynowiczK16}. If this is not a possibility, these will have to be written by ourselves. This is possible but more time-consuming. It also requires the use of reasoners, like HermiT or Konclude. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
+
+No additional software is currently expected to be used. Given that all the software we intend to use is open source or proprietary with permission granted, there are no issues regarding licensing. It presents no ethical, professional or legal issues.
+
+\subsection{Data}
+
+The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatibility issues. By necessity, it removes ontologies with data types that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
+
+\subsection{Publishing Work}
+
+It is the policy of the University of Cape Town that all software produced within the capacity of the project is the copyright of the university. It also must be published under a Creative Commons license. We will adhere to the university's Intellectual Property policy. This includes publishing the results of the performance test data.
+
+As there is no user testing involved in the project, no ethical clearance of the involvement of test subjects is required.
 
 \bibliographystyle{abbrv}
 \bibliography{references}
