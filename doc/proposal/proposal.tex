@@ -65,9 +65,7 @@ These developments into unit testing have the broader effects of expanding the s
 
 \todo[Ameerah: Reference better]
 
-Test-driven development is a methodology derived from Extreme Programming. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, are desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
-
-Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDOnto tool was developed as a plugin to Prot\'eg\'e \cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Tests were defined and applied to the TBox for terminological data. No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages.
+In the work by Keet and {\L}awrynowicz, tests were defined and applied to the TBox for terminological data. No RBox (reasoner) tests were run as some OWL 2 features were not covered by OWL-BGP (used in implementation) and there is still scope for additional TBox and ABox tests. TBox tests were, on average, found to have been faster than the ABox tests with the exception of tests concerning disjointness. The research into this field is still in its early stages. These were also improved empirically rather than theoretically. Efforts into unit testing also did not carry out experimentation with reasoners. This means that not much is known about reasoner performance with regard to unit tests.
 
 \subsection{Project Significance}
 
@@ -231,7 +229,7 @@ The project is separated into two distinct parts:
   \item the addition of unit tests to the test suite and proof of their correctness, and
   \item benchmarking of reasoner performance against the ontologies and the original test suite.
 \end{enumerate*}
-The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no inter-project dependencies \todo[the plan suggests otherwise]. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
+The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no inter-project dependencies. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
 
 \subsection{Risks}
 
