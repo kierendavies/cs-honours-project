@@ -44,19 +44,20 @@
 \maketitle
 
 \begin{abstract}
-  \todo
+  \todo[Ameerah]
 \end{abstract}
 
 \section{Introduction}
 
-\todo[Check if necessary; possibly - an abstract was specifically called for but not an introduction. It may be that the following section suffices as an intro though needs to be spruced up]
+\todo[Ameerah: Is this section necessary; possibly - an abstract was specifically called for but not an introduction. It may be that the following section suffices as an intro though needs to be spruced up]
 
 \section{Project Description}
 
 \subsection{Project Background}
 
-\todo[Which part of the broader problem do you intend to address?]
-\todo[Reference better]
+\todo[Ameerah: Which part of the broader problem do you intend to address?]
+
+\todo[Ameerah: Reference better]
 
 Test-driven development is a methodology derived from Extreme Programming. It is a test-first approach to programming that requires consistent testing throughout the development phase. This is shown to improve complexity and understandability of code, thereby improving code quality. Ontology development lacks mature methodologies to assist the process of development. Comparatively, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. There is no existing testbed for the addition of axioms into ontologies to ensure correctness. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, are desirable for ontology development also. Currently, tests are not applied throughout the ontology development process. Instead tests are applied afterwards by running the reasoner on the ontology and checking for inconsistencies and errors. This does not guarantee that satisfactory ontologies are produced.
 
@@ -64,11 +65,11 @@ Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz
 
 \subsection{Project Significance}
 
-Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, it test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems. Unit testing for ontologies in particular has been said by Vrande{\v{c}}i{\'c} and Gangemi \cite{DBLP:conf/otm/VrandecicG06} to make the code less tightly-coupled and easier to integrate and refactor.
+Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems. Unit testing for ontologies in particular has been said by Vrande{\v{c}}i{\'c} and Gangemi \cite{DBLP:conf/otm/VrandecicG06} to make the code less tightly-coupled and easier to integrate and refactor.
 
-Our project in particular does not change the methodology laid out by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it. Part of the project includes extending the set of tests defined for TDDOnto\todo["be more specific: how?"]. This includes proving correctness for these tests. If successful, it has the impact of more unit tests being made available for more types of axioms. This allows ontology developers to test for correctness of more types of axioms and apply the test-driven development methodology more broadly to their ontologies. It has the possibility of facilitating regression testing of ontologies and allow for testing of ontologies in a manner that is well-defined and simple to use \cite{DBLP:conf/otm/VrandecicG06}.
+Our project in particular does not change the methodology laid out by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it. Part of the project includes extending the set of tests defined for TDDOnto\todo[Kieren: comment from Maria - "be more specific: how?"]. This includes proving correctness for these tests. If successful, it has the impact of more unit tests being made available for more types of axioms. This allows ontology developers to test for correctness of more types of axioms and apply the test-driven development methodology more broadly to their ontologies. It has the possibility of facilitating regression testing of ontologies and allow for testing of ontologies in a manner that is well-defined and simple to use \cite{DBLP:conf/otm/VrandecicG06}.
 
-This has the impact of improving test-driven development speed by allowing for efficient reasoner choices. This may also inform reasoner choices for specific types of axioms or tests for general purposes beyond test-driven development in ontologies\todo[Refactor these sentences into paragraph]. The other part of this project includes, primarily, experimenting with reasoners applied to a set of ontologies and the benchmarking of these tests. This involves applying different reasoners to test their performance in comparison to the reasoner originally used, HermiT, and categorically determining which reasoners are more efficient and for which axioms or tests.
+Test-driven development speed can be improved by efficient reasoner choices being made for testing. This includes better reasoner choices for specific types of axioms. The other part of this project includes, primarily, experimenting with reasoners applied to a set of ontologies and the benchmarking of these tests. This involves applying different reasoners to test their performance in comparison to the reasoner originally used, HermiT, and categorically determining which reasoners are more efficient and for which axioms or tests. In addition to improving reasoner choices for test-driven development, it has general implications for reasoner choices beyond test-driven development in ontology development.
 
 \section{Related Work}
 
@@ -76,7 +77,7 @@ The literature contains only three prior attempts to implement unit tests for on
 
 Tawny-OWL is a library which includes programmatic ontology testing \cite{DBLP:journals/corr/WarrenderL15}.  We do not consider it because it implements only a very small set of tests, and in isolation they offer little abstraction over the OWL API.
 
-\textsc{Scone} \todo[a little more description would have been better. Like, scone does x; we aim to do y, which precedes/serves at the back end of x] is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
+\textsc{Scone} \todo[Kieren: comment from Maria - a little more description would have been better. Like, scone does x; we aim to do y, which precedes/serves at the back end of x] is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
 
 Vrande\v{c}i\'c and Gangemi \cite{DBLP:conf/otm/VrandecicG06} propose a means of testing ontologies but do not present an implementation.  They do however suggest the beginnings of a formal model of testing.  It will need to be extensively developed to be useful to this project.  One possible extension is the use of autoepistemic operators, which have been use to perform closed-world reasoning within ontologies \cite{DBLP:conf/owled/GrimmM05}.
 
@@ -84,29 +85,17 @@ Parsia et al.\ \cite{DBLP:conf/semweb/ParsiaMGGS15} compared 14 reasoners by mea
 
 \section{Problem Statement}
 
-\todo["aims are not problems"]
+\todo[Kieren: I rephrased this as problem, not benefits and aims; please check this is correct]
 
-The aim of this project is to refine and extend the unit testing in the test-driven development methodology applied to ontology engineering. An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This project aims to extend the test suite and prove correctness for the new unit tests added to the test suite and a test in the original test suite as correctness was not theoretically proven. This project also aims to address the question of which reasoner is the best reasoner to use for a given type of axiom. This includes benchmarking (testing and measuring performance) of various reasoners to improve speed of the unit tests in the test-driven development methodology applied to ontology development.
+An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This and other available tools do not support a fully comprehensive list of tests. Currently, only a limited number of unit tests have been defined. There is no systematic coverage of all OWL features. ABox axioms are not implemented and RBox axioms are not defined \todo[Kieren: please check this statement is correct]. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
 
-This aims to solve the problems of:
-\begin{enumerate}[noitemsep]
-  \item Correctness of unit tests
-  \item Limited number of unit tests or types of axioms they cover
-  \item Reasoner performance in unit testing
-\end{enumerate}
-
-Currently, only a small number of unit tests have been defined at all \todo["not a small number: we have 42 of them, for each of the SROIQ features."]. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
-
-Benchmarking would help to inform choices of reasoner not just within the scope of test-driven development but also ontology development. It also helps to improve the speed performance of the unit tests by matching reasoners to axioms more appropriately. \todo["benefits are not a problem statement; ... especially taking onto account the language of the ontology"]
-
-\section{Aims and Solutions}
-\todo[See if this needs to be done at all; may not be necessary as it might be covered under the headings we already have]
+Furthermore, the performance of reasoners in reasoner-based tests are poorly understood. It is not well understood which reasoners perform better on certain types of axioms or why the perform better. It is not known which reasoner performs better than others on each of the specific unit test implementations in real ontologies. As such, test performance may not be optimal, especially in terms of speed as only one type of reasoner is used which may not be appropriate for all unit test implementations.
 
 \section{Project Design}
 
 \subsection{Procedures and Methods}
 
-To devise new unit tests, we will draw inspiration from TDDOnto.  We will include some of those \todo["only some of them?"] which TDDOnto explicitly excludes, such as RBox tests, and also extrapolate to more complex compound axioms.  We will also introduce more unit test outcomes by characterising failure modes; for example, when vocabulary is missing, or when the missing axiom may be added to the ontology without causing inconsistency.
+To devise new unit tests, we will draw inspiration from TDDOnto.  We will include some of those \todo[Kieren: Maria questions why only some of them] which TDDOnto explicitly excludes, such as RBox tests, and also extrapolate to more complex compound axioms.  We will also introduce more unit test outcomes by characterising failure modes; for example, when vocabulary is missing, or when the missing axiom may be added to the ontology without causing inconsistency.
 
 In order to prove the correctness of unit tests, we must first develop a formal model, and then identify which questions can be directly answered by a reasoner in terms of this model.  The model will then be used to prove the correctness and completeness of each test algorithm.
 
@@ -173,8 +162,6 @@ The following deliverables have been prescribed:
   \item[\printdate{2016-11-11}] Website
   \item[\printdate{2016-11-14}] Reflection paper
 \end{description}
-
-\todo[so, the performance tester waits for the proofs? I suggest parallelizing things.]
 
 In addition, we have set the following milestones, which approximately describe the sequence in which work must be done:
 \begin{enumerate}[noitemsep]
@@ -271,26 +258,21 @@ An analysis of risks is presented in Table \ref{tab:risks}.
 
 \section{Ethical, Professional and Legal Issues}
 
-\subsection{Software}
+This project does not include subjects for testing. As such, there are no ethical considerations regarding treatment of others or the application of the results of the project.
 
-\todo[these are materials, not ethical etc issues.]
+We plan to use various software in the course of this project. Legal issues arise from this: software must be used lawfully and we may not be in contravention of any of the policies of use.
 
-We plan to use both Prot\'eg\'e\footnote{http://protege.stanford.edu/} and the TDDOnto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot\'eg\'e was developed at Stanford University and is a free and open source tool for ontology editing and framework for building intelligent systems. It is open source under the BSD-2 clause license\footnote{https://github.com/protegeproject/webprotege/blob/master/license.txt}. We will use Prot\'eg\'e within the terms specified. TDDOnto is a plugin for Prot\'eg\'e made available online. It is not open source but is available for use. Verbal permission was given by Dr.\ C.\ M.\ Keet, co-creator of the tool and the supervisor for this project, to use the software.
+We plan to use both Prot\'eg\'e\footnote{http://protege.stanford.edu/} and the TDDOnto tool\footnote{https://semantic.cs.put.poznan.pl/wiki/aristoteles/doku.php} for this project. Prot\'eg\'e is an open source tool for ontology editing and a framework for building intelligent systems. It is open source under the BSD-2 clause license\footnote{https://github.com/protegeproject/webprotege/blob/master/license.txt}. We will use Prot\'eg\'e within the terms specified. TDDOnto is a plugin for Prot\'eg\'e made available online. It is not open source but is available for use. Verbal permission was given by Dr.\ C.\ M.\ Keet, co-creator of the tool and the supervisor for this project, to use the software.
 
-Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. To assist with this, we will ask for permission of Dr.\ A.\ {\L}awrynowicz to use and modify the script she used for the TDDOnto tests \cite{DBLP:conf/dlog/LawrynowiczK16}. If this is not a possibility, these will have to be written by ourselves \todo[these are risks]. This is possible but more time-consuming. It also requires the use of reasoners, like HermiT or Konclude. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
+Additionally, the benchmarking part of this project requires scripting to automate the tests being run and its data being collected. Permission to use and modify Dr.\ A.\ {\L}awrynowicz's scripts was obtained. Benchmarking also requires the use of reasoners. These reasoners will not be edited but simply used for their reasoning function. They are freely available for use and will be used within their specified intents for use.
 
-No additional software is currently expected to be used. Given that all the software we intend to use is open source or proprietary with permission granted, there are no issues regarding licensing. It presents no ethical, professional or legal issues.
+No additional software is currently expected to be used. Given that all the software we intend to use is open source or proprietary with permission granted, there are no issues regarding licensing. It presents no legal issues.
 
-\subsection{Data}
+Ethical concerns may be raised about the proper use of data. Benchmarking requires a sample set of ontologies to apply the tests to and reason over. The same ontologies that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16} and further ontologies which must still be sourced will be used. These include ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} which are made available for public use. OntoHub is an open ontology repository that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
 
-The tests for the benchmarking part of the project require a sample set of ontologies to apply the tests to and reason over. This presents a data use problem. The solution to this is to use the same 82 ontologies \todo["no. 67 in the first batch (tech report+eswc paper), form TONES/ontohub.
-the additional 15 were manually sourced OWL 2 DL ontologies. TONES finished in 2008, before OWL 2 DL came out, so there can't be OWL 2 DL ontologies in that set."] that the original TDDOnto experiment used \cite{DBLP:conf/dlog/LawrynowiczK16}. These were the OWL 82 ontologies from the TONES mirror at OntoHub\footnote{https://ontohub.org/repositories} after removing the ones with OWL 2 datatype compatibility issues. By necessity, it removes ontologies with data types that cannot be resolved in OWL 2 DL to the set of ontologies within the scope of this project. OntoHub is an open ontology that enables the free download and use of the ontologies it holds. As such, there are no restrictions on use of the data and permission for use is not required. It presents no ethical, professional or legal issues.
-
-\subsection{Publishing Work}
+Professionally, the group members undertake to behave respectfully towards each other and any parties that may be onvolved in this project.
 
 It is the policy of the University of Cape Town that all software produced within the capacity of the project is the copyright of the university. It also must be published under a Creative Commons license. We will adhere to the university's Intellectual Property policy. This includes publishing the results of the performance test data.
-
-As there is no user testing involved in the project, no ethical clearance of the involvement of test subjects is required.
 
 \bibliographystyle{abbrv}
 \bibliography{references}
