@@ -53,7 +53,7 @@ Test-driven development is a methodology derived from Extreme Programming. It is
 
 Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDOnto tool was developed as a plugin to Prot\'eg\'e \cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Other work has also been done into unit testing for ontologies without developing the test-driven methodolgy itself.
 
-This project expands on that work by defining more tests to cover a greater scope of unit tests and testing reasoner performance on unit tests. This includes defining new tests and proving correctness for them theoretically. The benchmarking aspect requires that different reasoners are employed in the development of ontologies for different types of unit tests. These will not include the new set of unit tests to allow for project concurrency - allowing both parts to be carried out simultaneously. This allows for better understanding of how reasoners perform. 
+This project expands on that work by defining more tests to cover a greater scope of unit tests and testing reasoner performance on unit tests. This includes defining new tests and proving correctness for them theoretically. The benchmarking aspect requires that different reasoners are employed in the development of ontologies for different types of unit tests. These will not include the new set of unit tests to allow for project concurrency - allowing both parts to be carried out simultaneously. This allows for better understanding of how reasoners perform.
 
 The process described above does not include test subjects or external human involvement. This eases ethical conerns about the project, with the only major concern being a legal one of proper use of data and software. The two distinct parts, unit test development and benchmarking, will be carried out concurrently.
 
@@ -69,7 +69,7 @@ In the work by Keet and {\L}awrynowicz, tests were defined and applied to the TB
 
 Since this kind of low-level ontology authoring has not been widely researched, our efforts into it could improve the ontology authoring process for many ontology engineers. Generally, test-driven development for ontology engineering could improve the overall quality of ontologies that are being developed while ensuring that others who attempt to use those ontologies as a base for theirs may find those ontologies easier to understand and use. Mature development processes would also encourage wider adoption of ontologies in business and industry as a solution to problems. Unit testing for ontologies in particular has been said by Vrande{\v{c}}i{\'c} and Gangemi \cite{DBLP:conf/otm/VrandecicG06} to make the code less tightly-coupled and easier to integrate and refactor.
 
-Our project in particular does not change the methodology laid out by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it. Part of the project includes extending the set of tests defined for TDDOnto\todo[Kieren: comment from Maria - "be more specific: how?"]. This includes proving correctness for these tests. If successful, it has the impact of more unit tests being made available for more types of axioms. This allows ontology developers to test for correctness of more types of axioms and apply the test-driven development methodology more broadly to their ontologies. It has the possibility of facilitating regression testing of ontologies and allow for testing of ontologies in a manner that is well-defined and simple to use \cite{DBLP:conf/otm/VrandecicG06}.
+Our project in particular does not change the methodology laid out by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} but refines and extends some of the ideas within it. This entails systematically defining new tests which correspond to OWL 2 language features, and includes proving their correctness. If successful, it has the impact of more unit tests being made available for more types of axioms. This allows ontology developers to test for correctness of more types of axioms and apply the test-driven development methodology more broadly to their ontologies. It has the possibility of facilitating regression testing of ontologies and allow for testing of ontologies in a manner that is well-defined and simple to use \cite{DBLP:conf/otm/VrandecicG06}.
 
 Test-driven development speed can be improved by efficient reasoner choices being made for testing. This includes better reasoner choices for specific types of axioms. The other part of this project includes, primarily, experimenting with reasoners applied to a set of ontologies and the benchmarking of these tests. This involves applying different reasoners to test their performance in comparison to the reasoner originally used, HermiT, and categorically determining which reasoners are more efficient and for which axioms or tests. In addition to improving reasoner choices for test-driven development, it has general implications for reasoner choices beyond test-driven development in ontology development.
 
@@ -79,7 +79,8 @@ The literature contains only three prior attempts to implement unit tests for on
 
 Tawny-OWL is a library which includes programmatic ontology testing \cite{DBLP:journals/corr/WarrenderL15}.  We do not consider it because it implements only a very small set of tests, and in isolation they offer little abstraction over the OWL API.
 
-\textsc{Scone} \todo[Kieren: comment from Maria - a little more description would have been better. Like, scone does x; we aim to do y, which precedes/serves at the back end of x] is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.  We do not consider it because it uses a sophisticated domain-specific language to specify tests, and focusses on testing human-understandable scenarios rather than complex axioms.
+\textsc{Scone} is an ontology testing tool which is oriented towards behaviour-driven development \cite{SconeUserGuide}.
+It provides a mechanism for specifying tests in a domain-specific language designed to be close to natural language.  It cannot be used to test complex axioms, as it was designed to be simple enough for non-technical users to understand.
 
 Vrande\v{c}i\'c and Gangemi \cite{DBLP:conf/otm/VrandecicG06} propose a means of testing ontologies but do not present an implementation.  They do however suggest the beginnings of a formal model of testing.  It will need to be extensively developed to be useful to this project.  One possible extension is the use of autoepistemic operators, which have been use to perform closed-world reasoning within ontologies \cite{DBLP:conf/owled/GrimmM05}.
 
@@ -87,9 +88,7 @@ Parsia et al.\ \cite{DBLP:conf/semweb/ParsiaMGGS15} compared 14 reasoners by mea
 
 \section{Problem Statement}
 
-\todo[Kieren: I rephrased this as problem, not benefits and aims; please check this is correct]
-
-An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This and other available tools do not support a fully comprehensive list of tests. Currently, only a limited number of unit tests have been defined. There is no systematic coverage of all OWL features. ABox axioms are not implemented and RBox axioms are not defined \todo[Kieren: please check this statement is correct]. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
+An initial set of unit tests for test-driven development in ontology development, described in the previous section, was specified and implemented in the TDDOnto tool. This and other available tools do not support a fully comprehensive list of tests. Currently, only a limited number of unit tests have been defined. There is no systematic coverage of all OWL features. ABox axioms are not implemented and RBox axioms are not defined. Their correctness has only been proven empirically. Proof of correctness thus needs to be done. There needs to exist a larger set of unit tests to cover a greater variety of types of axioms to improve the test-driven development methodology scope.
 
 Furthermore, the performance of reasoners in reasoner-based tests are poorly understood. It is not well understood which reasoners perform better on certain types of axioms or why the perform better. It is not known which reasoner performs better than others on each of the specific unit test implementations in real ontologies. As such, test performance may not be optimal, especially in terms of speed as only one type of reasoner is used which may not be appropriate for all unit test implementations.
 
@@ -97,7 +96,7 @@ Furthermore, the performance of reasoners in reasoner-based tests are poorly und
 
 \subsection{Procedures and Methods}
 
-To devise new unit tests, we will draw inspiration from TDDOnto.  We will include some of those \todo[Kieren: Maria questions why only some of them] which TDDOnto explicitly excludes, such as RBox tests, and also extrapolate to more complex compound axioms.  We will also introduce more unit test outcomes by characterising failure modes; for example, when vocabulary is missing, or when the missing axiom may be added to the ontology without causing inconsistency.
+To devise new unit tests, we will first decide on a way to systematically consider OWL 2 features, and then describe tests in the same style as TDDOnto, excluding those which already exist.  We will also introduce more unit test outcomes by characterising failure modes; for example, when vocabulary is missing, or when the missing axiom may be added to the ontology without causing inconsistency.
 
 In order to prove the correctness of unit tests, we must first develop a formal model, and then identify which questions can be directly answered by a reasoner in terms of this model.  The model will then be used to prove the correctness and completeness of each test algorithm.
 
@@ -177,6 +176,16 @@ In addition, we have set the following milestones, which approximately describe 
   \item Completion of data analysis
 \end{enumerate}
 
+A full list of tasks has been scheduled in a Gantt chart in Figure \ref{fig:gantt}.
+
+\begin{sidewaysfigure*}
+  \caption{Timeline Gantt chart}
+  \label{fig:gantt}
+  \vspace{6pt}
+  \hspace{-1.5cm}
+  \input{gantt}
+\end{sidewaysfigure*}
+
 \subsection{Resources}
 
 The project requires the following software:
@@ -193,33 +202,6 @@ The data used will be ontologies that are extracted from the TONES mirror from t
 
 If the reasoner tests prove to be too computationally intensive for the machines on which we are developing, time may need to be negotiated for use of UCT's grid cluster resource. This is not a requirement at this stage but is a foreseeable use of resources. Our local machines are sufficient for every other task for this project.
 
-\subsection{Timeline}
-
-The project consists of the following primary tasks:
-\begin{enumerate}[noitemsep]
-  \item Finalise proposal
-  \item Create website
-  \item Demonstrate feasibility of
-  \begin{enumerate}[nosep]
-    \item new unit tests with proofs of correctness
-    \item benchmarking reasoners
-  \end{enumerate}
-  \item Create comprehensive suite of new unit tests, with proofs and implementation.
-  \item Benchmark reasoners with new and existing unit tests
-  \item Perform statistical analysis on benchmark results
-  \item Write paper
-\end{enumerate}
-\todo[repetition]
-The full list of tasks and subtasks has been scheduled in a Gantt chart in Figure \ref{fig:gantt}.
-
-\begin{sidewaysfigure*}
-  \caption{Timeline Gantt chart}
-  \label{fig:gantt}
-  \vspace{6pt}
-  \hspace{-1.5cm}
-  \input{gantt}
-\end{sidewaysfigure*}
-
 \subsection{Work Allocation}
 
 The project is separated into two distinct parts:
@@ -227,7 +209,7 @@ The project is separated into two distinct parts:
   \item the addition of unit tests to the test suite and proof of their correctness, and
   \item benchmarking of reasoner performance against the ontologies and the original test suite.
 \end{enumerate*}
-The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no inter-project dependencies. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
+The former will be done by Kieren Davies and the latter by Ameerah Allie. They represent two distinct project divisions that have no strict inter-project dependencies. Other tasks, like website creation and maintenance and the eventual poster, will be shared equally amongst the team.
 
 \subsection{Risks}
 
