@@ -49,13 +49,19 @@
 
 \section{Introduction}
 
-\todo[Ameerah: Is this section necessary; possibly - an abstract was specifically called for but not an introduction. It may be that the following section suffices as an intro though needs to be spruced up]
+Test-driven development is a methodology derived from Extreme Programming. It is a test-first approach to programming that requires consistent unit testing of code throughout the development phase. Ontology development has fewer mature methodologies. In these methodologies, more is made of the process of development as a whole than \textit{ontology authoring} concerning which axioms to add and how these axioms ought to be added. To test, ontology developers usually employ a test-last approach by inserting axioms and checking with the reasoner that it does not create any inconsistencies. This does not guarantee that satisfactory ontologies are produced. The benefits of test-driven development when applied to software engineering, like improved quality of code and decreased complexity, are desirable for ontology development also.
+
+Test-driven development for ontologies was introduced by Keet and {\L}awrynowicz \cite{DBLP:journals/corr/KeetL15} as a low-level solution to this problem. The TDDOnto tool was developed as a plugin to Prot\'eg\'e \cite{DBLP:conf/dlog/LawrynowiczK16}. This introduced the idea of unit tests from test-driven development to ontologies by defining tests for the introduction of each new axiom. Other work has also been done into unit testing for ontologies without developing the test-driven methodolgy itself.
+
+This project expands on that work by defining more tests to cover a greater scope of unit tests and testing reasoner performance on unit tests. This includes defining new tests and proving correctness for them theoretically. The benchmarking aspect requires that different reasoners are employed in the development of ontologies for different types of unit tests. These will not include the new set of unit tests to allow for project concurrency - allowing both parts to be carried out simultaneously. This allows for better understanding of how reasoners perform. 
+
+The process described above does not include test subjects or external human involvement. This eases ethical conerns about the project, with the only major concern being a legal one of proper use of data and software. The two distinct parts, unit test development and benchmarking, will be carried out concurrently.
+
+These developments into unit testing have the broader effects of expanding the scope of test-driven development for ontologies and paving the way for streamlining the process by creating an understanding of reasoner performance to allow different reasoners to be used for different types of ontologies or the axioms contained within them.
 
 \section{Project Description}
 
 \subsection{Project Background}
-
-\todo[Ameerah: Which part of the broader problem do you intend to address?]
 
 \todo[Ameerah: Reference better]
 
