@@ -1,0 +1,61 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ktodo}
+
+\RequirePackage{ifdraft}
+\RequirePackage{xifthen}
+\RequirePackage{soul}
+\RequirePackage{xcolor}
+\RequirePackage{amssymb}
+
+\makeatletter
+
+\colorlet{todocolor}{yellow!50}
+\sethlcolor{todocolor}
+
+\newcommand{\uncheckedbox}{\raisebox{-0.1ex}{$\square$}}
+\newcommand{\checkedbox}{\raisebox{-0.1ex}{$\text{\rlap{$\checkmark$}}\square$}}
+
+\newcommand{\@todo}[2]{%
+  \ifdraft{%
+    \ifthenelse{\isempty{#2}}{%
+      \hl{[#1]}%
+    }{%
+      \hl{[#1 #2]}%
+    }%
+  }{}%
+}
+
+\newcommand{\todo}[1][]{%
+  \@todo{\uncheckedbox}{#1}%
+}
+\newcommand{\done}[1][]{%
+  \@todo{\checkedbox}{#1}%
+}
+
+\newsavebox{\todosbox}
+\newboolean{intodosbox}
+\setboolean{intodosbox}{false}
+\newenvironment{todos}{%
+  \noindent%
+  \setlength{\fboxsep}{0pt}%
+  \ifthenelse{\boolean{intodosbox}}{}{%
+    \renewcommand{\todo}{\item[\uncheckedbox]}%
+    \renewcommand{\done}{\item[\checkedbox]}%
+    \setbox\todosbox=\vbox%
+    \bgroup%
+  }%
+  \begin{list}{}{}%
+    \setboolean{intodosbox}{true}%
+}{%
+  \end{list}%
+  \ifthenelse{\boolean{intodosbox}}{}{%
+    \egroup%
+    \colorbox{todocolor}{\usebox{\todosbox}}%
+    \setboolean{intodosbox}{false}
+  }%
+  \ignorespacesafterend%
+}
+
+\makeatother
+
+\endinput
