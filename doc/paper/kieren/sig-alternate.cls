@@ -1,1 +1,0 @@
-../../sig-alternate.cls

@@ -1,6 +1,36 @@
-\documentclass{sig-alternate}
+%TC:macro \subtitle [header]
+%TC:newcounter todo Number of TODOs
+%TC:macro \todo [option:ignore]
+%TC:macrocount \todo [todo]
+
+\documentclass[draft]{sig-alternate}
+\makeatletter
+\def\@copyrightspace{\relax}
+\makeatother
+
+\usepackage[english]{babel}
+\usepackage[english]{isodate}
+\cleanlookdateon
 
 \usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyphenat}
+\usepackage{ktodo}
+
+\newtheorem{proposition}{Proposition}
+
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\sementails}{\mathrel{|}\joinrel\mkern-.5mu\mathrel{-}}
+\newcommand{\synentails}{\mathrel{|}\joinrel\mathrel{=}}
+% \DeclareMathOperator{\signature}{signature}
+\newcommand{\signature}{\sigma}
+\DeclareMathOperator{\test}{test}
+
+\let\oldtextproc\textproc
+\renewcommand{\textproc}[1]{\nohyphens{\oldtextproc{#1}}}
+
 
 % This has to go in the preamble to not get counted by texcount
 \numberofauthors{1}
@@ -22,42 +52,100 @@
 
 \section{Introduction}
 
-\begin{itemize}
-  \item Importance of testing
-\end{itemize}
+\begin{todos}
+  \todo Importance of testing
+\end{todos}
 
-\section{Prior work}
+\section{Related work}
 
-\begin{itemize}
-  \item TDDOnto
-  \item No distinction between ``entailed'' and ``not a contradiction''
-\end{itemize}
+\begin{todos}
+  \todo TDDOnto etc.
+  \todo No distinction between ``entailed'' and ``not a contradiction''
+  \todo Not all complex axioms supported
+\end{todos}
 
-\section{Definitions}
+\section{A model of unit testing}
 
-\begin{itemize}
-  \item $\mathrm{test}_O(A)$
-  \item Kinds of results
-\end{itemize}
+\begin{todos}
+  \todo Need for different test outputs
+\end{todos}
 
-\section{Reasoner functionality}
+\subsection{Definitions}
 
-\begin{itemize}
-  \item Methods available from reasoners
-  \item Assumptions about correctness and performance
-  \item Discussion of some implementations
-  \begin{itemize}
-    \item Hypertableau with anonymous individuals
-  \end{itemize}
-\end{itemize}
+\begin{todos}
+  \todo Signature $\signature$
+  \todo Meaning of test outputs
+\end{todos}
 
-\section{Algorithms}
+\[
+  \test_O(A) =
+  \begin{cases}
+    \text{inconsistent} &
+      \text{if } O \sementails \bot \\
+    \text{missing vocab} &
+      \text{if } \signature(A) \not\subseteq \signature(O) \\
+    \text{valid} &
+      \text{if } O \sementails A \\
+    \text{unsatisfiable} &
+      \text{if } O \union A \sementails \bot \\
+    \text{satisfiable} &
+      \text{otherwise}
+  \end{cases}
+\]
 
-\begin{itemize}
-  \item Proof of mock individuals (class subsumption)
-  \item
-\end{itemize}
+\section{Reasoner functionality and considerations}
+
+\begin{todos}
+  \todo Methods available from reasoners
+  \todo Not using \textproc{isEntailed} because not universally provided
+  \todo Assumptions about correctness and performance
+  \begin{todos}
+    \todo ``Proven'' in the field
+  \end{todos}
+  \todo Discussion of some implementations
+  \begin{todos}
+    \todo Hypertableau with anonymous individuals
+  \end{todos}
+\end{todos}
+
+\section{Unit test algorithms}
+
+\begin{todos}
+  \todo With mock individuals (just class subsumption)
+  \todo Accompanying proofs
+\end{todos}
+
+\begin{algorithm}[H]
+  \caption{Test concept inclusion using satisfiability checking}
+  \begin{algorithmic}[1]
+    \Function{testSubClassOf}{$C$, $D$}
+      \If{$C \sqcap \neg D$ has instances}
+        \Comment or enumerate $C$ and check in $D$
+        \State \Return unsatisfiable
+      \ElsIf{$C \sqcap \neg D$ is satisfiable}
+        \State \Return satisfiable
+      \Else
+        \State \Return valid
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is sound with respect to validity.
+\end{proposition}
+
+\begin{proof}
+\end{proof}
 
 \section{Conclusion}
+
+\begin{todos}
+  \todo Success!
+  \todo Future work
+  \begin{todos}
+    \todo Benchmark different implementations
+  \end{todos}
+\end{todos}
 
 \end{document}

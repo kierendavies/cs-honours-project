@@ -6,6 +6,7 @@
 \RequirePackage{soul}
 \RequirePackage{xcolor}
 \RequirePackage{amssymb}
+\RequirePackage{mdframed}
 
 \makeatletter
 
@@ -32,6 +33,15 @@
   \@todo{\checkedbox}{#1}%
 }
 
+\mdfdefinestyle{todosstyle}{
+  backgroundcolor=todocolor,
+  % defaultunit=0cm,
+  hidealllines=true,
+  innerleftmargin=-7pt,
+  skipabove=0pt,
+  skipbelow=0pt,
+}
+
 \newsavebox{\todosbox}
 \newboolean{intodosbox}
 \setboolean{intodosbox}{false}
@@ -41,17 +51,14 @@
   \ifthenelse{\boolean{intodosbox}}{}{%
     \renewcommand{\todo}{\item[\uncheckedbox]}%
     \renewcommand{\done}{\item[\checkedbox]}%
-    \setbox\todosbox=\vbox%
-    \bgroup%
+    \begin{mdframed}[style=todosstyle]%
   }%
-  \begin{list}{}{}%
+  \begin{list}{\uncheckedbox}{}%
     \setboolean{intodosbox}{true}%
 }{%
   \end{list}%
   \ifthenelse{\boolean{intodosbox}}{}{%
-    \egroup%
-    \colorbox{todocolor}{\usebox{\todosbox}}%
-    \setboolean{intodosbox}{false}
+    \end{mdframed}%
   }%
   \ignorespacesafterend%
 }
