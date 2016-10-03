@@ -3,6 +3,7 @@
 
 \RequirePackage{ifdraft}
 \RequirePackage{xifthen}
+\RequirePackage{comment}
 \RequirePackage{soul}
 \RequirePackage{xcolor}
 \RequirePackage{amssymb}
@@ -42,25 +43,31 @@
   skipbelow=0pt,
 }
 
-\newsavebox{\todosbox}
-\newboolean{intodosbox}
-\setboolean{intodosbox}{false}
-\newenvironment{todos}{%
-  \noindent%
-  \setlength{\fboxsep}{0pt}%
-  \ifthenelse{\boolean{intodosbox}}{}{%
-    \renewcommand{\todo}{\item[\uncheckedbox]}%
-    \renewcommand{\done}{\item[\checkedbox]}%
-    \begin{mdframed}[style=todosstyle]%
-  }%
-  \begin{list}{\uncheckedbox}{}%
-    \setboolean{intodosbox}{true}%
-}{%
-  \end{list}%
-  \ifthenelse{\boolean{intodosbox}}{}{%
-    \end{mdframed}%
-  }%
-  \ignorespacesafterend%
+\ifdraft{
+  \newsavebox{\todosbox}
+  \newboolean{intodosbox}
+  \setboolean{intodosbox}{false}
+  \newenvironment{todos}{%
+    % \ifdraft{}{\expandafter\comment}%
+    \noindent%
+    \setlength{\fboxsep}{0pt}%
+    \ifthenelse{\boolean{intodosbox}}{}{%
+      \renewcommand{\todo}{\item[\uncheckedbox]}%
+      \renewcommand{\done}{\item[\checkedbox]}%
+      \begin{mdframed}[style=todosstyle]%
+    }%
+    \begin{list}{\uncheckedbox}{}%
+      \setboolean{intodosbox}{true}%
+  }{%
+    \end{list}%
+    \ifthenelse{\boolean{intodosbox}}{}{%
+      \end{mdframed}%
+    }%
+    \ignorespacesafterend%
+    % \ifdraft{}{\expandafter\endcomment}%
+  }
+}{
+  \excludecomment{todos}
 }
 
 \makeatother

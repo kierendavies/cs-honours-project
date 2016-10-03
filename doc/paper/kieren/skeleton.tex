@@ -18,15 +18,16 @@
 \usepackage{hyphenat}
 \usepackage{ktodo}
 
-\newtheorem{proposition}{Proposition}
-
 \newcommand{\union}{\cup}
 \newcommand{\intersect}{\cap}
 \newcommand{\sementails}{\mathrel{|}\joinrel\mkern-.5mu\mathrel{-}}
 \newcommand{\synentails}{\mathrel{|}\joinrel\mathrel{=}}
 % \DeclareMathOperator{\signature}{signature}
-\newcommand{\signature}{\sigma}
+\newcommand{\signature}{\Sigma}
 \DeclareMathOperator{\test}{test}
+\newcommand{\casesbox}[2][.45\linewidth]{\parbox[t]{#1}{\hangindent=1em\relax#2}}
+
+\newtheorem{proposition}{Proposition}
 
 \let\oldtextproc\textproc
 \renewcommand{\textproc}[1]{\nohyphens{\oldtextproc{#1}}}
@@ -47,13 +48,16 @@
 % \date{5 May 2016}
 \maketitle
 
-% \begin{abstract}
-% \end{abstract}
+\begin{abstract}
+\end{abstract}
 
 \section{Introduction}
 
 \begin{todos}
   \todo Importance of testing
+  \todo Problem: no rigorous examination or proof of correctness
+  \todo Simplification (one algorithm to handle many cases)
+  \todo (Maybe) Only consider class axioms, data axioms, etc.
 \end{todos}
 
 \section{Related work}
@@ -64,59 +68,65 @@
   \todo Not all complex axioms supported
 \end{todos}
 
+\section{Application of reasoners}
+
+\begin{todos}
+  \todo Methods available from reasoners
+  \todo Temporary individuals are slow (reclassification)
+  \todo OWL BGP is slow
+  \todo Not using \textproc{isEntailed} because not universally provided
+  \todo Assumptions about correctness and performance \\(``proven'' in the field)
+  \todo Discussion of some implementations (Hypertableau with anonymous individuals)
+
+\end{todos}
+
 \section{A model of unit testing}
 
 \begin{todos}
+  \todo Purpose: allow rigorous examination of test algorithms
   \todo Need for different test outputs
+  \todo Contradictions caused only by ABox
+  \todo Precedence of outputs
+  \todo Definitions
+  \begin{todos}
+    \todo Signature $\signature$
+    \todo Meaning of test outputs
+  \end{todos}
 \end{todos}
 
-\subsection{Definitions}
-
-\begin{todos}
-  \todo Signature $\signature$
-  \todo Meaning of test outputs
-\end{todos}
+\begin{description}
+  \item[]
+\end{description}
 
 \[
   \test_O(A) =
   \begin{cases}
-    \text{inconsistent} &
+    \casesbox{already inconsistent} &
       \text{if } O \sementails \bot \\
-    \text{missing vocab} &
+    \casesbox{missing entity} &
       \text{if } \signature(A) \not\subseteq \signature(O) \\
-    \text{valid} &
-      \text{if } O \sementails A \\
-    \text{unsatisfiable} &
+    \casesbox{new unsatisfiable class} & \\
+    \casesbox{inconsistent} &
       \text{if } O \union A \sementails \bot \\
-    \text{satisfiable} &
-      \text{otherwise}
+    \casesbox{entailed} &
+      \text{if } O \sementails A \\
+    \casesbox{not entailed} & \\
   \end{cases}
 \]
-
-\section{Reasoner functionality and considerations}
-
-\begin{todos}
-  \todo Methods available from reasoners
-  \todo Not using \textproc{isEntailed} because not universally provided
-  \todo Assumptions about correctness and performance
-  \begin{todos}
-    \todo ``Proven'' in the field
-  \end{todos}
-  \todo Discussion of some implementations
-  \begin{todos}
-    \todo Hypertableau with anonymous individuals
-  \end{todos}
-\end{todos}
 
 \section{Unit test algorithms}
 
 \begin{todos}
-  \todo With mock individuals (just class subsumption)
-  \todo Accompanying proofs
+  \todo Subsections?
+  \todo Name according to OWL functional syntax
+  \todo Preconditions: consistent ontology, no missing vocabulary
+  \todo Show correctness of anonymous individual approach, because reasoners use it (careful of difference)
 \end{todos}
 
+\subsection{Class axioms}
+
 \begin{algorithm}[H]
-  \caption{Test concept inclusion using satisfiability checking}
+  \caption{}
   \begin{algorithmic}[1]
     \Function{testSubClassOf}{$C$, $D$}
       \If{$C \sqcap \neg D$ has instances}
@@ -135,8 +145,31 @@
   \textproc{testSubClassOf} is sound with respect to validity.
 \end{proposition}
 
-\begin{proof}
-\end{proof}
+\begin{proposition}
+  \textproc{testSubClassOf} is complete with respect to validity.
+\end{proposition}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is sound with respect to satisfiability.
+\end{proposition}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is complete with respect to satisfiability.
+\end{proposition}
+
+\subsection{Object property axioms}
+\subsection{Data property axioms}
+\subsection{Assertion axioms}
+
+\section{Discussion}
+
+\begin{todos}
+  \todo What goes here?
+  \todo Implementation?
+  \todo Simpler than TDDOnto
+  \todo Plays nicely with Hermit
+  \todo TDD tool should support $\textproc{isSatisfiable}(C)$ tests
+\end{todos}
 
 \section{Conclusion}
 
