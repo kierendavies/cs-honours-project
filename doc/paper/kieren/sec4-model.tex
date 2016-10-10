@@ -1,0 +1,41 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{A model of unit testing}
+\label{sec:model}
+
+\begin{todos}
+  \todo Purpose: allow rigorous examination of testing algorithms
+  \todo Need for different test outputs
+  \todo Contradictions caused only by ABox
+  \todo Precedence of outputs
+  \todo Definitions
+  \begin{todos}
+    \todo Signature $\signature$
+    \todo Meaning of test outputs
+  \end{todos}
+\end{todos}
+
+\begin{description}
+  \item[]
+\end{description}
+
+\[
+  \test_O(A) =
+  \begin{cases}
+    \casesbox{already inconsistent} &
+      \text{if } O \sementails \bot \\
+    \casesbox{missing entity} &
+      \text{if } \signature(A) \not\subseteq \signature(O) \\
+    \casesbox{new unsatisfiable class} & \\
+    \casesbox{inconsistent} &
+      \text{if } O \union A \sementails \bot \\
+    \casesbox{entailed} &
+      \text{if } O \sementails A \\
+    \casesbox{not entailed} & \\
+  \end{cases}
+\]
+
+\end{document}

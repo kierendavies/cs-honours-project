@@ -1,0 +1,55 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Unit testing algorithms}
+\label{sec:algorithms}
+
+\begin{todos}
+  \todo Subsections?
+  \todo Name according to OWL functional syntax
+  \todo Preconditions: consistent ontology, no missing vocabulary
+  \todo Show correctness of anonymous individual approach, because reasoners use it (careful of difference)
+  \todo Coverage (justification)
+\end{todos}
+
+\subsection{Class axioms}
+
+\begin{algorithm}[H]
+  \caption{}
+  \begin{algorithmic}[1]
+    \Function{testSubClassOf}{$C$, $D$}
+      \If{$C \sqcap \neg D$ has instances}
+        \Comment or enumerate $C$ and check in $D$
+        \State \Return unsatisfiable
+      \ElsIf{$C \sqcap \neg D$ is satisfiable}
+        \State \Return satisfiable
+      \Else
+        \State \Return valid
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is sound with respect to validity.
+\end{proposition}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is complete with respect to validity.
+\end{proposition}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is sound with respect to satisfiability.
+\end{proposition}
+
+\begin{proposition}
+  \textproc{testSubClassOf} is complete with respect to satisfiability.
+\end{proposition}
+
+\subsection{Object property axioms}
+\subsection{Data property axioms}
+\subsection{Assertion axioms}
+
+\end{document}

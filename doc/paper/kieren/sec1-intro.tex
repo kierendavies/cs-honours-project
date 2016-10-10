@@ -1,0 +1,41 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Introduction}
+\label{sec:intro}
+
+Ontologies, and ontology engineering, have become increasingly relevant in the past decade.  They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
+
+Despite this, ontologies have seen disappointingly little adoption within business and industry \cite{Cardoso:SemanticWebVision, Kaczmarek:EnterpriseModelling}.  One of the contributing factors is a lack of any mature and widely-accepted ontology development methodologies \cite{Iqbal:Methodologies}.  In particular, there are no published methodologies which incorporate automated testing.
+% This is in turn due to a lack of mature testing tools and frameworks.
+
+There exist some tools to facilitate testing of ontologies, but they are all still early in development.  Furthermore, there has been no rigorous analysis of the techniques and algorithms employed.  In this paper we present algorithms for testing ontology axioms, prove their correctness, and \todo[maybe?] examine their performance.  We aim for these algorithms to be simpler than those already in use, so that they may be more easily and safely implemented.  \todo[only considering subset of axioms?]
+
+In section \ref{sec:rationale} we justify why testing is applicable to ontologies.
+In section \ref{sec:related} we examine prior work that has been done on this topic, and where there are still shortcomings in the state of the art.
+In section \ref{sec:reasoners} we consider how ontology reasoners may be applied to develop testing algorithms.
+In section \ref{sec:model} we present a formal model of testing, and in section \ref{sec:algorithms} we employ the model to describe and analyse testing algorithms.
+In section \ref{sec:discussion} \todo[fill in after discussion is written].
+Lastly, in section \ref{sec:conclusion} we conclude and briefly discuss future work.
+
+\section{Rationale for testing}
+\label{sec:rationale}
+
+In software engineering, \emph{Test-Driven Development} (TDD) \cite{Beck:TDD} is a methodology based on two rules:
+\begin{itemize}[nosep]
+  \item Write new code only if an automated test has failed.
+  \item Eliminate duplication.
+\end{itemize}
+This induces a ``red--green--refactor'' pattern of development: first write a new test which fails, then write code which makes it pass with minimal effort, then remove resultant duplication and restructure if necessary.  The process is usually facilitated with a test harness which runs tests automatically and generates reports.
+
+TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \todo[cite].  In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
+
+An ontology is a \emph{white box}---all of its internals are visible---so why employ automated tests at all?  There are cases where an author, especially if inexperienced, may easily make a mistake without noticing.  Suppose an author creates the following classes:
+\[ \mathtt{Giraffe} \sqsubseteq \mathtt{Herbivore} \sqsubseteq \mathtt{Mammal} \sqsubseteq \mathtt{Animal} \]
+The author then realises that not all herbivores are mammals, so changes $\mathtt{Herbivore}$ to be a subclass only of $\mathtt{Animal}$.  But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously miss giraffes.  This mistake could be caught by a simple test which asserts that $\mathtt{Giraffe}$ can be derived as a subclass of $\mathtt{Mammal}$.
+
+From this follows another question: why add a test which asserts an inferred axiom, instead of just adding that axiom directly to the ontology?  Adding such an axiom introduces redundancy, making modification of the ontology more difficult, and in some circumstances increases the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
+
+\end{document}
