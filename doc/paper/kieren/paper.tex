@@ -19,6 +19,7 @@
 \usepackage{enumitem}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{xspace}
 \usepackage{hyphenat}
 \usepackage{ktodo}
 
@@ -26,13 +27,22 @@
 \newcommand{\intersect}{\cap}
 \newcommand{\sementails}{\mathrel{|}\joinrel\mkern-.5mu\mathrel{-}}
 \newcommand{\synentails}{\mathrel{|}\joinrel\mathrel{=}}
+\newcommand{\nothing}{\bot}
 % \DeclareMathOperator{\signature}{signature}
 \newcommand{\signature}{\Sigma}
 \DeclareMathOperator{\test}{test}
 \newcommand{\casesbox}[2][.45\linewidth]{\parbox[t]{#1}{\hangindent=1em\relax#2}}
 
+\newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
 
+\algnewcommand{\And}{\textbf{and}\xspace}
+\algnewcommand{\Or}{\textbf{or}\xspace}
+\algnewcommand{\Not}{\textbf{not} }
+\algnewcommand{\To}{\textbf{to}\xspace}
+\newcommand{\algindent}[1]{\hskip\dimexpr\algorithmicindent*#1\relax}
 \let\oldtextproc\textproc
 \renewcommand{\textproc}[1]{\nohyphens{\oldtextproc{#1}}}
 

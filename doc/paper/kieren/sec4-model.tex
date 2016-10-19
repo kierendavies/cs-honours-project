@@ -9,33 +9,36 @@
 \begin{todos}
   \todo Purpose: allow rigorous examination of testing algorithms
   \todo Need for different test outputs
+  \todo Preconditions:
+  \begin{todos}
+    \todo Already consistent and coherent
+    \todo No missing entities
+  \end{todos}
   \todo Contradictions caused only by ABox
-  \todo Precedence of outputs
+  \todo Precedence of outputs (``badness'')
   \todo Definitions
   \begin{todos}
     \todo Signature $\signature$
     \todo Meaning of test outputs
   \end{todos}
+  \todo Terminology from OWL 2 grammar and OWL API
 \end{todos}
-
-\begin{description}
-  \item[]
-\end{description}
 
 \[
   \test_O(A) =
   \begin{cases}
-    \casesbox{already inconsistent} &
-      \text{if } O \sementails \bot \\
-    \casesbox{missing entity} &
-      \text{if } \signature(A) \not\subseteq \signature(O) \\
-    \casesbox{new unsatisfiable class} & \\
-    \casesbox{inconsistent} &
+    \mathrm{inconsistent} &
       \text{if } O \union A \sementails \bot \\
-    \casesbox{entailed} &
+    \mathrm{incoherent} &
+      \text{if } \exists C (O \sementails C \sqsubseteq \nothing) \\
+    \mathrm{absent} &
+      \text {if } O \not\sementails A \\
+    \mathrm{entailed} &
       \text{if } O \sementails A \\
-    \casesbox{not entailed} & \\
   \end{cases}
 \]
+\todo[assume previous conditions do not hold]
+
+\[ \mathrm{inconsistent} > \mathrm{incoherent} > \mathrm{absent} > \mathrm{entailed} \]
 
 \end{document}
