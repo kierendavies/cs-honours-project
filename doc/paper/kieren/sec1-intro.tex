@@ -6,15 +6,29 @@
 \section{Introduction}
 \label{sec:intro}
 
-Ontologies, and ontology engineering, have become increasingly relevant in the past decade.  They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
+Ontologies, and ontology engineering, have become increasingly relevant in the past decade.
+They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
 
-Despite this, ontologies have seen disappointingly little adoption within business and industry \cite{Cardoso:SemanticWebVision, Kaczmarek:EnterpriseModelling}.  One of the contributing factors is a lack of any mature and widely-accepted ontology development methodologies \cite{Iqbal:Methodologies}.  In particular, there are no published methodologies which incorporate automated testing.
-% This is in turn due to a lack of mature testing tools and frameworks.
+Despite this, ontologies have not seen widespread adoption within business and industry \cite{Cardoso:SemanticWebVision, Kaczmarek:EnterpriseModelling}.
+We postulate that one of the contributing factors is the state of ontology engineering methodologies, which lag behind software engineering methodologies in terms of both maturity and adoption \cite{Iqbal:Methodologies, Simperl:Maturity}.
+In particular, there are no published methodologies which explicitly incorporate automated testing, which has become a staple of software engineering.
 
-There exist some tools to facilitate testing of ontologies, but they are all still early in development.  Furthermore, there has been no rigorous analysis of the techniques and algorithms employed.  In this paper we present algorithms for testing ontology axioms, prove their correctness, and \todo[maybe?] examine their performance.  We aim for these algorithms to be simpler than those already in use, so that they may be more easily and safely implemented.  \todo[only considering subset of axioms?]
+There exist some tools to facilitate testing of ontologies, such as TDDonto \cite{Lawrynowicz:TDDontoTool}, Tawny-OWL \cite{Warrender:HowWhatWhyTest}, and OntoMaven \cite{Paschke:AspectOntoMaven}, but they have various shortcomings which will be discussed.
+Furthermore, there has been no rigorous analysis of the techniques and algorithms employed.
+In this paper we present algorithms for testing ontology axioms, prove their correctness, and \todo[TBC] examine their performance.
+The algorithms provide new functionality to address shortcomings of existing tools:
+\begin{itemize}[nosep]
+  \item Support for arbitrary class and property expressions in axioms, as permitted by the OWL 2 specification \cite{W3C:OWL2Syntax}.
+  \item Informative test outputs to indicate the consequences of adding a new axiom.
+\end{itemize}
+We aim for simple algorithms which handle general cases, and avoid having multiple algorithms to handle variants of a single kind of axiom.
+
+\todo[TBC: only considering subset of axioms]
+
+\todo[main outcomes?]
 
 In section \ref{sec:rationale} we justify why testing is applicable to ontologies.
-In section \ref{sec:related} we examine prior work that has been done on this topic, and where there are still shortcomings in the state of the art.
+In section \ref{sec:related} we examine prior work that has been done on this topic, and the shortcomings in the state of the art.
 In section \ref{sec:reasoners} we consider how ontology reasoners may be applied to develop testing algorithms.
 In section \ref{sec:model} we present a formal model of testing, and in section \ref{sec:algorithms} we employ the model to describe and analyse testing algorithms.
 In section \ref{sec:discussion} \todo[fill in after discussion is written].
@@ -28,14 +42,28 @@ In software engineering, \emph{Test-Driven Development} (TDD) \cite{Beck:TDD} is
   \item Write new code only if an automated test has failed.
   \item Eliminate duplication.
 \end{itemize}
-This induces a ``red--green--refactor'' pattern of development: first write a new test which fails, then write code which makes it pass with minimal effort, then remove resultant duplication and restructure if necessary.  The process is usually facilitated with a test harness which runs tests automatically and generates reports.
+This induces a ``red--green--refactor'' pattern of development: first write a new test which fails, then write code which makes it pass with minimal effort, then remove resultant duplication and restructure if necessary.
+The process is usually facilitated with a test harness which runs tests automatically and generates reports.
 
-TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \todo[cite].  In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
+TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \cite{Beck:TDD}.
+In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
 
-An ontology is a \emph{white box}---all of its internals are visible---so why employ automated tests at all?  There are cases where an author, especially if inexperienced, may easily make a mistake without noticing.  Suppose an author creates the following classes:
+An ontology is a \emph{white box}---all of its internals are visible---so why employ automated tests at all?  There are cases where an author, especially if inexperienced, may easily make a mistake without noticing.
+Suppose an author creates the following classes:
 \[ \mathtt{Giraffe} \sqsubseteq \mathtt{Herbivore} \sqsubseteq \mathtt{Mammal} \sqsubseteq \mathtt{Animal} \]
-The author then realises that not all herbivores are mammals, so changes $\mathtt{Herbivore}$ to be a subclass only of $\mathtt{Animal}$.  But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously miss giraffes.  This mistake could be caught by a simple test which asserts that $\mathtt{Giraffe}$ can be derived as a subclass of $\mathtt{Mammal}$.
+The author then realises that not all herbivores are mammals, so changes $\mathtt{Herbivore}$ to be a subclass only of $\mathtt{Animal}$.
+But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously miss giraffes.
+This mistake could be caught by a simple test which asserts that $\mathtt{Giraffe}$ is a derivable subclass of $\mathtt{Mammal}$.
 
 From this follows another question: why add a test which asserts an inferred axiom, instead of just adding that axiom directly to the ontology?  Adding such an axiom introduces redundancy, making modification of the ontology more difficult, and in some circumstances increases the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
+Adding only a test instead ensures correctness without bloating the ontology.
+
+Tests may also be used outside of an automated test suite to explore and understand an ontology.
+For example, an author might be assessing an ontology of animals for reuse and wants to verify that $\mathtt{Giraffe} \sqsubseteq \mathtt{Mammal}$.
+The author can simply create a corresponding temporary test and observe the result.
+This saves the time it would take to browse the inferred class heirarchy in a development environment such as Prot\'eg\'e.
+
+A similar thing can be done when developing a new ontology.
+Before adding a new axiom, the author can create a temporary test to determine if the axiom is already entailed, if it will result in a contradiction or unsatisfiable class, or if it can be safely added.
 
 \end{document}

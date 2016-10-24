@@ -15,10 +15,18 @@
   \todo Discussion of some implementations (Hypertableau with anonymous individuals)
 \end{todos}
 
-Ontology $O$,
+\todo[in ontology $O$]
 
-\[ \textproc{isSatisfiable}(C) \iff C \not\sqsubseteq \bot \]
-or
 \[ \textproc{isSatisfiable}(C) \iff O \not\sementails C \sqsubseteq \bot \]
+\[ \textproc{getEquivalentClasses}(C) = \{ D \in \signature(O) \mid O \sementails D \equiv C \} \]
+\begin{multline*}
+  \textproc{getSubClasses}(C) =
+  \{
+    D \in \signature_C(O)
+  \mid \\
+    (O \sementails D \sqsubseteq C) \land (O \not\sementails C \sqsubseteq D)
+  \}
+\end{multline*}
+\[ \textproc{getInstances}(C) = \{ a \in \signature_I(O) \mid O \sementails a : C \} \]
 
 \end{document}
