@@ -185,8 +185,8 @@ TransitiveObjectProperty ::= 'TransitiveObjectProperty' '(' axiomAnnotations Obj
 
 
 
-DataPropertyAxiom ::=;
-    SubDataPropertyOf | EquivalentDataProperties | DisjointDataProperties |;
+DataPropertyAxiom ::=
+    SubDataPropertyOf | EquivalentDataProperties | DisjointDataProperties |
     DataPropertyDomain | DataPropertyRange | FunctionalDataProperty;
 
 SubDataPropertyOf ::= 'SubDataPropertyOf' '(' axiomAnnotations subDataPropertyExpression superDataPropertyExpression ')';
@@ -213,9 +213,9 @@ HasKey ::= 'HasKey' '(' axiomAnnotations ClassExpression '(' { ObjectPropertyExp
 
 
 
-Assertion ::=;
-    SameIndividual | DifferentIndividuals | ClassAssertion |;
-    ObjectPropertyAssertion | NegativeObjectPropertyAssertion |;
+Assertion ::=
+    SameIndividual | DifferentIndividuals | ClassAssertion |
+    ObjectPropertyAssertion | NegativeObjectPropertyAssertion |
     DataPropertyAssertion | NegativeDataPropertyAssertion;
 
 sourceIndividual ::= Individual;
