@@ -47,33 +47,46 @@
         \State \Return absent
       \Else
         \State \Return entailed
+        \label{alg:testSubClassOf:returnEntailed}
       \EndIf
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
-% \begin{lemma}
-%   \textproc{testSubClassOf} is sound with respect to entailment.  That is,
-%   \begin{align*}
-%     & \textproc{testSubClassOf}(C, D) = \mathrm{entailed} \\
-%     \implies{}& \test_O(C \sqsubseteq D) = \mathrm{entailed}
-%   \end{align*}
-% \end{lemma}
-% \begin{proof}
-%   \todo
-% \end{proof}
-%
-% \begin{lemma}
-%   \textproc{testSubClassOf} is complete with respect to entailment.  That is,
-%   \begin{align*}
-%     & \test_O(C \sqsubseteq D) = \mathrm{entailed} \\
-%     \implies{}& \textproc{testSubClassOf}(C, D) = \mathrm{entailed}
-%   \end{align*}
-% \end{lemma}
-% \begin{proof}
-%   \todo
-% \end{proof}
-%
+\begin{lemma}
+  \textproc{testSubClassOf} is sound with respect to entailment.  That is,
+  \begin{align*}
+    & \textproc{testSubClassOf}(C, D) = \mathrm{entailed} \\
+    \implies{}& \test_O(C \sqsubseteq D) = \mathrm{entailed}
+  \end{align*}
+\end{lemma}
+\begin{proof}
+  The algorithm can only return entailed at line \ref{alg:testSubClassOf:returnEntailed}, so the three if-conditions must all be false.  So
+  \begin{multline}
+    \label{eqn:testSubClassOfBranchesFalse}
+    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \land {} \\
+    (\textproc{isSatisfiable}(C \sqcap D) \lor {} \\
+    (\textproc{getEquivalentClasses}(C) \union {} \\
+    \textproc{getSubClasses}(C)) = \emptyset) \land {} \\
+    \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
+  \end{multline}
+
+  Now suppose $O \not\sementails C \sqsubseteq D$.  Since we have the precondition that $O$ is consistent and coherent, it is possible to introduce a new individual $a : C \sqcap \neg D$ \todo[do this with $\mathcal{I}$ and sets instead?].  This means that $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfBranchesFalse}.  Therefore the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
+\end{proof}
+
+\begin{lemma}
+  \textproc{testSubClassOf} is complete with respect to entailment.  That is,
+  \begin{align*}
+    & \test_O(C \sqsubseteq D) = \mathrm{entailed} \\
+    \implies{}& \textproc{testSubClassOf}(C, D) = \mathrm{entailed}
+  \end{align*}
+\end{lemma}
+\begin{proof}
+  We have that $\test_O(C \sqsubseteq D) = \mathrm{entailed}$ and therefore $O \sementails C \sqsubseteq D$.  So we have that
+  \[ C \sqcap \neg D \;\sqsubseteq\; D \sqcap \neg D \;\sqsubseteq\; \bot \]
+  From the precondition that $O$ is consistent, it follows $C \sqcap \neg D$ cannot have instances, and therefore it is not satisfiable.  Additionally we have that $C \sqcap D \;\sqsubseteq\; C$ which is satisfiable by the coherence precondition.  Therefore all three terms of equation \ref{eqn:testSubClassOfBranchesFalse} are true, and so the algorithm returns entailed.
+\end{proof}
+
 % \begin{lemma}
 %   \textproc{testSubClassOf} is sound with respect to incoherence.
 % \end{lemma}
@@ -101,14 +114,15 @@
 % \begin{proof}
 %   \todo
 % \end{proof}
-%
-% \begin{theorem}
-%   \textproc{testSubClassOf} is correct and terminating.
-% \end{theorem}
-% \begin{proof}
-%   \todo[terminating, trivially]
-%   \todo[absent is default]
-% \end{proof}
+
+\begin{theorem}
+  \textproc{testSubClassOf} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo[from lemmas]
+  \todo[terminating, trivially]
+\end{proof}
+
 
 \begin{algorithm}[H]
   \caption{test $C_1 \equiv \ldots \equiv C_n$}
