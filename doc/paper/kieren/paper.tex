@@ -17,6 +17,8 @@
 \cleanlookdateon
 
 \usepackage{enumitem}
+\usepackage{cancel}
+\usepackage{centernot}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{xspace}
@@ -25,18 +27,45 @@
 
 \newcommand{\union}{\cup}
 \newcommand{\intersect}{\cap}
-\newcommand{\sementails}{\mathrel{|}\joinrel\mkern-.5mu\mathrel{-}}
-\newcommand{\synentails}{\mathrel{|}\joinrel\mathrel{=}}
-\newcommand{\nothing}{\bot}
-% \DeclareMathOperator{\signature}{signature}
+% \newcommand{\sementails}{\mathrel{|}\joinrel\mkern-1mu\mathrel{-}}
+% \newcommand{\synentails}{\mathrel{|}\joinrel\mkern-0.5mu\mathrel{=}}
+% \newcommand{\nsementails}{\mathrel{\cancel{\sementails}}}
+% \newcommand{\nsynentails}{\mathrel{\cancel{\synentails}}}
+\newcommand{\sementails}{\vdash}
+\newcommand{\synentails}{\vDash}
+\newcommand{\nsementails}{\nvdash}
+\newcommand{\nsynentails}{\nvDash}
+\newcommand{\I}{\mathcal{I}}
 \newcommand{\signature}{\Sigma}
 \DeclareMathOperator{\test}{test}
 \newcommand{\casesbox}[2][.45\linewidth]{\parbox[t]{#1}{\hangindent=1em\relax#2}}
 
+\newdef{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
+
+\makeatletter
+\renewenvironment{algorithm}[1][]
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
 
 \algnewcommand{\Input}[1]{\item[\textbf{Input:}] \parbox[t]{\linewidth-1cm}{#1}\vspace{3pt}}
 \algnewcommand{\And}{\textbf{and}\xspace}

@@ -3,7 +3,7 @@
 
 \begin{document}
 
-\section{A model of unit testing}
+\section{A model of testing}
 \label{sec:model}
 
 \begin{todos}
@@ -24,21 +24,56 @@
   \todo Terminology from OWL 2 grammar and OWL API
 \end{todos}
 
-\[
-  \test_O(A) =
-  \begin{cases}
-    \mathrm{inconsistent} &
-      \text{if } O \union A \sementails \bot \\
-    \mathrm{incoherent} &
-      \text{if } \exists C (O \sementails C \sqsubseteq \nothing) \\
-    \mathrm{absent} &
-      \text {if } O \not\sementails A \\
-    \mathrm{entailed} &
-      \text{if } O \sementails A \\
-  \end{cases}
-\]
-\todo[assume previous conditions do not hold]
+In order to rigorously examine any testing algorithms, we need a formal description of what it means to test an axiom against an ontology.  To facilitate, we identify some relevant use cases.
 
-\[ \mathrm{entailed} < \mathrm{absent} < \mathrm{incoherent} < \mathrm{inconsistent} \]
+\todo[Use cases]
+
+In line with the uses cases which have been presented, we define the possible test results.  In order of precedence:
+\begin{description}[
+  before={\renewcommand\makelabel[1]{\normalfont\itshape##1:}},
+  labelindent=1em,
+  leftmargin=2em,
+  nosep,
+]
+  \item[Ontology already inconsistent]  The ontology is inconsistent before considering the axiom under test.  The reasoner cannot meaningfully respond to queries, so no claims can be made about the axiom.
+  \item[Ontology already incoherent]  The ontology is incoherent before considering the axiom.  That is, one or more of its classes are unsatisfiable.  This confounds certain methods which will be used to evaluate tests.
+  \item[Missing entity in axiom]  The axiom contains one or more named classes or properties which are not declared in the ontology.  This result is probably caused by a mistake in the test declaration, so it is distinguished from the results below.
+  \item[Axiom causes inconsistency]  If the axiom were added to the ontology it would cause it to become inconsistent.
+  \item[Axiom causes incoherence]  If the axiom were added to the ontology it would cause one or more classes to become unsatisfiable.
+  \item[Axiom absent]  The axiom is not entailed by the ontology, but it could be added without negative consequences.
+  \item[Axiom entailed]  The axiom is already entailed by the ontology.
+\end{description}
+
+These are listed in order of most to least grave failure, with the final result of entailment being the only one considered a pass.
+
+If the ontology is already inconsistent or incoherent, every test will produce the same result.  In this way, these two cases apply to the entire suite of tests rather than to any one, and so they should be checked only once as preconditions before evaluating any tests.  Therefore we do not consider them in the formal definition of a test result, or in any of the algorithms.  Since there is no ambiguity, we henceforth abbreviate the remaining cases.
+
+Similarly, we do not directly address missing entities, as this can be a simple check performed at the start of each test which does not affect how it is otherwise evaluated.
+
+This leads to the following formalisation.
+
+\begin{definition}
+  Given an ontology $O$, the result of testing an axiom $A$ against it is
+  \[
+    \test_O(A) =
+    \begin{cases}
+      \mathrm{inconsistent} &
+        \text{if } O \union A \sementails \bot \\
+      \mathrm{incoherent} &
+        \text{if }
+        \! \begin{aligned}[t]
+          & (\exists C \in \signature_C(O)) \\
+          & \quad O \union A \sementails C \sqsubseteq \bot
+        \end{aligned} \\
+      \mathrm{entailed} &
+        \text{if } O \sementails A \\
+      \mathrm{absent} &
+        \text {otherwise} \\
+    \end{cases}
+  \]
+
+  The resultant values are ordered according to graveness of failure.
+  \[ \mathrm{entailed} < \mathrm{absent} < \mathrm{incoherent} < \mathrm{inconsistent} \]
+\end{definition}
 
 \end{document}

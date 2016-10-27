@@ -8,23 +8,23 @@
 
 \begin{todos}
   \todo Methods available from reasoners
-  \todo Temporary individuals are slow (reclassification)
+  \todo Reclassification is slow---no new axioms, individuals
   \todo OWL BGP is slow
   \todo Not using \textproc{isEntailed} because not universally provided
   \todo Assumptions about correctness and performance \\(``proven'' in the field)
-  \todo Discussion of some implementations (Hypertableau with anonymous individuals)
+  % \todo Discussion of some implementations (Hypertableau with anonymous individuals)
 \end{todos}
 
 \todo[in ontology $O$]
 
-\[ \textproc{isSatisfiable}(C) \iff O \not\sementails C \sqsubseteq \bot \]
+\[ \textproc{isSatisfiable}(C) \iff O \nsementails C \sqsubseteq \bot \]
 \[ \textproc{getEquivalentClasses}(C) = \{ D \in \signature(O) \mid O \sementails D \equiv C \} \]
 \begin{multline*}
   \textproc{getSubClasses}(C) =
   \{
     D \in \signature_C(O)
   \mid \\
-    (O \sementails D \sqsubseteq C) \land (O \not\sementails C \sqsubseteq D)
+    (O \sementails D \sqsubseteq C) \land (O \nsementails C \sqsubseteq D)
   \}
 \end{multline*}
 \[ \textproc{getInstances}(C) = \{ a \in \signature_I(O) \mid O \sementails a : C \} \]

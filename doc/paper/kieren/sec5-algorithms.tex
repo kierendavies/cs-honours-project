@@ -3,11 +3,10 @@
 
 \begin{document}
 
-\section{Unit testing algorithms}
+\section{Testing algorithms}
 \label{sec:algorithms}
 
 \begin{todos}
-  \todo Name according to OWL functional syntax
   % \todo Show correctness of anonymous individual approach, because reasoners use it (careful of difference)
   \todo Coverage (justification)
   \begin{todos}
@@ -17,19 +16,28 @@
   \end{todos}
 \end{todos}
 
-\subsection{Class axioms (TBox)}
-
-\begin{todos}
-  \todo \textproc{getSubClasses} and \textproc{getSuperClasses} get only named classes, want arbitrary class expressions
-\end{todos}
-
-\begin{itemize}[noitemsep]
-  \ttfamily
-  \item SubClassOf
-  \item EquivalentClasses
-  \item DisjointClasses
-  \item DisjointUnion
+We now present the algorithms and analysis, in the context of an ontology $O$.  As justified in section \ref{sec:model}, we assume the following preconditions:
+\begin{itemize}[nosep]
+  \item The ontology under test $O$ is consistent and coherent.
+  \item The axiom under test contains only entities which are declared in the ontology.
 \end{itemize}
+
+Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.
+
+We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].  We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.  We also do not address $\mathtt{HasKey}$ because \todo[it's a horrible horrible mistake] \todo[cite].
+
+\subsection{Class axioms}
+\label{sec:algorithms:class}
+
+% \begin{itemize}[noitemsep]
+%   \ttfamily
+%   \item SubClassOf
+%   \item EquivalentClasses
+%   \item DisjointClasses
+%   \item DisjointUnion
+% \end{itemize}
+
+In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes.  The only exception to this is $\mathtt{DisjointUnion}(C \; D_1 \; \ldots \; D_n)$ in which $C$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
 
 \begin{algorithm}[H]
   \caption{test $C \sqsubseteq D$}
@@ -71,7 +79,21 @@
     \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
   \end{multline}
 
-  Now suppose $O \not\sementails C \sqsubseteq D$.  Since we have the precondition that $O$ is consistent and coherent, it is possible to introduce a new individual $a : C \sqcap \neg D$ \todo[do this with $\mathcal{I}$ and sets instead?].  This means that $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfBranchesFalse}.  Therefore the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
+  %   Now suppose $O \nsementails C \sqsubseteq D$.  Since we have the precondition that $O$ is consistent and coherent, it is possible to introduce a new individual $a : C \sqcap \neg D$ \todo[is this valid?].  This means that $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfBranchesFalse}.  Therefore the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
+
+  Now suppose $O \nsementails C \sqsubseteq D$.  That is, there exists an interpretation $\I$ such that
+  \begin{align*}
+    & \I \nsynentails C \sqsubseteq D \\
+    \iff{}& C^\I \nsubseteq D^\I \\
+    \iff{}& (\exists a \in C^\I) \; a \notin D^\I \\
+    \iff{}& (\exists a \in \Delta^\I) \; a \in C^\I \land a \notin D^\I \\
+    \iff{}& (\exists a \in \Delta^\I) \; a \in C^\I \intersect (\Delta^\I \setminus D^\I) \\
+    \iff{}& (\exists a \in \Delta^\I) \; a \in C^\I \intersect (\neg D)^\I \\
+    \iff{}& (\exists a \in \Delta^\I) \; a \in (C \sqcap \neg D)^\I \\
+    \iff{}& (C \sqcap \neg D)^\I \ne \emptyset \\
+    \iff{}& \I \nsynentails C \sqcap \neg D \sqsubseteq \bot
+  \end{align*}
+  Therefore $O \nsementails C \sqcap \neg D \sqsubseteq \bot$.  In other words, $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfBranchesFalse}.  Hence the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
 \end{proof}
 
 \begin{lemma}
@@ -82,9 +104,13 @@
   \end{align*}
 \end{lemma}
 \begin{proof}
-  We have that $\test_O(C \sqsubseteq D) = \mathrm{entailed}$ and therefore $O \sementails C \sqsubseteq D$.  So we have that
+  From the definition, $\test_O(C \sqsubseteq D) = \mathrm{entailed}$ means that $O \sementails C \sqsubseteq D$.  From this we have
   \[ C \sqcap \neg D \;\sqsubseteq\; D \sqcap \neg D \;\sqsubseteq\; \bot \]
-  From the precondition that $O$ is consistent, it follows $C \sqcap \neg D$ cannot have instances, and therefore it is not satisfiable.  Additionally we have that $C \sqcap D \;\sqsubseteq\; C$ which is satisfiable by the coherence precondition.  Therefore all three terms of equation \ref{eqn:testSubClassOfBranchesFalse} are true, and so the algorithm returns entailed.
+  This means that $C \sqcap \neg D$ is not satisfiable, and from the consistency precondition it has no instances, so the first and last terms of equation \ref{eqn:testSubClassOfBranchesFalse} are true.
+
+  If $C \sqcap D$ is satisfiable, then the middle term of equation \ref{eqn:testSubClassOfBranchesFalse} is true without needing to evaluate its second $\lor$-condition.  If not, we note that $C \sqsubseteq D$ implies $C \sqcap D \equiv C$.  By the coherence precondition, since $C$ is not satisfiable it has no named subclasses or equivalent classes, so the second $\lor$-condition is true.  Therefore the middle term is true in all cases.
+
+  We have shown that all three terms of equation \ref{eqn:testSubClassOfBranchesFalse} are true, and so the algorithm returns entailed.
 \end{proof}
 
 % \begin{lemma}
@@ -123,7 +149,6 @@
   \todo[terminating, trivially]
 \end{proof}
 
-
 \begin{algorithm}[H]
   \caption{test $C_1 \equiv \ldots \equiv C_n$}
   \begin{algorithmic}[1]
@@ -143,13 +168,13 @@
 
 \todo[don't need pairwise---assume worse result from $(i, j)$, show it appears in $(1, i)$ or $(1, j)$]
 
+From OWL 2 spec,
 \begin{align*}
   \mathtt{DisjointClasses}(C, D)
-  &\iff C \sqsubseteq \neg D \\
-  &\iff C \sqcap D \sqsubseteq \bot
+  &\iff C \sqsubseteq \neg D
+  % &\iff C \sqcap D \sqsubseteq \bot
 \end{align*}
-
-\todo[Using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent when e.g. $D \equiv C_1 \sqcap C_2$ with no instances]
+But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent when e.g.\ $D \equiv C_1 \sqcap C_2$ with no instances, so use stronger form $C \sqcap D \sqsubseteq \bot$ \todo[write properly].
 
 \begin{algorithm}[H]
   \caption{test $C_1, \,\ldots, C_n$ pairwise disjoint}
@@ -196,18 +221,19 @@
 
 \todo[Presented without proof]
 
-\subsection{Assertions (ABox)}
+\subsection{Assertions}
+\label{sec:algorithms:assert}
 
-\begin{itemize}[noitemsep]
-  \ttfamily
-  \item SameIndividual
-  \item DifferentIndividuals
-  \item ClassAssertion
-  \item ObjectPropertyAssertion
-  \item NegativeObjectPropertyAssertion
-  % \item DataPropertyAssertion
-  % \item NegativeDataPropertyAssertion
-\end{itemize}
+% \begin{itemize}[noitemsep]
+%   \ttfamily
+%   \item SameIndividual
+%   \item DifferentIndividuals
+%   \item ClassAssertion
+%   \item ObjectPropertyAssertion
+%   \item NegativeObjectPropertyAssertion
+%   % \item DataPropertyAssertion
+%   % \item NegativeDataPropertyAssertion
+% \end{itemize}
 
 \begin{algorithm}[H]
   \caption{test same individual}
@@ -259,6 +285,7 @@
   \end{algorithmic}
 \end{algorithm}
 
+\todo[name shortened to fit]
 \begin{algorithm}[H]
   \caption{test $(a, b) : \neg R$}
   \begin{algorithmic}[1]
@@ -273,7 +300,8 @@
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{Object property axioms (RBox)}
+\subsection{Object property axioms}
+\label{sec:algorithms:objprop}
 
 \begin{itemize}[noitemsep]
   \ttfamily
@@ -292,20 +320,20 @@
   \item TransitiveObjectProperty
 \end{itemize}
 
-\begin{algorithm}[H]
-  \caption{test $R \sqsubseteq S$}
-  \begin{algorithmic}[1]
-    \Input{
-      $R$ object property expression or chain \\
-      $S$ object property
-    }
-    \Function{testSubObjectPropertyOf}{$R$, $S$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\todo[other algorithm stubs]
+% \begin{algorithm}[H]
+%   \caption{test $R \sqsubseteq S$}
+%   \begin{algorithmic}[1]
+%     \Input{
+%       $R$ object property expression or chain \\
+%       $S$ object property
+%     }
+%     \Function{testSubObjectPropertyOf}{$R$, $S$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \todo[other algorithm stubs]
 
 % \subsection{Data property axioms}
 %
