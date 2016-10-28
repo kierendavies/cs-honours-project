@@ -13,16 +13,12 @@ Despite this, ontologies have not seen widespread adoption within business and i
 We postulate that one of the contributing factors is the state of ontology engineering methodologies, which lag behind software engineering methodologies in terms of both maturity and adoption \cite{Iqbal:Methodologies, Simperl:Maturity}.
 In particular, there are no published methodologies which explicitly incorporate automated testing, which has become a staple of software engineering.
 
-There exist some tools to facilitate testing of ontologies, such as TDDonto \cite{Lawrynowicz:TDDontoTool}, Tawny-OWL \cite{Warrender:HowWhatWhyTest}, and OntoMaven \cite{Paschke:AspectOntoMaven}, but they have various shortcomings which will be discussed.
+There exist some tools for testing ontologies, but they all share two notable shortcomings: certain axioms cannot be tested even though they are permitted in OWL 2 \cite{W3C:OWL2Syntax}, such as $\forall R.C \sqsubseteq D$, and test results are either ``pass'' or ``fail'' with no further information as to the nature of failure.
 Furthermore, there has been no rigorous analysis of the techniques and algorithms employed.
-In this paper we present algorithms for testing ontology axioms, prove their correctness, and \todo[TBC] examine their performance.
-The algorithms provide new functionality to address shortcomings of existing tools:
-\begin{itemize}[nosep]
-  \item Support for arbitrary class and property expressions in axioms, as permitted by the OWL 2 specification \cite{W3C:OWL2Syntax}.
-  \item Informative test outputs to indicate the consequences of adding a new axiom.
-\end{itemize}
-We aim for simple algorithms which handle general cases, and avoid having multiple algorithms to handle variants of a single kind of axiom.
-\todo[separate problem from solution] \todo[list shortcomings, short example]
+In this paper we present algorithms for testing axioms against ontologies, prove their correctness, and \todo[TBC] examine their performance.
+The algorithms provide new functionality to address the aforementioned shortcomings.
+
+We aim for the algorithms to each handle the general case of an axiom, and avoid having multiple algorithms to handle variants of a single kind of axiom.
 
 \todo[TBC: only considering subset of axioms]
 
@@ -47,14 +43,16 @@ The process is usually facilitated with a test harness which runs tests automati
 TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \cite{Beck:TDD}.
 In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
 
-An ontology is a \emph{white box}---all of its internals are visible---so why employ automated tests at all?  There are cases where an author, especially if inexperienced, may easily make a mistake without noticing.
-Suppose an author creates the following classes:
+Ontologies, like computer programs, can become complex to the point that it is difficult for a human author to predict the consequences of changes, especially if the author is inexperienced.
+Automated tests are therefore useful to detect unintended consequences.
+As an illustrative example, suppose an author creates the following classes:
 \[ \mathtt{Giraffe} \sqsubseteq \mathtt{Herbivore} \sqsubseteq \mathtt{Mammal} \sqsubseteq \mathtt{Animal} \]
 The author then realises that not all herbivores are mammals, so changes $\mathtt{Herbivore}$ to be a subclass only of $\mathtt{Animal}$.
-But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously miss giraffes.
+But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously exclude giraffes.
 This mistake could be caught by a simple test which asserts that $\mathtt{Giraffe}$ is a derivable subclass of $\mathtt{Mammal}$.
 
-From this follows another question: why add a test which asserts an inferred axiom, instead of just adding that axiom directly to the ontology?  Adding such an axiom introduces redundancy, making modification of the ontology more difficult, and in some circumstances increases the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
+Superficially, it seems like this problem can be solved by not writing tests for axioms but instead just adding those axioms directly to the ontology.
+However, adding such axioms introduces redundancy, making modification of the ontology more difficult, and in some circumstances increasing the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
 Adding only a test instead ensures correctness without bloating the ontology.
 
 Tests may also be used outside of an automated test suite to explore and understand an ontology.
@@ -64,5 +62,14 @@ This saves the time it would take to browse the inferred class heirarchy in a de
 
 A similar thing can be done when developing a new ontology.
 Before adding a new axiom, the author can create a temporary test to determine if the axiom is already entailed, if it will result in a contradiction or unsatisfiable class, or if it can be safely added.
+The standard approach of adding an axiom and then observing the consequences involves reclassification, which is typically very slow, and which a test of a single axiom can avoid.
+
+This gives us two broad use cases:
+\begin{enumerate}[nosep]
+  \item Declare many tests alongside an ontology and evaluate them all together in order to demonstrate quality or detect regressions.
+  \item Evaluate temporary tests as needed in order to explore an ontology or predict the consequences of adding a new axiom.
+\end{enumerate}
+
+To satisfy both of these, tests must not reclassify the ontology, and they must produce results which identify the consequences of adding an axiom.
 
 \end{document}

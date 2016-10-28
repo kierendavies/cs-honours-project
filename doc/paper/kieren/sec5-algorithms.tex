@@ -3,7 +3,7 @@
 
 \begin{document}
 
-\section{Testing algorithms}
+\section{Algorithms and analysis}
 \label{sec:algorithms}
 
 \begin{todos}
@@ -24,7 +24,9 @@ We now present the algorithms and analysis, in the context of an ontology $O$.  
 
 Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.
 
-We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].  We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.  We also do not address $\mathtt{HasKey}$ because \todo[it's a horrible horrible mistake] \todo[cite].
+We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].  We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
+
+We also exclude $\mathtt{HasKey}$ because \todo[it's a horrible horrible mistake] \todo[cite].  We do not provide an algorithm to test it, and further, we assume that the ontology does not contain any $\mathtt{HasKey}$ axioms.
 
 \subsection{Class axioms}
 \label{sec:algorithms:class}

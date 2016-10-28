@@ -9,33 +9,19 @@
 \begin{todos}
   \todo Purpose: allow rigorous examination of testing algorithms
   \todo Need for different test outputs
-  \todo Preconditions:
-  \begin{todos}
-    \todo Already consistent and coherent
-    \todo No missing entities
-  \end{todos}
   \todo Contradictions caused only by ABox
-  \todo Precedence of outputs (``badness'')
-  \todo Definitions
-  \begin{todos}
-    \todo Signature $\signature$
-    \todo Meaning of test outputs
-  \end{todos}
-  \todo Terminology from OWL 2 grammar and OWL API
 \end{todos}
 
 In order to rigorously examine any testing algorithms, we need a formal description of what it means to test an axiom against an ontology.  To facilitate, we identify some relevant use cases.
 
-\todo[Use cases]
-
-In line with the uses cases which have been presented, we define the possible test results.  In order of precedence:
+In line with the uses cases identified in section \ref{sec:rationale}, we define the possible test results.  In order of precedence:
 \begin{description}[
   before={\renewcommand\makelabel[1]{\normalfont\itshape##1:}},
   labelindent=1em,
   leftmargin=2em,
   nosep,
 ]
-  \item[Ontology already inconsistent]  The ontology is inconsistent before considering the axiom under test.  The reasoner cannot meaningfully respond to queries, so no claims can be made about the axiom.
+  \item[Ontology already inconsistent]  The ontology is inconsistent before considering the axiom under test.  That is, it contains a contradiction.  The reasoner cannot meaningfully respond to queries, so no claims can be made about the axiom.
   \item[Ontology already incoherent]  The ontology is incoherent before considering the axiom.  That is, one or more of its classes are unsatisfiable.  This confounds certain methods which will be used to evaluate tests.
   \item[Missing entity in axiom]  The axiom contains one or more named classes or properties which are not declared in the ontology.  This result is probably caused by a mistake in the test declaration, so it is distinguished from the results below.
   \item[Axiom causes inconsistency]  If the axiom were added to the ontology it would cause it to become inconsistent.
