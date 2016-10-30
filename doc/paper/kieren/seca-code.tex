@@ -1,0 +1,78 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Code for reasoner methods}
+\label{app:code}
+
+\newlength{\currentparindent}
+\setlength{\currentparindent}{\parindent}
+\noindent
+\begin{minipage}[t]{\dimexpr.5\textwidth-.5\columnsep}
+\setlength{\parindent}{\currentparindent}
+
+Here we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code is in Java and uses the OWL API version 5.0.  The following imports and declarations apply as boilerplate for all snippets.
+
+\end{minipage}
+
+\bigskip
+
+\noindent
+\begin{verbatim}
+import java.util.Stream;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+OWLReasoner reasoner;
+OWLClassExpression C;
+OWLNamedIndividual a;
+\end{verbatim}
+
+\bigskip
+
+\makeatletter
+\newcolumntype{V}[1]{>{\topsep=0pt\@minipagetrue}p{#1}<{\vspace{-\baselineskip}}}
+\makeatother
+\noindent
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{5cm}V{11.9cm}} \hline
+Method call & Code \\ \hline
+
+$\textproc{isSatisfiable}(C)$ &
+\begin{verbatim}
+reasoner.isSatisfiable(C)
+\end{verbatim}
+\\
+
+$\textproc{getSubClasses}(C)$ &
+\begin{verbatim}
+Stream.concat(
+  reasoner.getSubClasses(C).entities(),
+  reasoner.getEquivalentClasses(C).entities()
+)
+\end{verbatim}
+\\
+
+$\textproc{getInstances}(C)$ &
+\begin{verbatim}
+reasoner.getInstances(C).entities()
+\end{verbatim}
+\\
+
+$\textproc{getSameIndividuals}(a)$ &
+\begin{verbatim}
+reasoner.getSameIndividuals(a).entities()
+\end{verbatim}
+\\
+
+$\textproc{getDifferentIndividuals}(a)$ &
+\begin{verbatim}
+reasoner.getDifferentIndividuals(a).entities()
+\end{verbatim}
+\\
+
+\hline
+\end{tabular}
+
+\end{document}

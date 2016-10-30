@@ -28,6 +28,8 @@ We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion 
 
 We also exclude $\mathtt{HasKey}$ because \todo[it's a horrible horrible mistake] \todo[cite].  We do not provide an algorithm to test it, and further, we assume that the ontology does not contain any $\mathtt{HasKey}$ axioms.
 
+We use the variables $C$, $D$ for class expressions; $N$ for a named class; $a$, $b$ for individuals; and $R$, $S$ for object properties.
+
 \subsection{Class axioms}
 \label{sec:algorithms:class}
 
@@ -51,8 +53,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
         \State \Return inconsistent
         \label{alg:testSubClassOf:returnInconsistent}
       \ElsIf{$\lnot \Call{isSatisfiable}{C \sqcap D}$ \\
-          \algindent{3} ${}\land (\Call{getEquivalentClasses}{C}$ \\
-          \algindent{3} $\phantom{{}\land (} \union \Call{getSubClasses}{C}) \ne \emptyset$}
+          \algindent{3} ${} \land \Call{getSubClasses}{C} \ne \emptyset$}
         \State \Return incoherent
         \label{alg:testSubClassOf:returnIncoherent}
       \ElsIf{\Call{isSatisfiable}{$C \sqcap \neg D$}}
@@ -75,20 +76,15 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{lemma}
 \begin{proof}
   The algorithm can only return entailed at line \ref{alg:testSubClassOf:returnEntailed}, so the three if-conditions must all be false.  So
-  \begin{equation}
+  \begin{multline}
     \label{eqn:testSubClassOfEntailed}
-    \begin{aligned}[b]
-      & \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-      {}\land{}& \begin{aligned}[t]
-        (& \textproc{isSatisfiable}(C \sqcap D) \\
-        & \lor \begin{aligned}[t]
-          (\textproc{getEquivalentClasses}(C)& \\
-          {} \union \textproc{getSubClasses}(C)&) = \emptyset)
-        \end{aligned}
-      \end{aligned} \\
-      {}\land{}& \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
-    \end{aligned}
-  \end{equation}
+    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
+    {} \land \begin{aligned}[t]
+      & (\textproc{isSatisfiable}(C \sqcap D) \\
+      & \lor \textproc{getSubClasses}(C) = \emptyset)
+    \end{aligned} \\
+    {} \land \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
+  \end{multline}
   \todo[three separate equations?]
 
   %   Now suppose $O \nsementails C \sqsubseteq D$.  Since we have the precondition that $O$ is consistent and coherent, it is possible to introduce a new individual $a : C \sqcap \neg D$ \todo[is this valid?].  This means that $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfEntailed}.  Therefore the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
@@ -192,17 +188,12 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{lemma}
 \begin{proof}
   The algorithm can only return incoherent at line \ref{alg:testSubClassOf:returnIncoherent}, so the first if-condition must be false and the second true.  So
-  \begin{equation*}
-    \label{eqn:testSubClassOfIncoherent}
-    \begin{aligned}[b]
-      & \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-      {}\land{}& \neg \textproc{isSatisfiable}(C \sqcap D) \\
-      {}\land{}& \begin{aligned}[t]
-        (\textproc{getEquivalentClasses}(C)& \\
-        {} \union \textproc{getSubClasses}(C)&) \ne \emptyset
-      \end{aligned}
-    \end{aligned}
-  \end{equation*}
+  \begin{multline*}
+    % \label{eqn:testSubClassOfIncoherent}
+    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
+    {} \land \neg \textproc{isSatisfiable}(C \sqcap D) \\
+    {} \land \textproc{getSubClasses}(C) \ne \emptyset
+  \end{multline*}
 
   Under $O \union (C \sqsubseteq D)$, the middle term of this equation means
   \begin{align*}
@@ -210,9 +201,9 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
     \implies{}& C \sqsubseteq \bot
   \end{align*}
 
-  From the last term, there exists some named class $E \in \signature_C(O)$ such that $E \sqsubseteq C$.  Since $C$ is unsatisfiable, so is $E$, and therefore
+  From the last term, there exists some named class $N \in \signature_C(O)$ such that $N \sqsubseteq C$.  Since $C$ is unsatisfiable, so is $N$, and therefore
   \begin{align*}
-    & O \union (C \sqsubseteq D) \sementails E \sqsubseteq \bot \\
+    & O \union (C \sqsubseteq D) \sementails N \sqsubseteq \bot \\
     \implies{}& \test_O(C \sqsubseteq D) = \mathrm{incoherent}
     \qed
   \end{align*}
@@ -228,25 +219,22 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 
   If it returns absent or entailed, the first two if-conditions must be false.
   % By the contrapositive of lemma \ref{lem:testSubClassOfInconsistentComplete}, the first must condition must necessarily be false, so it remains that
-  \begin{align*}
-    & \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {}\land{}& \begin{aligned}[t]
-      (& \textproc{isSatisfiable}(C \sqcap D) \\
-      & \lor \begin{aligned}[t]
-        (\textproc{getEquivalentClasses}(C)& \\
-        {} \union \textproc{getSubClasses}(C)&) = \emptyset)
-      \end{aligned}
+  \begin{multline*}
+    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
+    {} \land \begin{aligned}[t]
+      & (\textproc{isSatisfiable}(C \sqcap D) \\
+      & \lor \textproc{getSubClasses}(C) = \emptyset)
     \end{aligned}
-  \end{align*}
+  \end{multline*}
   From the second term we have two cases: first, $C \sqcap D$ is satisfiable.  Since $O$ is coherent and $C \sqcap \neg D$ has no instances, there is an interpretation $I \synentails O$ such that, for any class expression $E$,
   \[ E^\I = \emptyset \iff E \sqsubseteq \neg (C \sqcap \neg D) \]
 
 
   Under $O \union (C \sqsubseteq D)$, using the same interpretation
 
-  Suppose $O \union (C \sqsubseteq D)$ is incoherent, so there is some named class $E \in \signature_C(O)$ which is unsatisfiable.  So for every interpretation $\I \synentails O \union (C \sqsubseteq D)$,
+  Suppose $O \union (C \sqsubseteq D)$ is incoherent, so there is some named class $N \in \signature_C(O)$ which is unsatisfiable.  So for every interpretation $\I \synentails O \union (C \sqsubseteq D)$,
   \begin{align*}
-    E^\I = \emptyset
+    N^\I = \emptyset
   \end{align*}
 
   \todo Show $\I \synentails O$
@@ -333,8 +321,7 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
         \For{$j \gets i+1$ \To $n$}
           \If{$\Call{getInstances}{C_i \sqcap C_j} \ne \emptyset$}
             \State $r' \gets$ inconsistent
-          \ElsIf{$(\Call{getEquivalentClasses}{C_i \sqcap C_j} \union {}$ \\
-              \algindent{5} $\Call{getSubClasses}{C_i \sqcap C_j}) \ne \emptyset$}
+          \ElsIf{$\Call{getSubClasses}{C_i \sqcap C_j} \ne \emptyset$}
             \State $r' \gets$ incoherent
           \ElsIf{\Call{isSatisfiable}{$C_i \sqcap C_j$}}
             \State $r' \gets$ absent
@@ -350,16 +337,16 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
 \end{algorithm}
 
 \begin{algorithm}[H]
-  \caption{test disjoint union $C \equiv D_1 \sqcup \ldots \sqcup D_n$ with $D_1, \,\ldots, D_n$ pairwise disjoint}
+  \caption{test disjoint union $N \equiv C_1 \sqcup \ldots \sqcup C_n$ with $C_1, \,\ldots, C_n$ pairwise disjoint}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
-      $C$ class \\
-      $D_1$, \dots, $D_n$ class expressions
+      $N$ class \\
+      $C_1$, \dots, $C_n$ class expressions
     }
-    \Function{testDisjointUnion}{$C$, $D_1$, \dots, $D_n$}
-      \State $r_1 \gets \Call{testEquivalentClasses}{C, D_1 \sqcup \ldots \sqcup D_n}$
-      \State $r_2 \gets \Call{testDisjointClasses}{D_1, \,\ldots, D_n}$
+    \Function{testDisjointUnion}{$N$, $C_1$, \dots, $C_n$}
+      \State $r_1 \gets \Call{testEquivalentClasses}{N, C_1 \sqcup \ldots \sqcup C_n}$
+      \State $r_2 \gets \Call{testDisjointClasses}{C_1, \,\ldots, C_n}$
       \State \Return $\max(r_1, r_2)$
     \EndFunction
   \end{algorithmic}
@@ -393,8 +380,8 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
         \State \Return entailed
       \Else
         \For{$i \gets 1$ \To $n$}
-          \State $D \gets \Call{getDifferentIndividuals}{a_i}$
-          \If{$\{a_1, \ldots, a_n\} \intersect D \ne \emptyset$}
+          \State $\delta \gets \Call{getDifferentIndividuals}{a_i}$
+          \If{$\{a_1, \ldots, a_n\} \intersect \delta \ne \emptyset$}
             \State \Return inconsistent
           \EndIf
         \EndFor
