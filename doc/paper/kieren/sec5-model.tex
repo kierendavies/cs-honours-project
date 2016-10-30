@@ -39,20 +39,21 @@ Similarly, we do not directly address missing entities, as this can be a simple 
 This leads to the following formalisation.
 
 \begin{definition}
-  Given an ontology $O$, the result of testing an axiom $A$ against it is
+  Given an ontology $O$ which is consistent and coherent, and an axiom $A$ such that $\signature(A) \subseteq \signature(O)$, the result of testing $A$ against $O$ is
   \[
     \test_O(A) =
     \begin{cases}
+      \mathrm{entailed} &
+        \text{if } O \sementails A \\
       \mathrm{inconsistent} &
         \text{if } O \union A \sementails \bot \\
       \mathrm{incoherent} &
         \text{if }
         \! \begin{aligned}[t]
-          & (\exists C \in \signature_C(O)) \\
-          & \quad O \union A \sementails C \sqsubseteq \bot
+          & O \union A \nsementails \bot \\
+          & \land (\exists C \in \signature_C(O)) \\
+          & \phantom{{}\land (} O \union A \sementails C \sqsubseteq \bot
         \end{aligned} \\
-      \mathrm{entailed} &
-        \text{if } O \sementails A \\
       \mathrm{absent} &
         \text {otherwise} \\
     \end{cases}

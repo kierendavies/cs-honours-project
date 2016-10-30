@@ -10,16 +10,16 @@ We have found only three existing tools which implement ontology tests.
 
 TDDonto \cite{Lawrynowicz:TDDontoTool} is a Prot\'eg\'e plugin which allows test axioms to be specified in Prot\'eg\'e's expression syntax.
 Several implementation strategies were tried, and in evaluation it was found that making direct reasoner queries with OWL API is faster than making SPARQL queries with OWL BGP or introducing ``mock'' individual assertions.
-The cause of these performance differences was not established, although it is likely the mock individual strategy was constrained by the need to reclassify multiple times in every test.
+The cause of these performance differences was not established, although it is likely the mock individual strategy was constrained by the need to reclassify multiple times in every test.  It does not support testing data properties.
 
 Tawny-OWL \cite{Warrender:HowWhatWhyTest} is an ontology development framework implemented in Clojure.
 It provides predicate functions which query the reasoner which can be used in conjunction with any test framework, such as the built-in ``clojure.test''.
 It has the disadvantage of being totally seperated from the usual ontology development tools and requiring tests to be written in Clojure, which is not a widely known and used.
-It does not support querying object properties.
+It does not support querying object or data properties.
 
 \textsc{Scone} \cite{Scone:Bitbucket} is a tool which evaluates tests written in constrained natural language in a procedural style.
 It encourages the pattern of creating mock individuals and making assertions and inferences on them.
-It is also separated from the usual ontology development tools.
+It is also separated from the usual ontology development tools.  It does not support testing object or data properties.
 
 None of these three support the full range of axioms permitted in OWL 2.
 Most notably, in none of them is it possible to directly test axioms of the form $C \sqsubseteq D$ where $C$ is not a named class, such as $\forall R.E \sqsubseteq D$.
