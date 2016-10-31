@@ -6,11 +6,15 @@
 %TC:macrocount \todo [todo]
 %TC:envir todos [] ignore
 
-\documentclass[draft]{sig-alternate}
+\documentclass[a4paper,draft]{sig-alternate}
 \usepackage{subfiles}
 \makeatletter
 \def\@copyrightspace{\relax}
 \makeatother
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
 
 \usepackage[english]{babel}
 \usepackage[english]{isodate}
@@ -79,9 +83,6 @@
 
 % This has to go in the preamble to not get counted by texcount
 \numberofauthors{1}
-
-\begin{document}
-
 \title{Towards Test-Driven Development of Ontologies: \\
   An Analysis of Testing Algorithms}
 \author{
@@ -90,7 +91,11 @@
    \affaddr{University of Cape Town}\\
    \email{kieren@kdavi.es}
 }
-% \date{5 May 2016}
+
+\begin{document}
+
+\subfile{cover}
+
 \maketitle
 
 \subfile{sec0-abstract}
