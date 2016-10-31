@@ -41,7 +41,7 @@ We use the variables $C$, $D$ for class expressions; $N$ for a named class; $a$,
 %   \item DisjointUnion
 % \end{itemize}
 
-In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes.  The only exception to this is $\mathtt{DisjointUnion}(C \; D_1 \; \ldots \; D_n)$ in which $C$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
+In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes.  The only exception to this is $\mathtt{DisjointUnion}(N \; C_1 \; \ldots \; C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
 
 \begin{algorithm}[H]
   \caption{test $C \sqsubseteq D$}
@@ -52,8 +52,9 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
       \If{$\Call{getInstances}{C \sqcap \neg D} \ne \emptyset$}
         \State \Return inconsistent
         \label{alg:testSubClassOf:returnInconsistent}
-      \ElsIf{$\lnot \Call{isSatisfiable}{C \sqcap D}$ \\
-          \algindent{3} ${} \land \Call{getSubClasses}{C} \ne \emptyset$}
+      % \ElsIf{$\lnot \Call{isSatisfiable}{C \sqcap D}$ \\
+      %     \algindent{3} ${} \land \Call{getSubClasses}{C} \ne \emptyset$}
+      \ElsIf{$\Call{getSubClasses}{C \sqcap \neg D} \ne \emptyset$}
         \State \Return incoherent
         \label{alg:testSubClassOf:returnIncoherent}
       \ElsIf{\Call{isSatisfiable}{$C \sqcap \neg D$}}
@@ -67,41 +68,49 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{algorithm}
 
 \begin{lemma}
-  \label{lem:testSubClassOfEntailedSound}
+  \label{lem:subclassEntailsUnsat}
+  For any set of axioms $O$ and class expressions $C$ and $D$,
+  \[ O \:\sementails\: C \sqsubseteq D \;\iff\; O \:\sementails\: C \sqcap \neg D \sqsubseteq \bot \]
+\end{lemma}
+\begin{proof}
+  For every interpretation $\I \synentails O$,
+  \begin{align*}
+    & O \:\sementails\: C \sqsubseteq D \\
+    \iff{}& \I \:\synentails\: C \sqsubseteq D \\
+    \iff{}& C^\I \subseteq D^\I \\
+    \iff{}& (\forall x \in \Delta^\I) \; (x \in C^\I \!\!\implies\!\! x \in D^\I) \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; x \notin C^\I \lor x \in D^\I \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; \neg (x \in C^\I \land x \notin D^\I) \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; \neg (x \in C^\I \land x \in \Delta^\I \setminus D^\I) \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; x \notin C^\I \intersect (\Delta^\I \setminus D^\I) \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; x \notin C^\I \intersect (\neg D)^\I \\
+    \iff{}& (\forall x \in \Delta^\I) \;\; x \notin (C \sqcap \neg D)^\I \\
+    \iff{}& (C \sqcap \neg D)^\I = \emptyset = \bot^\I \\
+    \iff{}& \I \:\synentails\: C \sqcap \neg D \sqsubseteq \bot \\
+    \iff{}& O \:\sementails\: C \sqcap \neg D \sqsubseteq \bot
+  \end{align*}
+  \todo[is this too laborious?]
+  The first and last bi-implications hold because we consider every possible interpretation.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:testSubClassOfEntailedSound}
   \textproc{testSubClassOf} is sound with respect to entailment.  That is,
   \begin{multline*}
     \textproc{testSubClassOf}(C, D) = \mathrm{entailed} \implies \\
     \test_O(C \sqsubseteq D) = \mathrm{entailed}
   \end{multline*}
-\end{lemma}
+\end{proposition}
 \begin{proof}
   The algorithm can only return entailed at line \ref{alg:testSubClassOf:returnEntailed}, so the three if-conditions must all be false.  So
   \begin{multline}
     \label{eqn:testSubClassOfEntailed}
     \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {} \land \begin{aligned}[t]
-      & (\textproc{isSatisfiable}(C \sqcap D) \\
-      & \lor \textproc{getSubClasses}(C) = \emptyset)
-    \end{aligned} \\
+    {} \land \textproc{getSubClasses}(C \sqcap \neg D) = \emptyset \\
     {} \land \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
   \end{multline}
-  \todo[three separate equations?]
 
-  %   Now suppose $O \nsementails C \sqsubseteq D$.  Since we have the precondition that $O$ is consistent and coherent, it is possible to introduce a new individual $a : C \sqcap \neg D$ \todo[is this valid?].  This means that $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfEntailed}.  Therefore the supposition is false, and $O \sementails C \sqsubseteq D$, and by its definition $\test_O(C \sqsubseteq D) = \mathrm{entailed}$.
-
-  Now suppose $O \nsementails C \sqsubseteq D$.  That is, there exists an interpretation $\I$ such that
-  \begin{align*}
-    & \I \nsynentails C \sqsubseteq D \\
-    \iff{}& C^\I \nsubseteq D^\I \\
-    \iff{}& (\exists x \in C^\I) \; x \notin D^\I \\
-    \iff{}& (\exists x \in \Delta^\I) \; x \in C^\I \land x \notin D^\I \\
-    \iff{}& (\exists x \in \Delta^\I) \; x \in C^\I \intersect (\Delta^\I \setminus D^\I) \\
-    \iff{}& (\exists x \in \Delta^\I) \; x \in C^\I \intersect (\neg D)^\I \\
-    \iff{}& (\exists x \in \Delta^\I) \; x \in (C \sqcap \neg D)^\I \\
-    \iff{}& (C \sqcap \neg D)^\I \ne \emptyset \\
-    \iff{}& \I \nsynentails C \sqcap \neg D \sqsubseteq \bot
-  \end{align*}
-  Therefore $O \nsementails C \sqcap \neg D \sqsubseteq \bot$.  In other words, $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfEntailed}.  Hence the supposition is false, so
+  Now suppose $O \nsementails C \sqsubseteq D$.  By lemma \ref{lem:subclassEntailsUnsat}, $O \nsementails C \sqcap \neg D \sqsubseteq \bot$.  In other words, $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfEntailed}.  Hence the supposition is false, so
   \begin{align*}
     & O \sementails C \sqsubseteq D \\
     \iff{}& \test_O(C \sqsubseteq D) = \mathrm{entailed}
@@ -109,30 +118,28 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \end{align*}
 \end{proof}
 
-\begin{lemma}
-  \label{lem:testSubClassOfEntailedComplete}
+\begin{proposition}
+  \label{prop:testSubClassOfEntailedComplete}
   \textproc{testSubClassOf} is complete with respect to entailment.  That is,
   \begin{multline*}
     \test_O(C \sqsubseteq D) = \mathrm{entailed} \implies \\
     \textproc{testSubClassOf}(C, D) = \mathrm{entailed}
   \end{multline*}
-\end{lemma}
+\end{proposition}
 \begin{proof}
-  From $\test_O(C \sqsubseteq D) = \mathrm{entailed}$ we have that $O \sementails C \sqsubseteq D$, so
-  \[ C \sqcap \neg D \;\sqsubseteq\; D \sqcap \neg D \;\sqsubseteq\; \bot \]
-  This means that $C \sqcap \neg D$ is not satisfiable, and from the consistency precondition it has no instances, so the first and last terms of equation \ref{eqn:testSubClassOfEntailed} are true.
+  As indicated in the previous proof, the algorithm returns entailed if equation \ref{eqn:testSubClassOfEntailed} holds.
 
-  If $C \sqcap D$ is satisfiable, then the middle term of equation \ref{eqn:testSubClassOfEntailed} is true without needing to evaluate its second $\lor$-condition.  If not, we note that
-  \[ C \sqsubseteq D \implies C \sqcap D \equiv C\]
-  By the coherence precondition, since $C$ is not satisfiable it has no named subclasses or equivalent classes, so the second $\lor$-condition is true.  Therefore the middle term is true in all cases.
+  From $\test_O(C \sqsubseteq D) = \mathrm{entailed}$ we have that $O \sementails C \sqsubseteq D$, and by lemma \ref{lem:subclassEntailsUnsat}, $O \sementails C \sqcap \neg D \sqsubseteq \bot$ so the last term of the equation is true.
 
-  We have shown that all three terms of equation \ref{eqn:testSubClassOfEntailed} are true, and so the algorithm returns entailed.
+  Since $C \sqcap \neg D$ is unsatisfiable, by the coherence precondition it has no named subclasses, and by the consistency precondition it has no instances.  Therefore the first and second terms of the equation are also true.
+
+  Therefore equation \ref{eqn:testSubClassOfEntailed} holds, and so the algorithm returns entailed.
 \end{proof}
 
-\begin{lemma}
-  \label{lem:testSubClassOfInconsistentSound}
+\begin{proposition}
+  \label{prop:testSubClassOfInconsistentSound}
   \textproc{testSubClassOf} is sound with respect to inconsistency.
-\end{lemma}
+\end{proposition}
 \begin{proof}
   The algorithm can only return inconsistent at line \ref{alg:testSubClassOf:returnInconsistent}, so the first if-condition holds, so
   \[ \textproc{getInstances}(C \sqcap \neg D) \ne \emptyset \]
@@ -150,15 +157,11 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \end{align*}
 \end{proof}
 
-\begin{lemma}
-  \label{lem:testSubClassOfInconsistentComplete}
+\begin{proposition}
+  \label{prop:testSubClassOfInconsistentComplete}
   \textproc{testSubClassOf} is complete with respect to inconsistency.
-\end{lemma}
+\end{proposition}
 \begin{proof}
-  % . \\
-  % RTP: $O \union (C \sqsubseteq D)$ inconsistent $\implies$ $C \sqcap \neg D$ has instances \\
-  % or: $C \sqcap \neg D$ no instances $\implies$ consistent
-
   We have that $O$ is consistent, so it has an interpretation, but $O \union (C \sqsubseteq D)$ is inconsistent, so it has no interpretations.
 
   Suppose the algorithm does not return inconsistent.  Then it must be that
@@ -182,83 +185,55 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   This contradicts the initial condition that $O \union (C \sqsubseteq D)$ is inconsistent, so the supposition must be false, and therefore the algorithm returns inconsistent.
 \end{proof}
 
-\begin{lemma}
-  \label{lem:testSubClassOfIncoherentSound}
+\begin{proposition}
+  \label{prop:testSubClassOfIncoherentSound}
   \textproc{testSubClassOf} is sound with respect to incoherence.
-\end{lemma}
+\end{proposition}
 \begin{proof}
   The algorithm can only return incoherent at line \ref{alg:testSubClassOf:returnIncoherent}, so the first if-condition must be false and the second true.  So
   \begin{multline*}
-    % \label{eqn:testSubClassOfIncoherent}
     \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {} \land \neg \textproc{isSatisfiable}(C \sqcap D) \\
-    {} \land \textproc{getSubClasses}(C) \ne \emptyset
+    {} \land \textproc{getSubClasses}(C \sqcap \neg D) \ne \emptyset
   \end{multline*}
-
-  Under $O \union (C \sqsubseteq D)$, the middle term of this equation means
+  Therefore, by the second term, there exists some named class $N \in \signature_C(O)$ such that
+  \[ N \sqsubseteq C \sqcap \neg D \]
+  By the contrapositive of proposition \ref{prop:testSubClassOfInconsistentComplete}, $O \union (C \sqsubseteq D)$ is consistent, so by lemma \ref{lem:subclassEntailsUnsat},
   \begin{align*}
-    & C \sqcap D \sqsubseteq \bot \\
-    \implies{}& C \sqsubseteq \bot
-  \end{align*}
-
-  From the last term, there exists some named class $N \in \signature_C(O)$ such that $N \sqsubseteq C$.  Since $C$ is unsatisfiable, so is $N$, and therefore
-  \begin{align*}
-    & O \union (C \sqsubseteq D) \sementails N \sqsubseteq \bot \\
+    & O \union (C \sqsubseteq D) \:\sementails\: C \sqcap \neg D \sqsubseteq \bot \\
+    \implies{}& O \union (C \sqsubseteq D) \:\sementails\: N \sqsubseteq \bot \\
     \implies{}& \test_O(C \sqsubseteq D) = \mathrm{incoherent}
     \qed
   \end{align*}
 \end{proof}
 
-\begin{lemma}
-  \label{lem:testSubClassOfIncoherentComplete}
+\begin{proposition}
+  \label{prop:testSubClassOfIncoherentComplete}
   \textproc{testSubClassOf} is complete with respect to incoherence.
-\end{lemma}
+\end{proposition}
 \begin{proof}
-  Suppose the algorithm does not return incoherent.  If it returns inconsistent, then by lemma \ref{lem:testSubClassOfInconsistentSound},
-  \[ \test_O(C \sqsubseteq D) = \mathrm{inconsistent} \]
+  Suppose the algorithm does not return incoherent.  So either
+  \[ \textproc{getInstances}(C \sqcap \neg D) \ne \emptyset \]
+  in which case proposition \ref{prop:testSubClassOfInconsistentComplete} shows that $O \union (C \sqsubseteq D)$ is inconsistent, or
+  \[ \textproc{getSubClasses}(C \sqcap \neg D) = \emptyset \]
+  In this case, $O$ is coherent by precondition every named class, so there exists an interpretation $\I \synentails O$ where, for any class expression $E$,
+  \[ E^\I \ne \emptyset \iff (\exists N \in \signature_C(O)) \; N \sqsubseteq E \]
+  In other words, only named classes and their superclasses have non-empty interpretations.  So in particular
+  \[ (C \sqcap \neg D)^\I = \emptyset \]
 
-  If it returns absent or entailed, the first two if-conditions must be false.
-  % By the contrapositive of lemma \ref{lem:testSubClassOfInconsistentComplete}, the first must condition must necessarily be false, so it remains that
-  \begin{multline*}
-    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {} \land \begin{aligned}[t]
-      & (\textproc{isSatisfiable}(C \sqcap D) \\
-      & \lor \textproc{getSubClasses}(C) = \emptyset)
-    \end{aligned}
-  \end{multline*}
-  From the second term we have two cases: first, $C \sqcap D$ is satisfiable.  Since $O$ is coherent and $C \sqcap \neg D$ has no instances, there is an interpretation $I \synentails O$ such that, for any class expression $E$,
-  \[ E^\I = \emptyset \iff E \sqsubseteq \neg (C \sqcap \neg D) \]
-
-
-  Under $O \union (C \sqsubseteq D)$, using the same interpretation
-
-  Suppose $O \union (C \sqsubseteq D)$ is incoherent, so there is some named class $N \in \signature_C(O)$ which is unsatisfiable.  So for every interpretation $\I \synentails O \union (C \sqsubseteq D)$,
+  This interpretation also models $O \union (C \sqsubseteq D)$, which has exactly the same named classes, because
   \begin{align*}
-    N^\I = \emptyset
+    & \begin{aligned}
+      C^\I &= (C \sqcap (D \sqcup \neg D))^\I \\
+      &= ((C \sqcap D) \sqcup (C \sqcap \neg D))^\I \\
+      &= (C \sqcap D)^\I \union \emptyset
+    \end{aligned} \\
+    \implies{}& I \:\synentails\: C \sqsubseteq C \sqcap D \\
+    \implies{}& I \:\synentails\: C \sqsubseteq D
   \end{align*}
+  Therefore $O \union (C \sqsubseteq D)$ is consistent.
 
-  \todo Show $\I \synentails O$
-
-  then there exists an interpretation $\I \synentails O$ such that
-  \[ (C \sqcap D)^\I \ne \emptyset \]
-  Under $O \union (C \sqsubseteq D)$,
-  \begin{align*}
-    C \sqsubseteq D \implies{}& C \sqcap D \equiv C \\
-    \implies{}& (C \sqcap D)^\I = C^\I \ne \emptyset
-  \end{align*}
-
-  % In this second case the algorithm can return only absent or entailed, so from the contrapositive of lemma \ref{lem:testSubClassOfInconsistentComplete} we have that
-  % \begin{align*}
-  %   & \test_O(C \sqsubseteq D) \ne \mathrm{inconsistent} \\
-  %   \implies{}& O \union (C \sqsubseteq D) \nsementails \bot
-  % \end{align*}
-
-
-
-  \dots \todo
-
-  In all of the above cases,
-  \[ \test_O(C \sqsubseteq D) \ne \mathrm{incoherent} \]
+  In both of these cases,
+  \[ \test_O(C \sqsubset D) \ne \mathrm{inconsistent} \]
   Therefore, by contrapositive, if $\test_O(C \sqsubseteq D) = \mathrm{incoherent}$ then the algorithm returns incoherent.
 \end{proof}
 
@@ -270,8 +245,6 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 
   Termination is trivial, since the algorithm contains no looping or recursion.
 \end{proof}
-
-\todo[try and get structures more consistent]
 
 \begin{algorithm}[H]
   \caption{test $C_1 \equiv \ldots \equiv C_n$}
@@ -294,10 +267,10 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{algorithm}
 
 \begin{theorem}
-  \textproc{testEquivalentClasses} is correct and terminating.
+  \textproc{testEquivalentClasses} is correct and it is terminating.
 \end{theorem}
 \begin{proof}
-  \todo[don't need pairwise---assume worse result from $(i, j)$, show it appears in $(1, i)$ or $(1, j)$]
+  \todo don't need pairwise: assume worse result from $(i, j)$, show it appears in $(1, i)$ or $(1, j)$
 
   The for-loop iterates exactly $n - 1$ times, which is finite because the number of arguments $n$ is finite, and each iteration terminates because \textproc{testSubClassOf} was shown to terminate.  Therefore the entire algorithm terminates.
 \end{proof}
@@ -308,7 +281,7 @@ From OWL 2 spec,
   &\iff C \sqsubseteq \neg D
   % &\iff C \sqcap D \sqsubseteq \bot
 \end{align*}
-But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent when e.g.\ $D \equiv C_1 \sqcap C_2$ with no instances, so use stronger form $C \sqcap D \sqsubseteq \bot$ \todo[write properly].
+But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent when e.g.\ $D \equiv C_1 \sqcap C_2$ with no instances, so use stronger form $C \sqcap D \sqsubseteq \bot$ \todo[write properly].  \todo[check this with new version]
 
 \begin{algorithm}[H]
   \caption{test $C_1, \,\ldots, C_n$ pairwise disjoint}
