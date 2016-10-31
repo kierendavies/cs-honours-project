@@ -24,9 +24,9 @@ We now present the algorithms and analysis, in the context of an ontology $O$.  
 
 Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.
 
-We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].  We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
-
-We also exclude $\mathtt{HasKey}$ because \todo[it's a horrible horrible mistake] \todo[cite].  We do not provide an algorithm to test it, and further, we assume that the ontology does not contain any $\mathtt{HasKey}$ axioms.
+We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].
+We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
+We also do not address $\mathtt{HasKey}$ axioms because they can be regarded as a mistaken addition to OWL 2 \cite{Keet:Personal}.
 
 We use the variables $C$, $D$ for class expressions; $N$ for a named class; $a$, $b$ for individuals; and $R$, $S$ for object properties.
 
@@ -264,6 +264,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
       \For{$i \gets 1$ \To $n$}
         \For{$j \gets 1$ \To $n$}
           \State $r' \gets \Call{testSubClassOf}{C_i, C_j}$
+          \label{alg:testEquivalentClasses:inner}
           \State $r \gets \max(r, r')$
         \EndFor
       \EndFor
@@ -273,7 +274,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{algorithm}
 
 \begin{theorem}
-  \textproc{testEquivalentClasses} is correct and it is terminating.
+  \textproc{testEquivalentClasses} is correct and is terminating.
 \end{theorem}
 \begin{proof}
   By definition, $C_i \equiv C_j$ if and only if $C_i \sqsubseteq C_j$ and $C_j \sqsubseteq C_i$.  It is immediately clear from this that the algorithm is sound with respect to inconsistency and incoherence, and sound and complete with respect to entailment.  It remains to be shown that it is complete with respect to inconsistency and incoherence.
@@ -299,7 +300,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \[ \I \synentails C_1 \equiv \ldots \equiv C_n \]
   So $\I$ also models $O \union (C_1 \equiv \ldots \equiv C_n)$ which is therefore coherent.  Therefore, by contrapositive, the algorithm is complete with respect to incoherence.
 
-  The inner-most block is evaluated less than $n^2$ times, which is finite because the number of arguments $n$ is finite, and each evaluation terminates because \textproc{testSubClassOf} was shown to terminate.  Therefore the entire algorithm terminates.
+  The inner-most block at line \ref{alg:testEquivalentClasses:inner} runs less than $n^2$ times, which is finite because the number of arguments $n$ is finite, and each run terminates because \textproc{testSubClassOf} was shown to terminate.  Therefore the entire algorithm terminates.
 \end{proof}
 
 It is not sufficient to implement \textproc{testEquivalentClasses} by simply testing each of $C_2$ to $C_n$ for equivalence to $C_1$, as shown by a counterexample.  Let
@@ -320,15 +321,8 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
       \State $r \gets$ entailed
       \For{$i \gets 1$ \To $n-1$}
         \For{$j \gets i+1$ \To $n$}
-          \If{$\Call{getInstances}{C_i \sqcap C_j} \ne \emptyset$}
-            \State $r' \gets$ inconsistent
-          \ElsIf{$\Call{getSubClasses}{C_i \sqcap C_j} \ne \emptyset$}
-            \State $r' \gets$ incoherent
-          \ElsIf{\Call{isSatisfiable}{$C_i \sqcap C_j$}}
-            \State $r' \gets$ absent
-          \Else
-            \State $r' \gets$ entailed
-          \EndIf
+          \State $r' \gets \Call{testSubClassOf}{C_i, \neg C_j}$
+          \label{alg:testDisjointClasses:inner}
           \State $r \gets \max(r, r')$
         \EndFor
       \EndFor
@@ -337,13 +331,74 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
   \end{algorithmic}
 \end{algorithm}
 
-From OWL 2 spec,
-\begin{align*}
-  \mathtt{DisjointClasses}(C, D)
-  &\iff C \sqsubseteq \neg D
-  % &\iff C \sqcap D \sqsubseteq \bot
-\end{align*}
-But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent when e.g.\ $D \equiv C_1 \sqcap C_2$ with no instances, so use stronger form $C \sqcap D \sqsubseteq \bot$ \todo[write properly].  \todo[check this with new version]
+% \begin{proposition}
+%   \label{prop:testDisjointClassesEntailedSound}
+%   \textproc{testDisjointClasses} is sound with respect to entailment.
+% \end{proposition}
+% \begin{proof}
+%   If the algorithm returns entailed, then for every $i, j \le n$ with $i < j$
+%   \[ \textproc{testSubClassOf}(C_i, \neg C_j) = \mathrm{entailed} \]
+%   Since all three if-conditions in \textproc{testSubClassOf} must be false, in particular the third, we have
+%   \[ \neg \textproc{isSatisfiable}(C_i \sqcap C_j) \]
+% \end{proof}
+%
+% \begin{proposition}
+%   \label{prop:testDisjointClassesEntailedComplete}
+%   \textproc{testDisjointClasses} is complete with respect to entailment.
+% \end{proposition}
+% \begin{proof}
+%   \todo
+% \end{proof}
+%
+% \begin{proposition}
+%   \label{prop:testDisjointClassesInconsistentSound}
+%   \textproc{testDisjointClasses} is sound with respect to inconsistency.
+% \end{proposition}
+% \begin{proof}
+%   \todo
+% \end{proof}
+%
+% \begin{proposition}
+%   \label{prop:testDisjointClassesInconsistentComplete}
+%   \textproc{testDisjointClasses} is complete with respect to inconsistency.
+% \end{proposition}
+% \begin{proof}
+%   \todo
+% \end{proof}
+%
+% \begin{proposition}
+%   \label{prop:testDisjointClassesIncoherentSound}
+%   \textproc{testDisjointClasses} is sound with respect to incoherence.
+% \end{proposition}
+% \begin{proof}
+%   \todo
+% \end{proof}
+%
+% \begin{proposition}
+%   \label{prop:testDisjointClassesIncoherentComplete}
+%   \textproc{testDisjointClasses} is complete with respect to incoherence.
+% \end{proposition}
+% \begin{proof}
+%   \todo
+% \end{proof}
+
+\begin{theorem}
+  \textproc{testDisjointClasses} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  The OWL 2 specification \cite{W3C:OWL2Syntax} defines
+  \[ \mathtt{DisjointClasses}(C_i, C_j) \iff C_i \sqsubseteq \neg C_j \]
+  With more than two parameters, $\mathtt{DisjointClasses}$ means that the class expressions are pairwise disjoint.
+
+  In the inner-most block at line \ref{alg:testDisjointClasses:inner}, $i$ and $j$ are clearly seen to take on all values $i, j \le n$ where $i < j$.
+  It is not necessary to also call $\textproc{testSubClassOf}(C_j, \neg C_i)$ because disjointness is symmetric.  In fact by substituting arguments into \textproc{testSubClassOf} we see that all class expressions passed to reasoner methods are
+  \[ C_i \sqcap \neg (\neg C_j) = C_i \sqcap C_j \]
+  and class intersection is commutative.  Therefore it is seen by the definition that \textproc{testDisjointClasses} is correct.  \todo[unconvincing]
+
+  The inner-most block runs strictly less than $n^2$ times, and it terminates, therefore the entire algorithm terminates.
+\end{proof}
+
+\todo[prove sound/complete cases rigorously?]
 
 \begin{algorithm}[H]
   \caption{test $\mathtt{DisjointUnion}(N, C_1, \ldots, C_n)$}
@@ -366,7 +421,7 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
   \textproc{testDisjointUnion} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  Correctness is clearly seen from the definition of $\mathtt{DisjointUnion}$.  Termination is trivial.
+  Correctness is clearly seen from the definition of $\mathtt{DisjointUnion}$, which states separately that $N \equiv C_1 \sqcup \ldots \sqcup C_n$ and $\mathtt{DisjointClasses}(C_1, \ldots, C_n)$.  Termination is trivial.
 \end{proof}
 
 \subsection{Assertions}
@@ -383,7 +438,9 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
 %   % \item NegativeDataPropertyAssertion
 % \end{itemize}
 
-\todo[no incoherent]
+We begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.
+
+Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now]
 
 \begin{algorithm}[H]
   \caption{test same individual}
@@ -418,7 +475,19 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
       $n \ge 2$
     }
     \Function{testDifferentIndividuals}{$a_1, \ldots, a_n$}
-      \State \todo
+      \For{$i \gets 1$ \To $n$}
+        \State $\gamma \gets \Call{getSameIndividuals}{a_i}$
+        \If{$(\{a_1, \ldots, a_n\} \setminus \{a_i\}) \intersect \gamma \ne \emptyset$}
+          \State \Return inconsistent
+        \EndIf
+      \EndFor
+      \For{$i \gets 1$ \To $n$}
+        \State $\delta \gets \Call{getDifferentIndividuals}{a_i}$
+        \If{$(\{a_1, \ldots, a_n\} \setminus \{a_i\}) \nsubseteq \delta$}
+          \State \Return absent
+        \EndIf
+      \EndFor
+      \State \Return entailed
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
@@ -432,7 +501,13 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
       $a$ individual
     }
     \Function{testClassAssertion}{$C, a$}
-      \State \todo
+      \If{$a \in \Call{getInstances}{C}$}
+        \State \Return entailed
+      \ElsIf{$a \in \Call{getInstances}{\neg C}$}
+        \State \Return inconsistent
+      \Else
+        \State \Return absent
+      \EndIf
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
@@ -446,7 +521,16 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
       $a$, $b$ individuals
     }
     \Function{testObjectPropertyAssertion}{$R, a, b$}
-      \State \todo
+      \If{$b \in \Call{getObjectPropertyValues}{a, R}$}
+        \State \Return entailed
+      \Else
+        \For{$N \in \Call{getTypes}{b}$}
+          \If{$a \in \Call{getInstances}{\neg \exists R . N}$}
+            \State \Return inconsistent
+          \EndIf
+        \EndFor
+        \State \Return absent
+      \EndIf
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
@@ -460,8 +544,15 @@ But using $\textproc{testSubClassOf}(C_i, \neg C_j)$ fails to report incoherent 
       $R$ object property expression \\
       $a$, $b$ individuals
     }
-    \Function{testNegObjectPropAssertion}{$R, a, b$}
-      \State \todo
+    \Function{testNegativeObjPropAssertion}{$R, a, b$}
+      \State $r \gets \Call{testObjectPropertyAssertion}{R, a, b}$
+      \If{$r = \mathrm{entailed}$}
+        \State \Return inconsistent
+      \ElsIf{$r = \mathrm{inconsistent}$}
+        \State \Return entailed
+      \Else
+        \State \Return absent
+      \EndIf
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
