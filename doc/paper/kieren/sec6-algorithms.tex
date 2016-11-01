@@ -6,19 +6,20 @@
 \section{Algorithms and analysis}
 \label{sec:algorithms}
 
-We now present the algorithms and analysis, in the context of an ontology $O$.  As justified in section \ref{sec:model}, we assume the following preconditions:
+We now present the algorithms and analysis, in the context of an ontology $O$.  We base the coverage on OWL 2, but due to constraints we only cover class axioms (TBox) and assertions (ABox).  This fully covers $\mathcal{ALC}$, which accounts for the majority of real use cases.
+
+As justified in section \ref{sec:model}, we assume the following preconditions:
 \begin{itemize}[nosep]
   \item The ontology under test $O$ is consistent and coherent.
   \item The axiom under test contains only entities which are declared in the ontology.
 \end{itemize}
 
-Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.
+Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.  We use the variables $C$, $D$ for class expressions; $N$ for a named class; $a$, $b$ for individuals; and $R$, $S$ for object properties.
 
-We address class axioms (TBox) in section \ref{sec:algorithms:class}, assertions (ABox) in section \ref{sec:algorithms:assert}, and object property axioms (RBox) in section \ref{sec:algorithms:objprop} \todo[TBC].
-We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
-We also do not address $\mathtt{HasKey}$ axioms because they can be regarded as a mistaken addition to OWL 2 \cite{Keet:Personal}.
-
-We use the variables $C$, $D$ for class expressions; $N$ for a named class; $a$, $b$ for individuals; and $R$, $S$ for object properties.
+We address class axioms in section \ref{sec:algorithms:class} and assertions in section \ref{sec:algorithms:assert},
+% and object property axioms (RBox) in section \ref{sec:algorithms:objprop}.
+% We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
+% We also do not address $\mathtt{HasKey}$ axioms because they can be regarded as a mistaken addition to OWL 2 \cite{Keet:Personal}.
 
 \subsection{Class axioms}
 \label{sec:algorithms:class}
@@ -290,7 +291,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \[ \I \synentails C_1 \equiv \ldots \equiv C_n \]
   So $\I$ also models $O \union (C_1 \equiv \ldots \equiv C_n)$ which is therefore coherent.  Therefore, by contrapositive, the algorithm is complete with respect to incoherence.
 
-  The inner-most block at line \ref{alg:testEquivalentClasses:inner} runs less than $n^2$ times, which is finite because the number of arguments $n$ is finite, and each run terminates because \textproc{testSubClassOf} was shown to terminate.  Therefore the entire algorithm terminates.
+  The inner-most block at line \ref{alg:testEquivalentClasses:inner} runs exactly $n^2$ times, which is finite because the number of arguments $n$ is finite, and each run terminates because \textproc{testSubClassOf} was shown to terminate.  Therefore the entire algorithm terminates.
 \end{proof}
 
 It is not sufficient to implement \textproc{testEquivalentClasses} by simply testing each of $C_2$ to $C_n$ for equivalence to $C_1$, as shown by a counterexample.  Let
@@ -385,7 +386,7 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
   \[ C_i \sqcap \neg (\neg C_j) = C_i \sqcap C_j \]
   and class intersection is commutative.  Therefore it is seen by the definition that \textproc{testDisjointClasses} is correct.  \todo[unconvincing]
 
-  The inner-most block runs strictly less than $n^2$ times, and it terminates, therefore the entire algorithm terminates.
+  The inner-most block runs less than $n^2$ times and each run terminates, therefore the entire algorithm terminates.
 \end{proof}
 
 \todo[prove sound/complete cases rigorously?]
@@ -430,7 +431,7 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
 
 We begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.
 
-Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now]
+Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now?]
 
 \begin{algorithm}[H]
   \caption{test same individual}
@@ -548,201 +549,207 @@ The name of the following algorithm has been shortened to fit on one line.
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{Object property axioms}
-\label{sec:algorithms:objprop}
-
-Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now]
-
-% \begin{itemize}[noitemsep]
-%   \ttfamily
-%   \item SubObjectPropertyOf
-%   \item EquivalentObjectProperties
-%   \item DisjointObjectProperties
-%   \item InverseObjectProperties
-%   \item ObjectPropertyDomain
-%   \item ObjectPropertyRange
-%   \item FunctionalObjectProperty
-%   \item InverseFunctionalObjectProperty
-%   \item ReflexiveObjectProperty
-%   \item IrreflexiveObjectProperty
-%   \item SymmetricObjectProperty
-%   \item AsymmetricObjectProperty
-%   \item TransitiveObjectProperty
-% \end{itemize}
-
-\begin{algorithm}[H]
-  \caption{test $R \sqsubseteq S$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression or chain \\
-      $S$ object property
-    }
-    \Function{testSubObjectPropertyOf}{$R, S$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $R_1 \equiv \ldots \equiv R_n$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R_1, \ldots. R_n$ object property expressions \\
-      $n \ge 2$
-    }
-    \Function{testEquivalentObjectProperties}{$R_1, \ldots, R_n$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test {\small$\mathtt{DisjointObjectProperties}$}$(R_1, \ldots, R_n)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R_1, \ldots. R_n$ object property expressions \\
-      $n \ge 2$
-    }
-    \Function{testDisjointObjectProperties}{$R_1, \ldots, R_n$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $R \equiv S^-$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R, S$ object property expressions
-    }
-    \Function{testInverseObjectProperties}{$R, S$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{ObjectPropertyDomain}(R, C)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression \\
-      $C$ class expression
-    }
-    \Function{testObjectPropertyDomain}{$R, C$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{ObjectPropertyRange}(R, C)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression \\
-      $C$ class expression
-    }
-    \Function{testObjectPropertyRange}{$R, C$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{FunctionalObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testFunctionalObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{InverseFunctionalObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testInverseFunctionalObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{ReflexiveObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testReflexiveObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{IrreflexiveObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testIrreflexiveObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{SymmetricObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testSymmetricObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{AsymmetricObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testAsymmetricObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{test $\mathtt{TransitiveObjectProperty}(R)$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression
-    }
-    \Function{testTransitiveObjectProperty}{$R$}
-      \State \todo
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
+% \subsection{Object property axioms}
+% \label{sec:algorithms:objprop}
+%
+% Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now?]
+%
+% \todo[note reasoner methods]
+%
+% % \begin{itemize}[noitemsep]
+% %   \ttfamily
+% %   \item SubObjectPropertyOf
+% %   \item EquivalentObjectProperties
+% %   \item DisjointObjectProperties
+% %   \item InverseObjectProperties
+% %   \item ObjectPropertyDomain
+% %   \item ObjectPropertyRange
+% %   \item FunctionalObjectProperty
+% %   \item InverseFunctionalObjectProperty
+% %   \item ReflexiveObjectProperty
+% %   \item IrreflexiveObjectProperty
+% %   \item SymmetricObjectProperty
+% %   \item AsymmetricObjectProperty
+% %   \item TransitiveObjectProperty
+% % \end{itemize}
+%
+% \begin{algorithm}[H]
+%   \caption{test $R \sqsubseteq S$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression or chain \\
+%       $S$ object property
+%     }
+%     \Function{testSubObjectPropertyOf}{$R, S$}
+%       \If{$R \in \Call{getSubObjectProperties}{S}$}
+%         \State \Return entailed
+%       \ElsIf{}
+%         \State \todo
+%       \EndIf
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $R_1 \equiv \ldots \equiv R_n$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R_1, \ldots. R_n$ object property expressions \\
+%       $n \ge 2$
+%     }
+%     \Function{testEquivalentObjectProperties}{$R_1, \ldots, R_n$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test {\small$\mathtt{DisjointObjectProperties}$}$(R_1, \ldots, R_n)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R_1, \ldots. R_n$ object property expressions \\
+%       $n \ge 2$
+%     }
+%     \Function{testDisjointObjectProperties}{$R_1, \ldots, R_n$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $R \equiv S^-$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R, S$ object property expressions
+%     }
+%     \Function{testInverseObjectProperties}{$R, S$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{ObjectPropertyDomain}(R, C)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression \\
+%       $C$ class expression
+%     }
+%     \Function{testObjectPropertyDomain}{$R, C$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{ObjectPropertyRange}(R, C)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression \\
+%       $C$ class expression
+%     }
+%     \Function{testObjectPropertyRange}{$R, C$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{FunctionalObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testFunctionalObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{InverseFunctionalObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testInverseFunctionalObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{ReflexiveObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testReflexiveObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{IrreflexiveObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testIrreflexiveObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{SymmetricObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testSymmetricObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{AsymmetricObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testAsymmetricObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
+%
+% \begin{algorithm}[H]
+%   \caption{test $\mathtt{TransitiveObjectProperty}(R)$}
+%   \begin{algorithmic}[1]
+%     \raggedright
+%     \Input{
+%       $R$ object property expression
+%     }
+%     \Function{testTransitiveObjectProperty}{$R$}
+%       \State \todo
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm}
 
 % \subsection{Data property axioms}
 %
