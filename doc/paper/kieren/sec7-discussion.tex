@@ -6,22 +6,33 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\begin{todos}
-  \todo Importance: certainty that tests behave correctly
-  \todo More impact in large ontologies
-  \todo Implementation? (should be done by someone else?)
-  \begin{todos}
-    \todo Preconditions: consistent and coherent, no missing entities in tests axioms
-    \todo Possibly flag deliberate unsatisfiable classes
-    \todo Direct $\textproc{isSatisfiable}(C)$ tests
-    \todo \textproc{isEntailed} might be faster?
-  \end{todos}
-  \todo Shortcomings addressed
-  \todo Can fit into other tools
-  \todo Plays nicely with Hermit
-  \todo Can be more clever with certain patterns, e.g. $C \sqsubseteq D$ named classes
-  \todo Can be more clever in restricted profiles, check fewer cases
-  \todo Identify specific causes of inconsistency/incoherence
-\end{todos}
+The algorithms we have presented cover the most critical and commonly used OWL 2 axioms, namely class axioms and assertions. \todo[and obj prop]
+They lay the groundwork for testing algorithms to be devised for the remaining axioms, and for correctness to be proven.
+
+These new testing algorithms address the shortcomings of existing tools which were identified, and provide the assurance of having been proven correct.
+They will facilitate the development of new tools, or the improvement of existing ones, which in turn can aid the adoption of test-driven development within ontology engineering, and then hopefully the adoption of ontologies within business and industry.
+
+TDDonto already implements a testing harness with a broad collection of testing algorithms.
+It could very simply be modified to make use of these new algorithms.
+It could then support the testing of more complex axioms which it does not currently support, and report detailed information on the consequences of adding a new axiom.
+This would make it an invaluable component of the ontology development workflow within Prot\'eg\'e.
+
+Tawny-OWL tests are predicates which must only return boolean results, as required by Clojure's built-in testing framework.
+However they could still make use of slightly modified versions of the new algorithms so that they support the same complex axioms, only return boolean results, and include detailed results in a full test report.
+
+\textsc{Scone} could likewise be extended to support testing class axioms which contain complex expressions, and object and data properties.
+However this runs the risk of complicating its grammar.
+Since Cucumber is oriented towards its tests being readable to non-technical people, this may be considered contrary to \textsc{Scone}'s design philosophy.
+
+There is scope for ontology testing algorithms to improved further.
+Firstly, certain constrained cases might be tested more efficiently.
+For example, testing $N \sqsubseteq C$ where $N$ is a named class, it suffices to determine entailment by checking if $N \in \textproc{getSubClasses}(C)$, which may be faster.
+Secondly, it may be possible to test axioms more efficiently when the ontology is known to be in a restricted profile of OWL 2.
+Lastly, the algorithms could be extended to report a full explanation of inconsistency or incoherence, such as specifically which classes and individuals are affected.
+
+When implementing these algorithms, there are certain considerations.
+Most importantly, the consistency and coherence preconditions should be checked once before evaluating a suite of tests, and missing entities should be checked before each test.
+Next, it should be made possible to test $\textproc{isSatisfiable}(C)$ directly so as to allow authors to ensure satisfiability of arbitrary class expressions.
+Lastly, since some reasoners support checking $\textproc{isEntailed}(A)$, it may make sense to use it where possible.  This merits investigation and benchmarking.
 
 \end{document}
