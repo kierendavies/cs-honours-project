@@ -6,16 +6,6 @@
 \section{Algorithms and analysis}
 \label{sec:algorithms}
 
-\begin{todos}
-  % \todo Show correctness of anonymous individual approach, because reasoners use it (careful of difference)
-  \todo Coverage (justification)
-  \begin{todos}
-    \todo Doesn't make sense to test declaration or data\-type definition
-    \todo skip data property and annotation axioms because similiar to object property
-    \todo HasKey?  Relates to same/different individuals
-  \end{todos}
-\end{todos}
-
 We now present the algorithms and analysis, in the context of an ontology $O$.  As justified in section \ref{sec:model}, we assume the following preconditions:
 \begin{itemize}[nosep]
   \item The ontology under test $O$ is consistent and coherent.
@@ -24,7 +14,7 @@ We now present the algorithms and analysis, in the context of an ontology $O$.  
 
 Each algorithm is named according to the axiom it tests, as written in OWL 2 functional syntax, prepended with ``\textproc{test}''.  For example, the algorithm for testing $\mathtt{SubClassOf}$ axioms is named \textproc{testSubClassOf}.
 
-We address class (TBox) axioms in section \ref{sec:algorithms:class}, assertion (ABox) axioms in section \ref{sec:algorithms:assert}, and object property (RBox) axioms in section \ref{sec:algorithms:objprop} \todo[TBC].
+We address class axioms (TBox) in section \ref{sec:algorithms:class}, assertions (ABox) in section \ref{sec:algorithms:assert}, and object property axioms (RBox) in section \ref{sec:algorithms:objprop} \todo[TBC].
 We do not address data property axioms or annotation axioms because their grammar and semantics are a equivalent to a fragment of object properties, and they are seldom involved in reasoning.
 We also do not address $\mathtt{HasKey}$ axioms because they can be regarded as a mistaken addition to OWL 2 \cite{Keet:Personal}.
 
@@ -167,7 +157,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   Suppose the algorithm does not return inconsistent.  Then it must be that
   \[ \textproc{getInstances}(C \sqcap \neg D) = \emptyset \]
   But in this case there exists an interpretation $\I$ which models both $O$ and $O \union (C \sqsubseteq D)$.  Let $\I$ be the interpretation of $O$ with the smallest domain.  This means that the interpretation of any class $E$ only contains elements which correspond to individuals which must be in that class.
-  \[ E^\I = \{ x \in \Delta^\I \mid (\exists a \in \signature_I(O)) \; a : E \land a^\I = x \} \]
+  \[ E^\I = \{ x \in \Delta^\I \mid (\exists a \in \signatureI(O)) \; a : E \land a^\I = x \} \]
   This clearly still models $O$ because every individual is still in all classes it is entailed to be in.
 
   Under the supposition, we have that
@@ -200,7 +190,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
     \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
     {} \land \textproc{getSubClasses}(C \sqcap \neg D) \ne \emptyset
   \end{multline*}
-  Therefore, by the second term, there exists some named class $N \in \signature_C(O)$ such that
+  Therefore, by the second term, there exists some named class $N \in \signatureC(O)$ such that
   \[ N \sqsubseteq C \sqcap \neg D \]
   By the contrapositive of proposition \ref{prop:testSubClassOfInconsistentComplete}, $O \union (C \sqsubseteq D)$ is consistent, so by lemma \ref{lem:subclassEntailsUnsat},
   \begin{align*}
@@ -221,7 +211,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   in which case proposition \ref{prop:testSubClassOfInconsistentComplete} shows that $O \union (C \sqsubseteq D)$ is inconsistent, or
   \[ \textproc{getSubClasses}(C \sqcap \neg D) = \emptyset \]
   In this case, $O$ is coherent by precondition so there exists an interpretation $\I \synentails O$ where, for any class expression $E$,
-  \[ E^\I \ne \emptyset \iff (\exists N \in \signature_C(O)) \; N \sqsubseteq E \]
+  \[ E^\I \ne \emptyset \iff (\exists N \in \signatureC(O)) \; N \sqsubseteq E \]
   In other words, only named classes and their superclasses have non-empty interpretations.  So in particular
   \[ (C \sqcap \neg D)^\I = \emptyset \]
 
@@ -289,7 +279,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   Suppose the algorithm does not return incoherent.  If it returns inconsistent then by the above $O \union (C_1 \equiv \ldots \equiv C_n)$ is inconsistent.  If not, then it is consistent, and for all $i,j \le n$
   \[ \textproc{getSubClasses}(C_i \sqcap \neg C_j) = \emptyset \]
   As in the proof of proposition \ref{prop:testSubClassOfIncoherentComplete}, there exists an interpretation $I \synentails O$ where, for any class expression $E$,
-  \[ E^\I \ne \emptyset \iff (\exists N \in \signature_C(O)) \; N \sqsubseteq E \]
+  \[ E^\I \ne \emptyset \iff (\exists N \in \signatureC(O)) \; N \sqsubseteq E \]
   So again under $O \union (C_1 \equiv \ldots \equiv C_n)$ we have
   \begin{align*}
     & (C_i \sqcap \neg C_j)^\I = \emptyset \\
@@ -535,7 +525,8 @@ Due to constraints, we present the following algorithms without proof of correct
   \end{algorithmic}
 \end{algorithm}
 
-\todo[name shortened to fit]
+The name of the following algorithm has been shortened to fit on one line.
+
 \begin{algorithm}[H]
   \caption{test $(a, b) : \neg R$}
   \begin{algorithmic}[1]
@@ -559,6 +550,8 @@ Due to constraints, we present the following algorithms without proof of correct
 
 \subsection{Object property axioms}
 \label{sec:algorithms:objprop}
+
+Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now]
 
 % \begin{itemize}[noitemsep]
 %   \ttfamily
@@ -599,21 +592,21 @@ Due to constraints, we present the following algorithms without proof of correct
       $R_1, \ldots. R_n$ object property expressions \\
       $n \ge 2$
     }
-    \Function{testEquivalentObjectProperties}{$R, S$}
+    \Function{testEquivalentObjectProperties}{$R_1, \ldots, R_n$}
       \State \todo
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[H]
-  \caption{test $\mathtt{DisjointObjectProperties}(R_1, \ldots, R_n$}
+  \caption{test {\small$\mathtt{DisjointObjectProperties}$}$(R_1, \ldots, R_n)$}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
       $R_1, \ldots. R_n$ object property expressions \\
       $n \ge 2$
     }
-    \Function{testDisjointObjectProperties}{$R, S$}
+    \Function{testDisjointObjectProperties}{$R_1, \ldots, R_n$}
       \State \todo
     \EndFunction
   \end{algorithmic}

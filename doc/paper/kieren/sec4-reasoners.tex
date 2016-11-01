@@ -6,29 +6,48 @@
 \section{Application of reasoners}
 \label{sec:reasoners}
 
-\begin{todos}
-  \todo Methods available from reasoners
-  \todo Reclassification is slow---no new axioms, individuals
-  \todo OWL BGP is slow
-  \todo Not using \textproc{isEntailed} because not universally provided
-  \todo Assumptions about correctness and performance \\(``proven'' in the field)
-  % \todo Discussion of some implementations (Hypertableau with anonymous individuals)
-\end{todos}
+There are numerous automated reasoners which are compliant with OWL 2, most notably HermiT \cite{Glimm:HermiT}, with several mechanisms for making use of them.  OWL API \cite{OWLAPI} is a Java library which defines a widely-supported standard interface for reasoners.  OWL-BGP \cite{OWLBGP} is a Java library which implements SPARQL, an ontology query language.
 
-\todo[in ontology $O$]
+As mentioned in section \ref{sec:related}, evaluation of TDDonto identified that OWL-BGP introduces an efficiency overhead which is not present in OWL API.  Therefore we focus only on OWL API and the functionality it provides.
+
+The evaluation also found that implementations which introduced temporary ``mock'' individuals were substantially slower than all others.  The cause was not explicitly identified, but it is likely due to the need for reclassification of the ontology to include the new assertions.  In a typical ontology, with typical hardware, reclassification can take minutes or hours.  This is an unacceptable duration for a single test.  Therefore we do not permit the introduction of new axioms in our testing algorithms.
+
+The OWL API reasoner interface specifies a ``convenience'' method named \texttt{isEntailed} which accepts any axiom and returns a boolean indicating whether or not that axiom is entailed.  However, it is not mandatory for reasoners to implement this method, and in fact many do not, or only implement it with support for certain axioms.  We wish for our testing algorithms to support operation with all reasoners, and therefore we do not permit use of \texttt{isEntailed}.
+
+We begin with some prerequisite definitions.
+
+\begin{definition}
+  The \emph{class signature} of an axiom or ontology $A$ is $\signatureC(A)$, the set of all symbols in its formulae which are class names.
+\end{definition}
+
+\begin{definition}
+  The \emph{individual signature} of an axiom or ontology $A$ is $\signatureI(A)$, the set of all symbols in its formulae which are individual names.
+\end{definition}
+
+\begin{definition}
+  The \emph{object property signature} of an axiom or ontology $A$ is $\signatureOP(A)$, the set of all symbols in its formulae which are object property names.
+\end{definition}
+
+\begin{definition}
+  The \emph{signature} of an axiom or ontology $A$ is
+  \[ \signature(A) = \signatureC(A) \union \signatureI(A) \union \signatureOP(A) \]
+\end{definition}
+
+We now identify relevant methods available from reasoners and formalise their returned values.  Let $O$ be the ontology under test.
 
 \[ \textproc{isSatisfiable}(C) \iff O \nsementails C \sqsubseteq \bot \]
-\[ \textproc{getSubClasses}(C) = \{ N \in \signature_C(O) \mid O \sementails N \sqsubseteq C \} \]
-\todo[$\mathtt{getSubClasses} \union \mathtt{getEquivalentClasses}$]
-\[ \textproc{getInstances}(C) = \{ a \in \signature_I(O) \mid O \sementails a : C \} \]
-\[ \textproc{getTypes}(a) = \{ N \in \signature_C(O) \mid O \sementails a : N \} \]
-\[ \textproc{getSameIndividuals}(a) = \{ b \in \signature_I(O) \mid O \sementails b \equiv a \} \]
-\[ \textproc{getDifferentIndividuals}(a) = \{ b \in \signature_I(O) \mid O \sementails b \not\equiv a \} \]
+\[ \textproc{getSubClasses}(C) = \{ N \in \signatureC(O) \mid O \sementails N \sqsubseteq C \} \]
+\[ \textproc{getInstances}(C) = \{ a \in \signatureI(O) \mid O \sementails a : C \} \]
+\[ \textproc{getTypes}(a) = \{ N \in \signatureC(O) \mid O \sementails a : N \} \]
+\[ \textproc{getSameIndividuals}(a) = \{ b \in \signatureI(O) \mid O \sementails b \equiv a \} \]
+\[ \textproc{getDifferentIndividuals}(a) = \{ b \in \signatureI(O) \mid O \sementails b \not\equiv a \} \]
 \begin{multline*}
   \textproc{getObjectPropertyValues}(a, R) = \\
-  \{ b \in \signature_I(O) \mid O \sementails (a, b) : R \}
+  \{ b \in \signatureI(O) \mid O \sementails (a, b) : R \}
 \end{multline*}
 
 \todo[querying object properties]
+
+We make the assumption that reasoners implement these methods correctly and efficiently.  No thorough low-level analysis of any reasoners has been done, but the high-level techniques used by the most popular reasoners, such as HermiT's hypertableau calculus \cite{Glimm:HermiT}, are widely accepted to be correct.  In addition, the popular reasoners have been subject to extensive practical testing.
 
 \end{document}

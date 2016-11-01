@@ -6,19 +6,20 @@
 %TC:macrocount \todo [todo]
 %TC:envir todos [] ignore
 
-\documentclass[a4paper,draft]{sig-alternate}
-\usepackage{subfiles}
+\documentclass[draft]{sig-alternate}
 \makeatletter
 \def\@copyrightspace{\relax}
 \makeatother
 
-\usepackage{graphicx}
-\usepackage{epstopdf}
-\usepackage{tabularx}
+\usepackage{subfiles}
 
 \usepackage[english]{babel}
 \usepackage[english]{isodate}
 \cleanlookdateon
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
 
 \usepackage{enumitem}
 \usepackage{cancel}
@@ -42,6 +43,9 @@
 \newcommand{\nsynentails}{\nvDash}
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\signature}{\Sigma}
+\newcommand{\signatureC}{\Sigma_C}
+\newcommand{\signatureI}{\Sigma_I}
+\newcommand{\signatureOP}{\Sigma_\mathit{OP}}
 \DeclareMathOperator{\test}{test}
 \newcommand{\casesbox}[2][.45\linewidth]{\parbox[t]{#1}{\hangindent=1em\relax#2}}
 

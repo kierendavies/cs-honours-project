@@ -12,7 +12,7 @@
 \begin{minipage}[t]{\dimexpr.5\textwidth-.5\columnsep}
 \setlength{\parindent}{\currentparindent}
 
-Here we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code is in Java and uses the OWL API version 5.0.  The following imports and declarations apply as boilerplate for all snippets.
+Here we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code uses Java 8 and OWL API 5.  The following imports and declarations apply as boilerplate for all snippets.
 
 \end{minipage}
 
@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 OWLReasoner reasoner;
 OWLClassExpression C;
 OWLNamedIndividual a;
+OWLPropertyExpression R;
 \end{verbatim}
 
 \bigskip
@@ -36,7 +37,7 @@ OWLNamedIndividual a;
 \makeatother
 \noindent
 \renewcommand{\arraystretch}{1.5}
-\begin{tabular}{p{5cm}V{11.9cm}} \hline
+\begin{tabular}{p{6cm}V{10.9cm}} \hline
 Method call & Code \\ \hline
 
 $\textproc{isSatisfiable}(C)$ &
@@ -48,8 +49,8 @@ reasoner.isSatisfiable(C)
 $\textproc{getSubClasses}(C)$ &
 \begin{verbatim}
 Stream.concat(
-  reasoner.getSubClasses(C).entities(),
-  reasoner.getEquivalentClasses(C).entities()
+  reasoner.getEquivalentClasses(C).entities(),
+  reasoner.getSubClasses(C).entities()
 )
 \end{verbatim}
 \\
@@ -57,6 +58,12 @@ Stream.concat(
 $\textproc{getInstances}(C)$ &
 \begin{verbatim}
 reasoner.getInstances(C).entities()
+\end{verbatim}
+\\
+
+$\textproc{getTypes}(a)$ &
+\begin{verbatim}
+reasoner.getTypes(a).entities()
 \end{verbatim}
 \\
 
@@ -69,6 +76,12 @@ reasoner.getSameIndividuals(a).entities()
 $\textproc{getDifferentIndividuals}(a)$ &
 \begin{verbatim}
 reasoner.getDifferentIndividuals(a).entities()
+\end{verbatim}
+\\
+
+$\textproc{getObjectPropertyValues}(a, R)$ &
+\begin{verbatim}
+reasoner.getObjectPropertyValue(a, R).entities()
 \end{verbatim}
 \\
 
