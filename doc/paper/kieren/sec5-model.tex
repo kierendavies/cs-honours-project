@@ -14,8 +14,8 @@ In line with the uses cases identified in section \ref{sec:rationale}, we define
   leftmargin=2em,
   nosep,
 ]
-  \item[Ontology already inconsistent]  The ontology is inconsistent before considering the axiom under test.  That is, it contains a contradiction.  The reasoner cannot meaningfully respond to queries, so no claims can be made about the axiom.
-  \item[Ontology already incoherent]  The ontology is incoherent before considering the axiom.  That is, one or more of its named classes are unsatisfiable.  This confounds certain methods which will be used to evaluate tests.
+  \item[Ontology already inconsistent]  The ontology is inconsistent before considering the axiom under test; that is, it contains a contradiction.  The reasoner cannot meaningfully respond to queries, so no claims can be made about the axiom.
+  \item[Ontology already incoherent]  The ontology is incoherent before considering the axiom; that is, one or more of its named classes are unsatisfiable.  This confounds certain methods which will be used to evaluate tests.
   \item[Missing entity in axiom]  The axiom contains one or more named classes or properties which are not declared in the ontology.  This result is probably caused by a mistake in the test declaration, so it is distinguished from the results below.
   \item[Axiom causes inconsistency]  If the axiom were added to the ontology it would cause it to become inconsistent.
   \item[Axiom causes incoherence]  If the axiom were added to the ontology it would cause one or more named classes to become unsatisfiable.
