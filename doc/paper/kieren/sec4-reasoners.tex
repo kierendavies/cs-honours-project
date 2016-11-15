@@ -35,14 +35,14 @@ We begin with some prerequisite definitions.
 
 We now identify relevant methods available from reasoners and formalise their returned values.  Let $O$ be the ontology under test.
 
-\[ \textproc{isSatisfiable}(C) \iff O \nsementails C \sqsubseteq \bot \]
-\[ \textproc{getSubClasses}(C) = \{ N \in \signatureC(O) \mid O \sementails N \sqsubseteq C \} \]
-\[ \textproc{getInstances}(C) = \{ a \in \signatureI(O) \mid O \sementails a : C \} \]
-\[ \textproc{getTypes}(a) = \{ N \in \signatureC(O) \mid O \sementails a : N \} \]
-\[ \textproc{getSameIndividuals}(a) = \{ b \in \signatureI(O) \mid O \sementails b \equiv a \} \]
-\[ \textproc{getDifferentIndividuals}(a) = \{ b \in \signatureI(O) \mid O \sementails b \not\equiv a \} \]
+\[ \Call{isSatisfiable}{C} \iff O \nsementails C \sqsubseteq \bot \]
+\[ \Call{getSubClasses}{C} = \{ N \in \signatureC(O) \mid O \sementails N \sqsubseteq C \} \]
+\[ \Call{getInstances}{C} = \{ a \in \signatureI(O) \mid O \sementails a : C \} \]
+\[ \Call{getTypes}{a} = \{ N \in \signatureC(O) \mid O \sementails a : N \} \]
+\[ \Call{getSameIndividuals}{a} = \{ b \in \signatureI(O) \mid O \sementails b \equiv a \} \]
+\[ \Call{getDifferentIndividuals}{a} = \{ b \in \signatureI(O) \mid O \sementails b \not\equiv a \} \]
 \begin{multline*}
-  \textproc{getObjectPropertyValues}(a, R) = \\
+  \Call{getObjectPropertyValues}{a, R} = \\
   \{ b \in \signatureI(O) \mid O \sementails (a, b) : R \}
 \end{multline*}
 

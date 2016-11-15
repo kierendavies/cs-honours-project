@@ -26,13 +26,13 @@ Since Cucumber is oriented towards its tests being readable to non-technical peo
 
 There is scope for ontology testing algorithms to improved further.
 Firstly, certain constrained cases might be tested more efficiently.
-For example, testing $N \sqsubseteq C$ where $N$ is a named class, it suffices to determine entailment by checking if $N \in \textproc{getSubClasses}(C)$, which may be faster.
+For example, testing $N \sqsubseteq C$ where $N$ is a named class, it suffices to determine entailment by checking if $N \in \Call{getSubClasses}{C}$, which may be faster.
 Secondly, it may be possible to test axioms more efficiently when the ontology is known to be in a restricted profile of OWL 2.
 Lastly, the algorithms could be extended to report a full explanation of inconsistency or incoherence, such as specifically which classes and individuals are affected.
 
 When implementing these algorithms, there are certain considerations.
 Most importantly, the consistency and coherence preconditions should be checked once before evaluating a suite of tests, and missing entities should be checked before each test.
-Next, it should be made possible to test $\textproc{isSatisfiable}(C)$ directly so as to allow authors to ensure satisfiability of arbitrary class expressions.
-Lastly, since some reasoners support checking $\textproc{isEntailed}(A)$, it may make sense to use it where possible.  This merits investigation and benchmarking.
+Next, it should be made possible to test $\Call{isSatisfiable}{C}$ directly so as to allow authors to ensure satisfiability of arbitrary class expressions.
+Lastly, since some reasoners support checking $\Call{isEntailed}{A}$, it may make sense to use it where possible.  This merits investigation and benchmarking.
 
 \end{document}

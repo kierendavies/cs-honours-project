@@ -35,13 +35,13 @@ OWLPropertyExpression R;
 \begin{tabular}{l V{8cm}} \hline
 Method call & Code \\ \hline
 
-$\textproc{isSatisfiable}(C)$ &
+$\Call{isSatisfiable}{C}$ &
 \begin{verbatim}
 reasoner.isSatisfiable(C)
 \end{verbatim}
 \\
 
-$\textproc{getSubClasses}(C)$ &
+$\Call{getSubClasses}{C}$ &
 \begin{verbatim}
 Stream.concat(
   reasoner.getEquivalentClasses(C).entities(),
@@ -50,31 +50,31 @@ Stream.concat(
 \end{verbatim}
 \\
 
-$\textproc{getInstances}(C)$ &
+$\Call{getInstances}{C}$ &
 \begin{verbatim}
 reasoner.getInstances(C).entities()
 \end{verbatim}
 \\
 
-$\textproc{getTypes}(a)$ &
+$\Call{getTypes}{a}$ &
 \begin{verbatim}
 reasoner.getTypes(a).entities()
 \end{verbatim}
 \\
 
-$\textproc{getSameIndividuals}(a)$ &
+$\Call{getSameIndividuals}{a}$ &
 \begin{verbatim}
 reasoner.getSameIndividuals(a).entities()
 \end{verbatim}
 \\
 
-$\textproc{getDifferentIndividuals}(a)$ &
+$\Call{getDifferentIndividuals}{a}$ &
 \begin{verbatim}
 reasoner.getDifferentIndividuals(a).entities()
 \end{verbatim}
 \\
 
-$\textproc{getObjectPropertyValues}(a, R)$ &
+$\Call{getObjectPropertyValues}{a, R}$ &
 \begin{verbatim}
 reasoner.getObjectPropertyValue(a, R).entities()
 \end{verbatim}

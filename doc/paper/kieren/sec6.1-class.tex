@@ -70,7 +70,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \label{prop:testSubClassOfEntailedSound}
   \textproc{testSubClassOf} is sound with respect to entailment.  That is,
   \begin{multline*}
-    \textproc{testSubClassOf}(C, D) = \mathrm{entailed} \implies \\
+    \Call{testSubClassOf}{C, D} = \mathrm{entailed} \implies \\
     \test_O(C \sqsubseteq D) = \mathrm{entailed}
   \end{multline*}
 \end{proposition}
@@ -78,9 +78,9 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   The algorithm can only return entailed at line \ref{alg:testSubClassOf:returnEntailed}, so the three if-conditions must all be false.  So
   \begin{multline}
     \label{eqn:testSubClassOfEntailed}
-    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {} \land \textproc{getSubClasses}(C \sqcap \neg D) = \emptyset \\
-    {} \land \lnot \textproc{isSatisfiable}(C \sqcap \neg D)
+    \Call{getInstances}{C \sqcap \neg D} = \emptyset \\
+    {} \land \Call{getSubClasses}{C \sqcap \neg D} = \emptyset \\
+    {} \land \lnot \Call{isSatisfiable}{C \sqcap \neg D}
   \end{multline}
 
   Now suppose $O \nsementails C \sqsubseteq D$.  By lemma \ref{lem:subclassEntailsUnsat}, $O \nsementails C \sqcap \neg D \sqsubseteq \bot$.  In other words, $C \sqcap \neg D$ is satisfiable, which contradicts the last term of equation \ref{eqn:testSubClassOfEntailed}.  Hence the supposition is false, so
@@ -96,7 +96,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \textproc{testSubClassOf} is complete with respect to entailment.  That is,
   \begin{multline*}
     \test_O(C \sqsubseteq D) = \mathrm{entailed} \implies \\
-    \textproc{testSubClassOf}(C, D) = \mathrm{entailed}
+    \Call{testSubClassOf}{C, D} = \mathrm{entailed}
   \end{multline*}
 \end{proposition}
 \begin{proof}
@@ -115,7 +115,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{proposition}
 \begin{proof}
   The algorithm can only return inconsistent at line \ref{alg:testSubClassOf:returnInconsistent}, so the first if-condition holds, so
-  \[ \textproc{getInstances}(C \sqcap \neg D) \ne \emptyset \]
+  \[ \Call{getInstances}{C \sqcap \neg D} \ne \emptyset \]
   which means there exists an individual $a$ such that
   \begin{align*}
     & a : C \sqcap \neg D \\
@@ -138,7 +138,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   We have that $O$ is consistent, so it has an interpretation, but $O \union (C \sqsubseteq D)$ is inconsistent, so it has no interpretations.
 
   Suppose the algorithm does not return inconsistent.  Then it must be that
-  \[ \textproc{getInstances}(C \sqcap \neg D) = \emptyset \]
+  \[ \Call{getInstances}{C \sqcap \neg D} = \emptyset \]
   But in this case there exists an interpretation $\I$ which models both $O$ and $O \union (C \sqsubseteq D)$.  Let $\I$ be the interpretation of $O$ with the smallest domain.  This means that the interpretation of any class $E$ only contains elements which correspond to individuals which must be in that class.
   \[ E^\I = \{ x \in \Delta^\I \mid (\exists a \in \signatureI(O)) \; a : E \land a^\I = x \} \]
   This clearly still models $O$ because every individual is still in all classes it is entailed to be in.
@@ -170,8 +170,8 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \begin{proof}
   The algorithm can only return incoherent at line \ref{alg:testSubClassOf:returnIncoherent}, so the first if-condition must be false and the second true.  So
   \begin{multline*}
-    \textproc{getInstances}(C \sqcap \neg D) = \emptyset \\
-    {} \land \textproc{getSubClasses}(C \sqcap \neg D) \ne \emptyset
+    \Call{getInstances}{C \sqcap \neg D} = \emptyset \\
+    {} \land \Call{getSubClasses}{C \sqcap \neg D} \ne \emptyset
   \end{multline*}
   Therefore, by the second term, there exists some named class $N \in \signatureC(O)$ such that
   \[ N \sqsubseteq C \sqcap \neg D \]
@@ -190,9 +190,9 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{proposition}
 \begin{proof}
   Suppose the algorithm does not return incoherent.  So either
-  \[ \textproc{getInstances}(C \sqcap \neg D) \ne \emptyset \]
+  \[ \Call{getInstances}{C \sqcap \neg D} \ne \emptyset \]
   in which case proposition \ref{prop:testSubClassOfInconsistentComplete} shows that $O \union (C \sqsubseteq D)$ is inconsistent, or
-  \[ \textproc{getSubClasses}(C \sqcap \neg D) = \emptyset \]
+  \[ \Call{getSubClasses}{C \sqcap \neg D} = \emptyset \]
   In this case, $O$ is coherent by precondition so there exists an interpretation $\I \synentails O$ where, for any class expression $E$,
   \[ E^\I \ne \emptyset \iff (\exists N \in \signatureC(O)) \; N \sqsubseteq E \]
   In other words, only named classes and their superclasses have non-empty interpretations.  So in particular
@@ -253,14 +253,14 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   By definition, $C_i \equiv C_j$ if and only if $C_i \sqsubseteq C_j$ and $C_j \sqsubseteq C_i$.  It is immediately clear from this that the algorithm is sound with respect to inconsistency and incoherence, and sound and complete with respect to entailment.  It remains to be shown that it is complete with respect to inconsistency and incoherence.
 
   Suppose the algorithm does not return inconsistent.  Then, for all $i,j \le n$
-  \[ \textproc{testSubClassOf}(C_i, C_j) \ne \mathrm{inconsistent} \]
+  \[ \Call{testSubClassOf}{C_i, C_j} \ne \mathrm{inconsistent} \]
   otherwise $r$ would take the value inconsistent because it is greater than other values.
   Therefore, for any individual $a$,
   \[ a : C_i \implies a : C_j \]
   So if $a$ is in any of $C_1, \ldots, C_n$ it is in all of them.  By the same construction as in the proof of proposition \ref{prop:testSubClassOfInconsistentComplete}, $O \union (C_1 \equiv \ldots \equiv C_n)$ has an interpretation and is not inconsistent.  Therefore, by contrapositive, the algorithm is complete with respect to inconsistency.
 
   Suppose the algorithm does not return incoherent.  If it returns inconsistent then by the above $O \union (C_1 \equiv \ldots \equiv C_n)$ is inconsistent.  If not, then it is consistent, and for all $i,j \le n$
-  \[ \textproc{getSubClasses}(C_i \sqcap \neg C_j) = \emptyset \]
+  \[ \Call{getSubClasses}{C_i \sqcap \neg C_j} = \emptyset \]
   As in the proof of proposition \ref{prop:testSubClassOfIncoherentComplete}, there exists an interpretation $I \synentails O$ where, for any class expression $E$,
   \[ E^\I \ne \emptyset \iff (\exists N \in \signatureC(O)) \; N \sqsubseteq E \]
   So again under $O \union (C_1 \equiv \ldots \equiv C_n)$ we have
@@ -278,7 +278,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 
 It is not sufficient to implement \textproc{testEquivalentClasses} by simply testing each of $C_2$ to $C_n$ for equivalence to $C_1$, as shown by a counterexample.  Let
 \[ O = \{ N \equiv C_2 \sqcap \neg C_3 \} \]
-It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, but this would not be reporting by testing only $C_1 \sqsubseteq C_2$, $C_2 \sqsubseteq C_1$, $C_1 \sqsubseteq C_3$, and $C_3 \sqsubseteq C_1$.
+It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but this would not be reporting by testing only $C_1 \sqsubseteq C_2$, $C_2 \sqsubseteq C_1$, $C_1 \sqsubseteq C_3$, and $C_3 \sqsubseteq C_1$.
 
 \medskip
 
@@ -310,9 +310,9 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
 % \end{proposition}
 % \begin{proof}
 %   If the algorithm returns entailed, then for every $i, j \le n$ with $i < j$
-%   \[ \textproc{testSubClassOf}(C_i, \neg C_j) = \mathrm{entailed} \]
+%   \[ \Call{testSubClassOf}{C_i, \neg C_j} = \mathrm{entailed} \]
 %   Since all three if-conditions in \textproc{testSubClassOf} must be false, in particular the third, we have
-%   \[ \neg \textproc{isSatisfiable}(C_i \sqcap C_j) \]
+%   \[ \neg \Call{isSatisfiable}{C_i \sqcap C_j} \]
 % \end{proof}
 %
 % \begin{proposition}
@@ -364,7 +364,7 @@ It can be seen that $\textproc{testSubClassOf}(C_2, C_3)$ returns incoherent, bu
   With more than two parameters, $\mathtt{DisjointClasses}$ means that the class expressions are pairwise disjoint.
 
   In the inner-most block at line \ref{alg:testDisjointClasses:inner}, $i$ and $j$ are clearly seen to take on all values $i, j \le n$ where $i < j$.
-  It is not necessary to also call $\textproc{testSubClassOf}(C_j, \neg C_i)$ because disjointness is symmetric.  In fact by substituting arguments into \textproc{testSubClassOf} we see that all class expressions passed to reasoner methods are
+  It is not necessary to also call $\Call{testSubClassOf}{C_j, \neg C_i}$ because disjointness is symmetric.  In fact by substituting arguments into \textproc{testSubClassOf} we see that all class expressions passed to reasoner methods are
   \[ C_i \sqcap \neg (\neg C_j) = C_i \sqcap C_j \]
   and class intersection is commutative.  Therefore it is seen by the definition that \textproc{testDisjointClasses} is correct.  \todo[unconvincing]
 
