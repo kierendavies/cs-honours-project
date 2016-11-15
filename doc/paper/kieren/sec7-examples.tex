@@ -6,4 +6,57 @@
 \section{Example usage}
 \label{sec:examples}
 
+Here we present some examples of axioms being tested to illustrate how the algorithms are used and how they work.
+We use an ontology $O$ which consists of the following axioms.
+\begin{gather*}
+  \oaxiom{DisjointClasses}(\oent{Animal}, \oent{Plant}) \\
+  \begin{aligned}
+    \oent{Giraffe} &\sqsubseteq \oent{Mammal} \\
+    \oent{Mammal} &\sqsubseteq \oent{Animal} \\
+    \oent{Herbivore} &\equiv \forall \oent{eats} .\, \oent{Plant} \\
+    \oent{Susan} &\aligncolon \oent{Giraffe} \\
+    \oent{Frank} &\aligncolon \oent{Herbivore}
+  \end{aligned}
+\end{gather*}
+
+Let us begin with a simple example which falls into use case \ref{enum:usecase:regression}, testing something we expect to be entailed to assure the quality of the ontology.
+We test that $\oent{Giraffe}$ is a subclass of $\oent{Animal}$.
+In terms of our formal model, this means finding the result of
+\[ \test_O(\oent{Giraffe} \sqsubseteq \oent{Animal}) \]
+In OWL 2 functional syntax, the axiom is represented as
+\[ \oaxiom{SubClassOf}(\oent{Giraffe}, \oent{Animal}) \]
+So we call the corresponding algorithm
+\[ \Call{testSubClassOf}{\oent{Giraffe}, \oent{Animal}} \]
+The algorithm first checks if there are any instances of the class expression $\oent{Giraffe} \sqcap \neg \oent{Animal}$.
+There are none in this ontology, so it proceeds to check if the same class expression has any named subclasses or equivalent classes.
+Again there are none, so it checks if the class expression is satisfiable.
+It is not, so the algorithm returns entailed.
+
+Next we consider some examples of axioms which are not entailed.
+These could arise from mistakes in the ontology or in a test, or from use case \ref{enum:usecase:temp}, temporary tests used for investigation.
+
+We test if $\exists \oent{eats} .\, \oent{Animal} \sqsubseteq \oent{Herbivore}$.
+Similarly to the previous example, we call
+\[ \Call{testSubClassOf}{\exists \oent{eats} .\, \oent{Animal}, \oent{Herbivore}} \]
+This checks if $\exists \oent{eats} .\, \oent{Animal} \sqcap \neg \oent{Herbivore}$ has instances, which it does not, then named subclasses, which it does not.
+Then it checks if it is satisfiable, which it is because the ontology does not entail that it is empty, so the algorithm returns absent.
+This means that the axiom is not entailed but it would not cause inconsistency or incoherence if added to the ontology.
+\todo[drop last sentence?]
+
+Note that it is not possible to test this axiom with any of the tools identified in section \ref{sec:related} because the left part of the axiom, the subclass, is not a named class.
+
+Lastly we test if $(\oent{Frank}, \oent{Susan}) : \oent{eats}$.
+The call to the corresponding algorithm is
+\[ \Call{testObjectPropertyAssertion}{\oent{eats}, \oent{Frank}, \oent{Susan}} \]
+This first checks if $\oent{Susan}$ is one of the inferred object property values which $\oent{Frank}$ $\oent{eats}$.
+It is not, so we enter the for-loop.
+$N$ takes the named classes of which $\oent{Susan}$ is an inferred instance, which are $\{\oent{Giraffe}, \oent{Mammal}, \oent{Animal}\}$.
+For each of these, we check if $\oent{Frank}$ is an instance of $\neg \exists \oent{eats} . N$.
+When $N$ is $\oent{Animal}$, this is true, so the algorithm returns inconsistent.
+
+% Alternatives:
+% \[ \Call{testClassAssertion}{\oent{Plant}, \oent{Susan}} \]
+% \[ \Call{testClassAssertion}{\exists \oent{eats}^- .\, \oent{Herbivore}, \oent{Susan}} \]
+% \[ \Call{ObjectPropertyRange}{\oent{eats}, \oent{Animal}} \]
+
 \end{document}

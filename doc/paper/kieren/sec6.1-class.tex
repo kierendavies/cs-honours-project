@@ -17,8 +17,6 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
       \If{$\Call{getInstances}{C \sqcap \neg D} \ne \emptyset$}
         \State \Return $\inconsistent$
         \label{alg:testSubClassOf:returnInconsistent}
-      % \ElsIf{$\lnot \Call{isSatisfiable}{C \sqcap D}$ \\
-      %     \algindent{3} ${} \land \Call{getSubClasses}{C} \ne \emptyset$}
       \ElsIf{$\Call{getSubClasses}{C \sqcap \neg D} \ne \emptyset$}
         \State \Return $\incoherent$
         \label{alg:testSubClassOf:returnIncoherent}

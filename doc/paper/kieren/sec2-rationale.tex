@@ -40,8 +40,13 @@ The standard approach of adding an axiom and then observing the consequences inv
 
 This gives us two broad use cases:
 \begin{enumerate}[nosep]
-  \item Declare many tests alongside an ontology and evaluate them all together in order to demonstrate quality or detect regressions.
-  \item Evaluate temporary tests as needed in order to explore an ontology or predict the consequences of adding a new axiom.
+  \item
+  \label{enum:usecase:regression}
+  Declare many tests alongside an ontology and evaluate them all together in order to demonstrate quality or detect regressions.
+
+  \item
+  \label{enum:usecase:temp}
+  Evaluate temporary tests as needed in order to explore an ontology or predict the consequences of adding a new axiom.
 \end{enumerate}
 
 To satisfy both of these, tests must not reclassify the ontology, and they must produce results which identify the consequences of adding an axiom.
