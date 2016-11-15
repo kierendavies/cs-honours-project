@@ -36,24 +36,24 @@ This leads to the following formalisation.
   \[
     \test_O(A) =
     \begin{cases}
-      \mathrm{entailed} &
+      \entailed &
         \text{if } O \sementails A \\
-      \mathrm{inconsistent} &
+      \inconsistent &
         \text{if } O \union A \sementails \bot \\
-      \mathrm{incoherent} &
+      \incoherent &
         \text{if }
         \! \begin{aligned}[t]
           & O \union A \nsementails \bot \\
           & \land (\exists C \in \signatureC(O)) \\
           & \phantom{{}\land (} O \union A \sementails C \sqsubseteq \bot
         \end{aligned} \\
-      \mathrm{absent} &
+      \absent &
         \text {otherwise} \\
     \end{cases}
   \]
 
   The resultant values are ordered according to graveness of failure.
-  \[ \mathrm{entailed} < \mathrm{absent} < \mathrm{incoherent} < \mathrm{inconsistent} \]
+  \[ \entailed < \absent < \incoherent < \inconsistent \]
 \end{definition}
 
 \end{document}
