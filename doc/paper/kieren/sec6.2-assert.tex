@@ -1,0 +1,139 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+\subsection{Assertions}
+\label{sec:algorithms:assert}
+
+% \begin{itemize}[noitemsep]
+%   \ttfamily
+%   \item SameIndividual
+%   \item DifferentIndividuals
+%   \item ClassAssertion
+%   \item ObjectPropertyAssertion
+%   \item NegativeObjectPropertyAssertion
+%   % \item DataPropertyAssertion
+%   % \item NegativeDataPropertyAssertion
+% \end{itemize}
+
+We begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.
+
+Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now?]
+
+\begin{algorithm}[H]
+  \caption{test same individual}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $a_1, \ldots, a_n$ individuals \\
+      $n \ge 2$
+    }
+    \Function{testSameIndividual}{$a_1, \ldots, a_n$}
+      \If{$\{a_2, \ldots, a_n\} \subseteq \Call{getSameIndividuals}{a_1}$}
+        \State \Return entailed
+      \Else
+        \For{$i \gets 1$ \To $n$}
+          \State $\delta \gets \Call{getDifferentIndividuals}{a_i}$
+          \If{$\{a_1, \ldots, a_n\} \intersect \delta \ne \emptyset$}
+            \State \Return inconsistent
+          \EndIf
+        \EndFor
+        \State \Return absent
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test different individuals}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $a_1, \ldots, a_n$ individuals \\
+      $n \ge 2$
+    }
+    \Function{testDifferentIndividuals}{$a_1, \ldots, a_n$}
+      \For{$i \gets 1$ \To $n$}
+        \State $\gamma \gets \Call{getSameIndividuals}{a_i}$
+        \If{$(\{a_1, \ldots, a_n\} \setminus \{a_i\}) \intersect \gamma \ne \emptyset$}
+          \State \Return inconsistent
+        \EndIf
+      \EndFor
+      \For{$i \gets 1$ \To $n$}
+        \State $\delta \gets \Call{getDifferentIndividuals}{a_i}$
+        \If{$(\{a_1, \ldots, a_n\} \setminus \{a_i\}) \nsubseteq \delta$}
+          \State \Return absent
+        \EndIf
+      \EndFor
+      \State \Return entailed
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test $a : C$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $C$ class expression \\
+      $a$ individual
+    }
+    \Function{testClassAssertion}{$C, a$}
+      \If{$a \in \Call{getInstances}{C}$}
+        \State \Return entailed
+      \ElsIf{$a \in \Call{getInstances}{\neg C}$}
+        \State \Return inconsistent
+      \Else
+        \State \Return absent
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test $(a, b) : R$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression \\
+      $a, b$ individuals
+    }
+    \Function{testObjectPropertyAssertion}{$R, a, b$}
+      \If{$b \in \Call{getObjectPropertyValues}{a, R}$}
+        \State \Return entailed
+      \Else
+        \For{$N \in \Call{getTypes}{b}$}
+          \If{$a \in \Call{getInstances}{\neg \exists R . N}$}
+            \State \Return inconsistent
+          \EndIf
+        \EndFor
+        \State \Return absent
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+The name of the following algorithm has been shortened to fit on one line.
+
+\begin{algorithm}[H]
+  \caption{test $(a, b) : \neg R$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression \\
+      $a, b$ individuals
+    }
+    \Function{testNegativeObjPropAssertion}{$R, a, b$}
+      \State $r \gets \Call{testObjectPropertyAssertion}{R, a, b}$
+      \If{$r = \mathrm{entailed}$}
+        \State \Return inconsistent
+      \ElsIf{$r = \mathrm{inconsistent}$}
+        \State \Return entailed
+      \Else
+        \State \Return absent
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\end{document}

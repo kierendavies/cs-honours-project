@@ -6,15 +6,7 @@
 \section{Code for reasoner methods}
 \label{app:code}
 
-\newlength{\currentparindent}
-\setlength{\currentparindent}{\parindent}
-\noindent
-\begin{minipage}[t]{\dimexpr.5\textwidth-.5\columnsep}
-\setlength{\parindent}{\currentparindent}
-
-Here we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code uses Java 8 and OWL API 5.  The following imports and declarations apply as boilerplate for all snippets.
-
-\end{minipage}
+In table \ref{tab:code} we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code is in Java 8 and uses OWL API 5.  The following imports and declarations apply as boilerplate for all snippets.
 
 \bigskip
 
@@ -30,14 +22,17 @@ OWLNamedIndividual a;
 OWLPropertyExpression R;
 \end{verbatim}
 
-\bigskip
+\begin{table*}
+\center
+\caption{Example code for reasoner methods}
+\label{tab:code}
 
 \makeatletter
 \newcolumntype{V}[1]{>{\topsep=0pt\@minipagetrue}p{#1}<{\vspace{-\baselineskip}}}
 \makeatother
-\noindent
 \renewcommand{\arraystretch}{1.5}
-\begin{tabular}{p{6cm}V{10.9cm}} \hline
+
+\begin{tabular}{l V{8cm}} \hline
 Method call & Code \\ \hline
 
 $\textproc{isSatisfiable}(C)$ &
@@ -87,5 +82,6 @@ reasoner.getObjectPropertyValue(a, R).entities()
 
 \hline
 \end{tabular}
+\end{table*}
 
 \end{document}

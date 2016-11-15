@@ -6,7 +6,7 @@
 %TC:macrocount \todo [todo]
 %TC:envir todos [] ignore
 
-\documentclass[]{sig-alternate}
+\documentclass[draft]{sig-alternate}
 \makeatletter
 \def\@copyrightspace{\relax}
 \makeatother
@@ -100,7 +100,7 @@
 
 \begin{document}
 
-\subfile{cover}
+\ifdraft{}{\subfile{cover}}
 
 \maketitle
 
@@ -111,14 +111,15 @@
 \subfile{sec4-reasoners}
 \subfile{sec5-model}
 \subfile{sec6-algorithms}
-\subfile{sec7-discussion}
-\subfile{sec8-conclusion}
+\subfile{sec7-examples}
+\subfile{sec8-discussion}
+\subfile{sec9-conclusion}
 
 \bibliographystyle{abbrv}
 \bibliography{references}
 
-\onecolumn
 \appendix
-\subfile{seca-code}
+\subfile{seca-untested}
+\subfile{secb-code}
 
 \end{document}

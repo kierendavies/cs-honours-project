@@ -1,0 +1,64 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Untested axioms}
+\label{app:untested}
+
+Here we provide a complete list of OWL 2 axioms for which this paper does not describe a testing algorithm.
+
+\begin{itemize}
+  \item Assertions
+  \begin{itemize}[noitemsep]
+    \ttfamily
+    \item DataPropertyAssertion
+    \item NegativeDataPropertyAssertion
+  \end{itemize}
+
+  \item Object property axioms
+  \begin{itemize}[noitemsep]
+    \ttfamily
+    \item SubObjectPropertyOf
+    \item EquivalentObjectProperties
+    \item DisjointObjectProperties
+    \item InverseObjectProperties
+    \item FunctionalObjectProperty
+    \item InverseFunctionalObjectProperty
+    \item ReflexiveObjectProperty
+    \item IrreflexiveObjectProperty
+    \item SymmetricObjectProperty
+    \item AsymmetricObjectProperty
+    \item TransitiveObjectProperty
+  \end{itemize}
+
+  \item Data property axioms
+  \begin{itemize}[noitemsep]
+    \ttfamily
+    \item SubDataPropertyOf
+    \item EquivalentDataProperties
+    \item DisjointDataProperties
+    \item DataPropertyDomain
+    \item DataPropertyRange
+    \item FunctionalDataProperty
+  \end{itemize}
+
+  \item Annotation axioms
+  \begin{itemize}[noitemsep]
+    \ttfamily
+    \item AnnotationAssertion
+    \item SubAnnotationPropertyOf
+    \item AnnotationPropertyDomain
+    \item AnnotationPropertyRange
+  \end{itemize}
+
+  \item Other
+  \begin{itemize}[noitemsep]
+    \ttfamily
+    \item Declaration
+    \item DatatypeDefinition
+    \item HasKey
+  \end{itemize}
+\end{itemize}
+
+\end{document}
