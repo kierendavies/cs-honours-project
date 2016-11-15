@@ -20,17 +20,17 @@ In light of this, it has been proposed that TDD should be incorporated into new 
 Ontologies, like computer programs, can become complex to the point that it is difficult for a human author to predict the consequences of changes, especially if the author is inexperienced.
 Automated tests are therefore useful to detect unintended consequences.
 As an illustrative example, suppose an author creates the following classes:
-\[ \mathtt{Giraffe} \sqsubseteq \mathtt{Herbivore} \sqsubseteq \mathtt{Mammal} \sqsubseteq \mathtt{Animal} \]
-The author then realises that not all herbivores are mammals, so changes $\mathtt{Herbivore}$ to be a subclass only of $\mathtt{Animal}$.
-But now $\mathtt{Giraffe}$ is no longer a derived subclass of $\mathtt{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously exclude giraffes.
-This mistake could be caught by a simple test which asserts that $\mathtt{Giraffe}$ is a derivable subclass of $\mathtt{Mammal}$.
+\[ \oent{Giraffe} \sqsubseteq \oent{Herbivore} \sqsubseteq \oent{Mammal} \sqsubseteq \oent{Animal} \]
+The author then realises that not all herbivores are mammals, so changes $\oent{Herbivore}$ to be a subclass only of $\oent{Animal}$.
+But now $\oent{Giraffe}$ is no longer a derived subclass of $\oent{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously exclude giraffes.
+This mistake could be caught by a simple test which asserts that $\oent{Giraffe}$ is a derivable subclass of $\oent{Mammal}$.
 
 Superficially, it seems like this problem can be solved by not writing tests for axioms but instead just adding those axioms directly to the ontology.
 However, adding such axioms introduces redundancy, making modification of the ontology more difficult, and in some circumstances increasing the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
 Adding only a test instead ensures correctness without bloating the ontology.
 
 Tests may also be used outside of an automated test suite to explore and understand an ontology.
-For example, an author might be assessing an ontology of animals for reuse and wants to verify that $\mathtt{Giraffe} \sqsubseteq \mathtt{Mammal}$.
+For example, an author might be assessing an ontology of animals for reuse and wants to verify that $\oent{Giraffe} \sqsubseteq \oent{Mammal}$.
 The author can simply create a corresponding temporary test and observe the result.
 This saves the time it would take to browse the inferred class heirarchy in a development environment such as Prot\'eg\'e.
 

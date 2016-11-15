@@ -14,7 +14,7 @@
 %   \item DisjointUnion
 % \end{itemize}
 
-In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\mathtt{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
+In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
 
 \begin{algorithm}[H]
   \caption{test $C \sqsubseteq D$}
@@ -283,7 +283,7 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
 \medskip
 
 \begin{algorithm}[H]
-  \caption{test $\mathtt{DisjointClasses}(C_1, \ldots, C_n)$}
+  \caption{test $\oaxiom{DisjointClasses}(C_1, \ldots, C_n)$}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -360,8 +360,8 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
 \end{theorem}
 \begin{proof}
   The OWL 2 specification \cite{W3C:OWL2Syntax} defines
-  \[ \mathtt{DisjointClasses}(C_i, C_j) \iff C_i \sqsubseteq \neg C_j \]
-  With more than two parameters, $\mathtt{DisjointClasses}$ means that the class expressions are pairwise disjoint.
+  \[ \oaxiom{DisjointClasses}(C_i, C_j) \iff C_i \sqsubseteq \neg C_j \]
+  With more than two parameters, $\oaxiom{DisjointClasses}$ means that the class expressions are pairwise disjoint.
 
   In the inner-most block at line \ref{alg:testDisjointClasses:inner}, $i$ and $j$ are clearly seen to take on all values $i, j \le n$ where $i < j$.
   It is not necessary to also call $\Call{testSubClassOf}{C_j, \neg C_i}$ because disjointness is symmetric.  In fact by substituting arguments into \textproc{testSubClassOf} we see that all class expressions passed to reasoner methods are
@@ -374,7 +374,7 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
 \todo[prove sound/complete cases rigorously?]
 
 \begin{algorithm}[H]
-  \caption{test $\mathtt{DisjointUnion}(N, C_1, \ldots, C_n)$}
+  \caption{test $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -394,7 +394,7 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
   \textproc{testDisjointUnion} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  Correctness is clearly seen from the definition of $\mathtt{DisjointUnion}$, which states separately that $N \equiv C_1 \sqcup \ldots \sqcup C_n$ and $\mathtt{DisjointClasses}(C_1, \ldots, C_n)$.  Termination is trivial.
+  Correctness is clearly seen from the definition of $\oaxiom{DisjointUnion}$, which states separately that $N \equiv C_1 \sqcup \ldots \sqcup C_n$ and $\oaxiom{DisjointClasses}(C_1, \ldots, C_n)$.  Termination is trivial.
 \end{proof}
 
 \end{document}
