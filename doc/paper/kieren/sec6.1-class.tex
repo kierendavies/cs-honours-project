@@ -6,14 +6,6 @@
 \subsection{Class axioms}
 \label{sec:algorithms:class}
 
-% \begin{itemize}[noitemsep]
-%   \ttfamily
-%   \item SubClassOf
-%   \item EquivalentClasses
-%   \item DisjointClasses
-%   \item DisjointUnion
-% \end{itemize}
-
 In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
 
 \begin{algorithm}[H]
