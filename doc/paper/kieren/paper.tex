@@ -7,8 +7,13 @@
 %TC:envir todos [] ignore
 
 \documentclass[draft]{sig-alternate}
+
+\usepackage{ifdraft}
 \makeatletter
-\def\@copyrightspace{\relax}
+\ifdraft{
+  \def\@copyrightspace{\relax}
+  \def\thepage{\arabic{page}}
+}{}
 \makeatother
 
 \usepackage{subfiles}
