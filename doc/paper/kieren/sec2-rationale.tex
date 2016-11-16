@@ -12,10 +12,13 @@ In software engineering, \emph{Test-Driven Development} (TDD) \cite{Beck:TDD} is
   \item Eliminate duplication.
 \end{itemize}
 This induces a ``red--green--refactor'' pattern of development: first write a new test which fails, then write code which makes it pass with minimal effort, then remove resultant duplication and restructure if necessary.
+In this way, tests serve to define desired functionality.
 The process is usually facilitated with a test harness which runs tests automatically and generates reports.
 
 TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \cite{Beck:TDD}.
 In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
+
+\todo[the argument of competency questions]
 
 Ontologies, like computer programs, can become complex to the point that it is difficult for a human author to predict the consequences of changes, especially if the author is inexperienced.
 Automated tests are therefore useful to detect unintended consequences.
@@ -23,7 +26,7 @@ As an illustrative example, suppose an author creates the following classes:
 \[ \oent{Giraffe} \sqsubseteq \oent{Herbivore} \sqsubseteq \oent{Mammal} \sqsubseteq \oent{Animal} \]
 The author then realises that not all herbivores are mammals, so changes $\oent{Herbivore}$ to be a subclass only of $\oent{Animal}$.
 But now $\oent{Giraffe}$ is no longer a derived subclass of $\oent{Mammal}$, and an application which uses this ontology to enumerate mammals would erroneously exclude giraffes.
-This mistake could be caught by a simple test which asserts that $\oent{Giraffe}$ is a derivable subclass of $\oent{Mammal}$.
+This mistake could be caught by a simple test which declares that $\oent{Giraffe}$ should be a subclass of $\oent{Mammal}$.
 
 Superficially, it seems like this problem can be solved by not writing tests for axioms but instead just adding those axioms directly to the ontology.
 However, adding such axioms introduces redundancy, making modification of the ontology more difficult, and in some circumstances increasing the complexity of reasoning \cite{Vrandecic:UnitTestsOntologies}.
@@ -34,7 +37,7 @@ For example, an author might be assessing an ontology of animals for reuse and w
 The author can simply create a corresponding temporary test and observe the result.
 This saves the time it would take to browse the inferred class heirarchy in a development environment such as Prot\'eg\'e.
 
-A similar thing can be done when developing a new ontology.
+A similar approach can be employed when developing a new ontology.
 Before adding a new axiom, the author can create a temporary test to determine if the axiom is already entailed, if it will result in a contradiction or unsatisfiable class, or if it can be safely added.
 The standard approach of adding an axiom and then observing the consequences involves reclassification, which is typically very slow, and which a test of a single axiom can avoid.
 

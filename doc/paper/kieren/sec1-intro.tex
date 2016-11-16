@@ -9,16 +9,18 @@
 Ontologies, and ontology engineering, have become increasingly relevant in the past decade.
 They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
 
-Despite this, ontologies have not seen widespread adoption within business and industry \cite{Cardoso:SemanticWebVision, Kaczmarek:EnterpriseModelling}.
+Despite this, ontologies have not seen widespread adoption within business and industry \cite{Kaczmarek:EnterpriseModelling}.
 We postulate that one of the contributing factors is the state of ontology engineering methodologies, which lag behind software engineering methodologies in terms of both maturity and adoption \cite{Iqbal:Methodologies, Simperl:Maturity}.
 In particular, there are no published methodologies which explicitly incorporate automated testing, which has become a staple of software engineering.
 
-There exist some tools for testing ontologies, but they all share two notable shortcomings: certain axioms cannot be tested even though they are permitted in OWL 2 \cite{W3C:OWL2Syntax}, such as $\forall R.C \sqsubseteq D$, and test results are either ``pass'' or ``fail'' with no further information as to the nature of failure.
+There exist some tools for testing ontologies \cite{Lawrynowicz:TDDontoTool, Warrender:HowWhatWhyTest, Scone:Bitbucket}, but they all share two notable shortcomings: certain axioms cannot be tested even though they are permitted in OWL 2 \cite{W3C:OWL2Syntax}, such as $\forall R.C \sqsubseteq D$, and test results are either ``pass'' or ``fail'' with no further information as to the nature of failure.
 Furthermore, there has been no rigorous analysis of the techniques and algorithms employed.
 In this paper we present algorithms to test axioms against ontologies and prove their correctness.  \todo[performance?]
 The algorithms provide new functionality to address the aforementioned shortcomings.
 
 We aim for the algorithms to each handle the general case of an axiom, and avoid having multiple algorithms to handle variants of a single kind of axiom.
+
+We require \todo[acceptably fast, no reclassification]
 
 In section \ref{sec:rationale} we justify why testing is applicable to ontologies.
 In section \ref{sec:related} we examine prior work that has been done on this topic, and the shortcomings in the state of the art.

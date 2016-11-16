@@ -7,7 +7,8 @@
 
 We begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.
 
-Due to constraints, we present the following algorithms without proof of correctness.  \todo[for now?]
+\todo[connect, ref]
+\todo[notation]
 
 \begin{algorithm}[H]
   \caption{test same individual}
@@ -32,6 +33,15 @@ Due to constraints, we present the following algorithms without proof of correct
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{theorem}
+  \textproc{testSameIndividual} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo
+\end{proof}
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test different individuals}
@@ -59,6 +69,15 @@ Due to constraints, we present the following algorithms without proof of correct
   \end{algorithmic}
 \end{algorithm}
 
+\begin{theorem}
+  \textproc{testDifferentIndividuals} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo
+\end{proof}
+
+\todo[connect, ref]
+
 \begin{algorithm}[H]
   \caption{test $a : C$}
   \begin{algorithmic}[1]
@@ -78,6 +97,15 @@ Due to constraints, we present the following algorithms without proof of correct
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{theorem}
+  \textproc{testClassAssertion} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo
+\end{proof}
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $(a, b) : R$}
@@ -102,6 +130,15 @@ Due to constraints, we present the following algorithms without proof of correct
   \end{algorithmic}
 \end{algorithm}
 
+\begin{theorem}
+  \sloppy
+  \textproc{testObjectPropertyAssertion} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo
+\end{proof}
+
+\todo[connect, ref]
 The name of the following algorithm has been shortened to fit on one line.
 
 \begin{algorithm}[H]
@@ -124,5 +161,12 @@ The name of the following algorithm has been shortened to fit on one line.
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{theorem}
+  \textproc{testNegativeObjPropAssertion} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  \todo
+\end{proof}
 
 \end{document}

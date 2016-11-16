@@ -6,7 +6,9 @@
 \subsection{Class axioms}
 \label{sec:algorithms:class}
 
-In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.
+In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.  \todo[contradictory wording]
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $C \sqsubseteq D$}
@@ -56,6 +58,8 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   The first and last bi-implications hold because we consider every possible interpretation.
 \end{proof}
 
+\todo[exclude or cite]
+
 \begin{proposition}
   \label{prop:testSubClassOfEntailedSound}
   \textproc{testSubClassOf} is sound with respect to entailment.  That is,
@@ -90,7 +94,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \end{multline*}
 \end{proposition}
 \begin{proof}
-  As indicated in the previous proof, the algorithm returns entailed if equation \ref{eqn:testSubClassOfEntailed} holds.
+  As indicated in the proof of proposition \ref{prop:testSubClassOfEntailedSound}, the algorithm returns entailed if equation \ref{eqn:testSubClassOfEntailed} holds.
 
   From $\test_O(C \sqsubseteq D) = \entailed$ we have that $O \sementails C \sqsubseteq D$, and by lemma \ref{lem:subclassEntailsUnsat}, $O \sementails C \sqcap \neg D \sqsubseteq \bot$ so the last term of the equation is true.
 
@@ -185,7 +189,7 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   \[ \Call{getSubClasses}{C \sqcap \neg D} = \emptyset \]
   In this case, $O$ is coherent by precondition so there exists an interpretation $\I \synentails O$ where, for any class expression $E$,
   \[ E^\I \ne \emptyset \iff (\exists N \in \signatureC(O)) \; N \sqsubseteq E \]
-  In other words, only named classes and their superclasses have non-empty interpretations.  So in particular
+  In other words, only named classes and their superclasses have non-empty interpretations.  \todo[wat]  So in particular
   \[ (C \sqcap \neg D)^\I = \emptyset \]
 
   This interpretation also models $O \union (C \sqsubseteq D)$, which has exactly the same named classes, because
@@ -214,6 +218,9 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   Termination is trivial, since the algorithm contains no looping or recursion.
 \end{proof}
 
+\todo[connect, ref]
+\todo[clarify $i$, $j$, $r$, $r'$]
+
 \begin{algorithm}[H]
   \caption{test $C_1 \equiv \ldots \equiv C_n$}
   \begin{algorithmic}[1]
@@ -237,7 +244,8 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
 \end{algorithm}
 
 \begin{theorem}
-  \textproc{testEquivalentClasses} is correct and is terminating.
+  \sloppy
+  \textproc{testEquivalentClasses} is correct and terminating.
 \end{theorem}
 \begin{proof}
   By definition, $C_i \equiv C_j$ if and only if $C_i \sqsubseteq C_j$ and $C_j \sqsubseteq C_i$.  It is immediately clear from this that the algorithm is sound with respect to inconsistency and incoherence, and sound and complete with respect to entailment.  It remains to be shown that it is complete with respect to inconsistency and incoherence.
@@ -271,6 +279,8 @@ It is not sufficient to implement \textproc{testEquivalentClasses} by simply tes
 It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but this would not be reporting by testing only $C_1 \sqsubseteq C_2$, $C_2 \sqsubseteq C_1$, $C_1 \sqsubseteq C_3$, and $C_3 \sqsubseteq C_1$.
 
 \medskip
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{DisjointClasses}(C_1, \ldots, C_n)$}
@@ -362,6 +372,8 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
 \end{proof}
 
 \todo[prove sound/complete cases rigorously?]
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$}

@@ -8,6 +8,7 @@
 
 In order to rigorously examine any testing algorithms, we need a formal description of what it means to test an axiom against an ontology.
 In line with the uses cases identified in section \ref{sec:rationale}, we define the possible test results.
+They are listed in order from most grave failure to least, with the final result of entailment being the only one considered a pass.
 \begin{description}[
   before={\renewcommand\makelabel[1]{\normalfont\itshape##1:}},
   labelindent=1em,
@@ -23,9 +24,9 @@ In line with the uses cases identified in section \ref{sec:rationale}, we define
   \item[Axiom entailed]  The axiom is already entailed by the ontology.
 \end{description}
 
-These are listed in order from most grave failure to least, with the final result of entailment being the only one considered a pass.
+\todo[relate to TDD: pass, fail]
 
-If the ontology is already inconsistent or incoherent, every test will produce the same result.  In this way, these two cases apply to the entire suite of tests rather than to any one, and so they should be checked only once as preconditions before evaluating any tests.  Therefore we do not consider them in the formal definition of a test result, or in any of the algorithms.  Since there is no ambiguity, we henceforth abbreviate the remaining cases.
+If the ontology is already inconsistent or incoherent, every test will produce the same result.  In this way, these two cases apply to the entire suite of tests rather than to any one, and so they should be checked only once as preconditions before evaluating any tests.  Therefore we do not consider them in the formal definition of a test result, or in any of the algorithms.  Since there is no ambiguity, we henceforth abbreviate the remaining cases.  \todo[how?]
 
 Similarly, we do not directly address missing entities, as this can be a simple check performed at the start of each test which does not affect how it is otherwise evaluated.
 

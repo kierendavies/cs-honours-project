@@ -9,27 +9,30 @@
 We have found only three existing tools which implement ontology testing.
 
 TDDonto \cite{Lawrynowicz:TDDontoTool} is a Prot\'eg\'e plugin which allows test axioms to be specified in Prot\'eg\'e's expression syntax.
-Several implementation strategies were tried, and in evaluation it was found that making direct reasoner queries with OWL API is faster than making SPARQL queries with OWL-BGP or introducing ``mock'' individual assertions.
+% Several implementation strategies were tried, and in evaluation it was found that making direct reasoner queries with OWL API is faster than making SPARQL queries with OWL-BGP or introducing ``mock'' individual assertions.
+Several implementation strategies were tried, and in evaluation it was found that directly querying the reasoner through the OWL API \cite{OWLAPI} is faster than evaluating SPARQL queries with OWL-BGP \cite{OWLBGP} or introducing ``mock'' individual assertions.
 % The cause of these performance differences was not established, although it is likely the mock individual strategy was constrained by the need to reclassify multiple times in every test.
-It does not support testing data properties.
+It supports testing only certain object property axioms, and it does not support data properties.
 
 Tawny-OWL \cite{Warrender:HowWhatWhyTest} is an ontology development framework implemented in Clojure.
 It provides predicate functions which query the reasoner which can be used in conjunction with any testing framework, such as the built-in ``clojure.test''.
 It has the disadvantage of being totally seperated from the usual ontology development tools and requiring tests to be written in Clojure, which is not a widely known and used language.
 It does not support querying object or data properties.
 
-\textsc{Scone} \cite{Scone:Bitbucket} is a tool based on Cucumber \cite{Cucumber} which evaluates tests written in constrained natural language in a procedural style.
+\textsc{Scone} \cite{Scone:Bitbucket} is a tool based on Cucumber \cite{Cucumber} which evaluates tests written in controlled natural language in a procedural style.
 It encourages the pattern of creating mock individuals and making assertions and inferences on them.
 It is also separated from the usual ontology development tools.  It does not support testing object or data properties.
 
 None of these three support the full range of axioms permitted in OWL 2.
 Most notably, in none of them is it possible to directly test axioms of the form $C \sqsubseteq D$ where $C$ is not a named class, such as $\forall R.E \sqsubseteq D$.
-\todo[Do I need to show that this is the case?]
 
-Additionally, in all three, the result of any test is either pass or fail.
+Additionally, in each of the three tools, the result of any test is either pass or fail.
 No further information is reported.
+\todo[TDDonto has ``unknown'' for missing entity]
 This severly limits their usefulness as a means to explore an ontology or aid in development.
 
-There is clear scope for these shortcomings to be addressed by new algorithms or tools which provide full coverage of OWL 2 axioms and which return detailed test results.
+\todo[no proofs]
+
+There is clear scope for these shortcomings to be addressed by new algorithms and tools which provide full coverage of OWL 2 axioms and which return detailed test results.
 
 \end{document}

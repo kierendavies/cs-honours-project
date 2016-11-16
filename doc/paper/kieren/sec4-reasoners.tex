@@ -10,9 +10,11 @@ There are numerous automated reasoners which are compliant with OWL 2, most nota
 
 As mentioned in section \ref{sec:related}, evaluation of TDDonto identified that OWL-BGP introduces an efficiency overhead which is not present in OWL API.  Therefore we focus only on OWL API and the functionality it provides.
 
-The evaluation also found that implementations which introduced temporary ``mock'' individuals were substantially slower than all others.  The cause was not explicitly identified, but it is likely due to the need for reclassification of the ontology to include the new assertions.  In a typical ontology, with typical hardware, reclassification can take minutes or hours.  This is an unacceptable duration for a single test.  Therefore we do not permit the introduction of new axioms in our testing algorithms.  Instead we only make queries, which are assumed to be acceptably efficient.
+The evaluation also found that implementations which introduced temporary ``mock'' individuals were substantially slower than all others.  The cause was not explicitly identified, but it is likely due to the need for reclassification of the ontology to include the new assertions.  With typical hardware, reclassification of some ontologies can take minutes or hours.  This is an unacceptable duration for a single test.  \todo[yuck]  Therefore we do not permit the introduction of new axioms in our testing algorithms.  Instead we only make queries, which are assumed to be acceptably efficient.  \todo[note as requirement]
 
-The OWL API reasoner interface specifies a ``convenience'' method named \texttt{isEntailed} which accepts any axiom and returns a boolean indicating whether or not that axiom is entailed.  However, it is not mandatory for reasoners to implement this method, and in fact many do not, or only implement it with support for certain axioms.  We wish for our testing algorithms to support operation with all reasoners, and therefore we do not permit use of \texttt{isEntailed}.
+The OWL API reasoner interface specifies a ``convenience'' method named \textproc{isEntailed} which accepts any axiom and returns a boolean indicating whether or not that axiom is entailed.  However, it is not mandatory for reasoners to implement this method, and in fact many do not, or only implement it with support for certain axioms.  We wish \todo[``weasel word''] for our testing algorithms to support operation with all reasoners, and therefore we do not permit use of \textproc{isEntailed}.  \todo[requirement]
+
+\todo[connect]
 
 We begin with some prerequisite definitions.
 
@@ -33,7 +35,11 @@ We begin with some prerequisite definitions.
   \[ \signature(A) = \signatureC(A) \union \signatureI(A) \union \signatureOP(A) \]
 \end{definition}
 
-We now identify relevant methods available from reasoners and formalise their returned values.  Let $O$ be the ontology under test.
+\todo[one def]
+
+We now identify relevant methods available from reasoners through the OWL API and formalise their returned values.  Let $O$ be the ontology under test.
+
+\todo[introduce notation]
 
 \[ \Call{isSatisfiable}{C} \iff O \nsementails C \sqsubseteq \bot \]
 \[ \Call{getSubClasses}{C} = \{ N \in \signatureC(O) \mid O \sementails N \sqsubseteq C \} \]
@@ -45,8 +51,6 @@ We now identify relevant methods available from reasoners and formalise their re
   \Call{getObjectPropertyValues}{a, R} = \\
   \{ b \in \signatureI(O) \mid O \sementails (a, b) : R \}
 \end{multline*}
-
-\todo[querying object properties]
 
 We make the assumption that reasoners implement these methods correctly and efficiently.  No thorough low-level analysis of any reasoners has been done, but the high-level techniques used by the most popular reasoners, such as HermiT's hypertableau calculus \cite{Glimm:HermiT}, are widely accepted to be correct.  In addition, the popular reasoners have been subject to extensive practical testing.
 
