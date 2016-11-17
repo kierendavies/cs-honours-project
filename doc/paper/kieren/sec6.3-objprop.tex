@@ -6,7 +6,9 @@
 \subsection{Object property axioms}
 \label{sec:algorithms:objprop}
 
-\todo[from OWL 2 defs]
+We present all algorithms in this section without proof of correctness, as the OWL 2 specification \cite{W3C:OWL2Syntax} describes how the respective object property axioms can be written as class axioms.
+
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ObjectPropertyDomain}(R, C)$}
@@ -22,15 +24,7 @@
   \end{algorithmic}
 \end{algorithm}
 
-\begin{theorem}
-  \sloppy~
-  \textproc{testObjectPropertyDomain} is correct and terminating.
-\end{theorem}
-\begin{proof}
-  The OWL 2 specification \cite{W3C:OWL2Syntax} states that
-  \[ \oaxiom{ObjectPropertyDomain}(R, C) \iff \exists R . \top \sqsubseteq C \]
-  So correctness and termination are trivial.
-\end{proof}
+\todo[connect, ref]
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ObjectPropertyRange}(R, C)$}
@@ -46,16 +40,64 @@
   \end{algorithmic}
 \end{algorithm}
 
-\begin{theorem}
-  \sloppy~
-  \textproc{testObjectPropertyRange} is correct and terminating.
-\end{theorem}
-\begin{proof}
-  The OWL 2 specification \cite{W3C:OWL2Syntax} states that
-  \[ \oaxiom{testObjectPropertyRange}(R, C) \iff \top \sqsubseteq \forall R . C \]
-  So correctness and termination are trivial.
-\end{proof}
+\todo[connect, ref]
 
-\todo[rest are difficult] \todo[cite Maria]
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{FunctionalObjectProperty}(R)$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{FunctionalObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectMaxCardinality}(1, R)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\todo[connect, ref]
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{InverseFunctionalObjectProperty}(R)$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{InverseFunctionalObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectMaxCardinality}(1, R^-)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\todo[connect, ref]
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{ReflexiveObjectProperty}(R)$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{ReflexiveObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectHasSelf}(R)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\todo[connect, ref]
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{IrreflexiveObjectProperty}(R)$}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{IrreflexiveObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\oaxiom{ObjectHasSelf}(R), \bot$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
 
 \end{document}
