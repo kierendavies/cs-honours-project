@@ -22,6 +22,16 @@
   \end{algorithmic}
 \end{algorithm}
 
+\begin{theorem}
+  \sloppy~
+  \textproc{testObjectPropertyDomain} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  The OWL 2 specification \cite{W3C:OWL2Syntax} states that
+  \[ \oaxiom{ObjectPropertyDomain}(R, C) \iff \exists R . \top \sqsubseteq C \]
+  So correctness and termination are trivial.
+\end{proof}
+
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ObjectPropertyRange}(R, C)$}
   \begin{algorithmic}[1]
@@ -35,6 +45,16 @@
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{theorem}
+  \sloppy~
+  \textproc{testObjectPropertyRange} is correct and terminating.
+\end{theorem}
+\begin{proof}
+  The OWL 2 specification \cite{W3C:OWL2Syntax} states that
+  \[ \oaxiom{testObjectPropertyRange}(R, C) \iff \top \sqsubseteq \forall R . C \]
+  So correctness and termination are trivial.
+\end{proof}
 
 \todo[rest are difficult] \todo[cite Maria]
 

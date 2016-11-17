@@ -8,7 +8,7 @@
 Begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.  We take this as given, without proof, for all axioms tested in this section.
 
 Throughout this section, when an algorithm accepts $n$ individuals as arguments, we use the shorthand
-\[\alpha = \{a_1, \ldots, a_n\}\]
+\[\mathbf{a} = \{a_1, \ldots, a_n\}\]
 
 \todo[connect, ref]
 \todo[notation]
@@ -55,14 +55,15 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{proof}
 
 \begin{proposition}
+  \sloppy~
   \textproc{testSameIndividual} is sound with respect to inconsistency.
 \end{proposition}
 \begin{proof}
   The algorithm can only return inconsistent at line \ref{alg:testSameIndividual:returnInconsistent}, so the first if-condition is false, and for some iteration of the for-loop the inner if-condition is true.  From the inner condition, we have
   \begin{align*}
-    & (\exists i \le n) \;\; \alpha \intersect \Call{getDifferentIndividuals}{a_i} \ne \emptyset \\
-    \iff{}& (\exists a_i, a_j \in \alpha) \;\; a_j \in \Call{getDifferentIndividuals}{a_i} \\
-    \iff{}& (\exists a_i, a_j \in \alpha) \;\; O \sementails a_i \not\equiv a_j
+    & (\exists i \le n) \;\; \mathbf{a} \intersect \Call{getDifferentIndividuals}{a_i} \ne \emptyset \\
+    \iff{}& (\exists a_i, a_j \in \mathbf{a}) \;\; a_j \in \Call{getDifferentIndividuals}{a_i} \\
+    \iff{}& (\exists a_i, a_j \in \mathbf{a}) \;\; O \sementails a_i \not\equiv a_j
   \end{align*}
   Which contradicts the axiom under test, and therefore
   \[ \test_O(a_1 \equiv \ldots \equiv a_n) = \inconsistent \qed \]
@@ -73,14 +74,14 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{proposition}
 \begin{proof}
   Suppose the algorithm does not return inconsistent.  If it returns entailed, by proposition \ref{prop:testSameIndividualEntailed}, $\test_O(a_1 \equiv \ldots \equiv a_n) = \entailed$.  If not, then for every iteration of the for-loop the inner if-condition must be false.  That is,
-  \[ (\forall a_i, a_j \in \alpha) \;\; O \nsementails a_i \not\equiv a_j \]
+  \[ (\forall a_i, a_j \in \mathbf{a}) \;\; O \nsementails a_i \not\equiv a_j \]
   It follows that $O$ has an interpretation in which $a_1 \equiv \ldots \equiv a_n$, so $O \union (a_1 \equiv \ldots \equiv a_n)$ is consistent.
 
   In both cases, $\test_O(a_1 \equiv \ldots \equiv a_n) \ne \inconsistent$, so by contrapositive the proposition holds.
 \end{proof}
 
 \begin{theorem}
-  \label{prop:testSameIndividualCorrect}
+  \label{thm:testSameIndividual}
   \textproc{testSameIndividual} is correct and terminating.
 \end{theorem}
 \begin{proof}
@@ -124,10 +125,10 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \begin{proof}
   The algorithm can only return entailed at line \ref{alg:testDifferentIndividuals:returnEntailed}.  To reach this line, the two if-conditions must be false for every iteration of their enclosing for-loops, else another result would be returned.  This means
   \begin{align*}
-    & (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \\
-    {}\land{}& (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \subseteq \Call{getDifferentIndividuals}{a_i}
+    & (\forall a_i \in \mathbf{a}) \;\; (\mathbf{a} \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \\
+    {}\land{}& (\forall a_i \in \mathbf{a}) \;\; (\mathbf{a} \setminus \{a_i\}) \subseteq \Call{getDifferentIndividuals}{a_i}
   \end{align*}
-  Equivalently, for all distinct arguments $a_i, a_j \in \alpha$ with $i \ne j$
+  Equivalently, for all distinct arguments $a_i, a_j \in \mathbf{a}$ with $i \ne j$
   \begin{align*}
     & \begin{multlined}[t]
       a_j \notin \Call{getSameIndividuals}{a_i} \\
@@ -144,8 +145,8 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{proposition}
 \begin{proof}
   The algorithm can only return inconsistent at line \ref{alg:testDifferentIndividuals:returnInconsistent}.  So for some iteration of the first for-loop, its inner if-condition is true.  That is,
-  \[ (\exists a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} \ne \emptyset \]
-  So there exist distinct $a_i, a_j \in \alpha$ such that
+  \[ (\exists a_i \in \mathbf{a}) \;\; (\mathbf{a} \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} \ne \emptyset \]
+  So there exist distinct $a_i, a_j \in \mathbf{a}$ such that
   \begin{align*}
     & a_j \in \Call{getSameIndividuals}{a_i} \\
     \iff{}& O \sementails a_i \equiv a_j
@@ -159,8 +160,8 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{proposition}
 \begin{proof}
   Suppose the algorithm does not return inconsistent.  Then for every iteration of the first for-loop its inner if-condition must be false.  That is,
-  \[ (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \]
-  So for all distinct $a_i, a_j \in \alpha$ we have $O \nsementails a_i \equiv a_j$.  There exists an interpretation of $O$ in which the individuals are all different, which then also models
+  \[ (\forall a_i \in \mathbf{a}) \;\; (\mathbf{a} \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \]
+  So for all distinct $a_i, a_j \in \mathbf{a}$ we have $O \nsementails a_i \equiv a_j$.  There exists an interpretation of $O$ in which the individuals are all different, which then also models
   \[ O \union \oaxiom{DifferentIndividuals}(a_1, \ldots, a_n) \]
   Therefore ontology with the axiom added is not inconsistent, so by contrapositive the proposition holds.
 \end{proof}
@@ -169,7 +170,7 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
   \textproc{testDifferentIndividuals} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  As for theorem \ref{prop:testSameIndividualCorrect}.
+  As for theorem \ref{thm:testSameIndividual}.
 \end{proof}
 
 \todo[connect, ref]
@@ -239,7 +240,7 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
   \textproc{testClassAssertion} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  As for theorem \ref{prop:testSameIndividualCorrect}.
+  As for theorem \ref{thm:testSameIndividual}.
 \end{proof}
 
 \end{document}
