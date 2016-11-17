@@ -5,13 +5,16 @@
 \subsection{Assertions}
 \label{sec:algorithms:assert}
 
-We begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.
+Begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.  We take this as given, without proof, for all axioms tested in this section.
+
+Throughout this section, when an algorithm accepts $n$ individuals as arguments, we use the shorthand
+\[\alpha = \{a_1, \ldots, a_n\}\]
 
 \todo[connect, ref]
 \todo[notation]
 
 \begin{algorithm}[H]
-  \caption{test same individual}
+  \caption{test $a_1 \equiv \ldots \equiv a_n$}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -21,11 +24,13 @@ We begin by noting that the addition of an ABox axiom does not affect satisfiabi
     \Function{testSameIndividual}{$a_1, \ldots, a_n$}
       \If{$\{a_2, \ldots, a_n\} \subseteq \Call{getSameIndividuals}{a_1}$}
         \State \Return $\entailed$
+        \label{alg:testSameIndividual:returnEntailed}
       \Else
         \For{$i \gets 1$ \To $n$}
           \State $\delta \gets \Call{getDifferentIndividuals}{a_i}$
           \If{$\{a_1, \ldots, a_n\} \intersect \delta \ne \emptyset$}
             \State \Return $\inconsistent$
+            \label{alg:testSameIndividual:returnInconsistent}
           \EndIf
         \EndFor
         \State \Return $\absent$
@@ -34,17 +39,58 @@ We begin by noting that the addition of an ABox axiom does not affect satisfiabi
   \end{algorithmic}
 \end{algorithm}
 
+\begin{proposition}
+  \label{prop:testSameIndividualEntailed}
+  \sloppy~
+  \textproc{testSameIndividual} is sound and complete with respect to entailment.
+\end{proposition}
+\begin{proof}
+  Suppose the algorithm returns entailed.  This can only happen from line \ref{alg:testSameIndividual:returnEntailed}, inside the first if-condition, which is reached if and only if
+  \begin{align*}
+    & \{a_2, \ldots, a_n\} \subseteq \Call{getSameIndividuals}{a_1} \\
+    \iff{}&(\forall a_j \in \{a_2, \ldots, a_n\}) \;\; a_j \in \Call{getSameIndividuals}{a_1} \\
+    \iff{}& (\forall a_j \in \{a_2, \ldots, a_n\}) \;\; a_j \equiv a_1
+  \end{align*}
+  Equivalence of individuals is transitive, so this is the same as $a_1 \equiv \ldots \equiv a_n$ being entailed.  The chain of implication holds in both directions, giving both soundness and completeness.
+\end{proof}
+
+\begin{proposition}
+  \textproc{testSameIndividual} is sound with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  The algorithm can only return inconsistent at line \ref{alg:testSameIndividual:returnInconsistent}, so the first if-condition is false, and for some iteration of the for-loop the inner if-condition is true.  From the inner condition, we have
+  \begin{align*}
+    & (\exists i \le n) \;\; \alpha \intersect \Call{getDifferentIndividuals}{a_i} \ne \emptyset \\
+    \iff{}& (\exists a_i, a_j \in \alpha) \;\; a_j \in \Call{getDifferentIndividuals}{a_i} \\
+    \iff{}& (\exists a_i, a_j \in \alpha) \;\; O \sementails a_i \not\equiv a_j
+  \end{align*}
+  Which contradicts the axiom under test, and therefore
+  \[ \test_O(a_1 \equiv \ldots \equiv a_n) = \inconsistent \qed \]
+\end{proof}
+
+\begin{proposition}
+  \textproc{testSameIndividual} is complete with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  Suppose the algorithm does not return inconsistent.  If it returns entailed, by proposition \ref{prop:testSameIndividualEntailed}, $\test_O(a_1 \equiv \ldots \equiv a_n) = \entailed$.  If not, then for every iteration of the for-loop the inner if-condition must be false.  That is,
+  \[ (\forall a_i, a_j \in \alpha) \;\; O \nsementails a_i \not\equiv a_j \]
+  It follows that $O$ has an interpretation in which $a_1 \equiv \ldots \equiv a_n$, so $O \union (a_1 \equiv \ldots \equiv a_n)$ is consistent.
+
+  In both cases, $\test_O(a_1 \equiv \ldots \equiv a_n) \ne \inconsistent$, so by contrapositive the proposition holds.
+\end{proof}
+
 \begin{theorem}
+  \label{prop:testSameIndividualCorrect}
   \textproc{testSameIndividual} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  \todo
+  The algorithm is sound and complete with respect to entailment and inconsistency, and by default also absence.  All loops are bounded.
 \end{proof}
 
 \todo[connect, ref]
 
 \begin{algorithm}[H]
-  \caption{test different individuals}
+  \caption{test $\oaxiom{DifferentIndividuals}(a_1, \ldots, a_n)$}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -56,6 +102,7 @@ We begin by noting that the addition of an ABox axiom does not affect satisfiabi
         \State $\gamma \gets \Call{getSameIndividuals}{a_i}$
         \If{$(\{a_1, \ldots, a_n\} \setminus \{a_i\}) \intersect \gamma \ne \emptyset$}
           \State \Return $\inconsistent$
+          \label{alg:testDifferentIndividuals:returnInconsistent}
         \EndIf
       \EndFor
       \For{$i \gets 1$ \To $n$}
@@ -65,15 +112,64 @@ We begin by noting that the addition of an ABox axiom does not affect satisfiabi
         \EndIf
       \EndFor
       \State \Return $\entailed$
+      \label{alg:testDifferentIndividuals:returnEntailed}
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{proposition}
+  \sloppy~
+  \textproc{testDifferentIndividuals} is sound and complete with respect to entailment.
+\end{proposition}
+\begin{proof}
+  The algorithm can only return entailed at line \ref{alg:testDifferentIndividuals:returnEntailed}.  To reach this line, the two if-conditions must be false for every iteration of their enclosing for-loops, else another result would be returned.  This means
+  \begin{align*}
+    & (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \\
+    {}\land{}& (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \subseteq \Call{getDifferentIndividuals}{a_i}
+  \end{align*}
+  Equivalently, for all distinct arguments $a_i, a_j \in \alpha$ with $i \ne j$
+  \begin{align*}
+    & \begin{multlined}[t]
+      a_j \notin \Call{getSameIndividuals}{a_i} \\
+      {} \land a_j \in \Call{getDifferentIndividuals}{a_i}
+    \end{multlined} \\
+    \iff{}& O \nsementails a_i \equiv a_j \;\land\; O \sementails a_i \not\equiv a_j
+  \end{align*}
+  This holds if and only if the ontology already entails the axiom.
+\end{proof}
+
+\begin{proposition}
+  \sloppy~
+  \textproc{testDifferentIndividuals} is sound with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  The algorithm can only return inconsistent at line \ref{alg:testDifferentIndividuals:returnInconsistent}.  So for some iteration of the first for-loop, its inner if-condition is true.  That is,
+  \[ (\exists a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} \ne \emptyset \]
+  So there exist distinct $a_i, a_j \in \alpha$ such that
+  \begin{align*}
+    & a_j \in \Call{getSameIndividuals}{a_i} \\
+    \iff{}& O \sementails a_i \equiv a_j
+  \end{align*}
+  This contradicts the axiom under test, so the ontology would become inconsistent if the axiom were added.
+\end{proof}
+
+\begin{proposition}
+  \sloppy~
+  \textproc{testDifferentIndividuals} is complete with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  Suppose the algorithm does not return inconsistent.  Then for every iteration of the first for-loop its inner if-condition must be false.  That is,
+  \[ (\forall a_i \in \alpha) \;\; (\alpha \setminus \{a_i\}) \intersect \Call{getSameIndividuals}{a_i} = \emptyset \]
+  So for all distinct $a_i, a_j \in \alpha$ we have $O \nsementails a_i \equiv a_j$.  There exists an interpretation of $O$ in which the individuals are all different, which then also models
+  \[ O \union \oaxiom{DifferentIndividuals}(a_1, \ldots, a_n) \]
+  Therefore ontology with the axiom added is not inconsistent, so by contrapositive the proposition holds.
+\end{proof}
 
 \begin{theorem}
   \textproc{testDifferentIndividuals} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  \todo
+  As for theorem \ref{prop:testSameIndividualCorrect}.
 \end{proof}
 
 \todo[connect, ref]
@@ -89,84 +185,61 @@ We begin by noting that the addition of an ABox axiom does not affect satisfiabi
     \Function{testClassAssertion}{$C, a$}
       \If{$a \in \Call{getInstances}{C}$}
         \State \Return $\entailed$
+        \label{alg:testClassAssertion:returnEntailed}
       \ElsIf{$a \in \Call{getInstances}{\neg C}$}
         \State \Return $\inconsistent$
+        \label{alg:testClassAssertion:returnInconsistent}
       \Else
         \State \Return $\absent$
       \EndIf
     \EndFunction
   \end{algorithmic}
 \end{algorithm}
+
+\begin{proposition}
+  \label{prop:testClassAssertionEntailed}
+  \sloppy~
+  \textproc{testClassAssertion} is sound and complete with respect to entailment.
+\end{proposition}
+\begin{proof}
+  The algorithm can only return entailed at line \ref{alg:testClassAssertion:returnEntailed}.  This is reached if and only if the first if-condition is true.  That is,
+  \begin{align*}
+    & a \in \Call{getInstances}{C} \\
+    \iff{}& O \sementails a : C \\
+    \iff{}& \test_O(a : c) = \entailed \qed
+  \end{align*}
+\end{proof}
+
+\begin{proposition}
+  \sloppy~
+  \textproc{testClassAssertion} is sound with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  Suppose the algorithm returns inconsistent.  This can only happen at line \ref{alg:testClassAssertion:returnInconsistent}, so the first if-condition is false and the second is true.  That is,
+  \begin{align*}
+    & a \notin \Call{getInstances}{C} \land a \in \Call{getInstances}{\neg C} \\
+    \iff{}& O \nsementails a : C \;\land\; O \sementails a : \neg C
+  \end{align*}
+  This contradicts $a : C$, so $O \union (a : C)$ is inconsistent.
+\end{proof}
+
+\begin{proposition}
+  \textproc{testClassAssertion} is complete with respect to inconsistency.
+\end{proposition}
+\begin{proof}
+  Suppose the algorithm does not return inconsistent.  If it returns entailed, then by proposition \ref{prop:testClassAssertionEntailed} we have that $\test_O(a : C) = \entailed$.  If not, then the second if-condition must be false.
+  \begin{align*}
+    & a \notin \Call{getInstances}{\neg C} \\
+    \iff{}& O \nsementails a : \neg C
+  \end{align*}
+  So $O$ has an interpretation which also models $O \union (a : C)$ which is therefore consistent.  By contrapositive, the proposition holds.
+\end{proof}
 
 \begin{theorem}
   \textproc{testClassAssertion} is correct and terminating.
 \end{theorem}
 \begin{proof}
-  \todo
-\end{proof}
-
-\todo[connect, ref]
-
-\begin{algorithm}[H]
-  \caption{test $(a, b) : R$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression \\
-      $a, b$ individuals
-    }
-    \Function{testObjectPropertyAssertion}{$R, a, b$}
-      \If{$b \in \Call{getObjectPropertyValues}{a, R}$}
-        \State \Return $\entailed$
-      \Else
-        \For{$N \in \Call{getTypes}{b}$}
-          \If{$a \in \Call{getInstances}{\neg \exists R . N}$}
-            \State \Return $\inconsistent$
-          \EndIf
-        \EndFor
-        \State \Return $\absent$
-      \EndIf
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{theorem}
-  \sloppy
-  \textproc{testObjectPropertyAssertion} is correct and terminating.
-\end{theorem}
-\begin{proof}
-  \todo
-\end{proof}
-
-\todo[connect, ref]
-The name of the following algorithm has been shortened to fit on one line.
-
-\begin{algorithm}[H]
-  \caption{test $(a, b) : \neg R$}
-  \begin{algorithmic}[1]
-    \raggedright
-    \Input{
-      $R$ object property expression \\
-      $a, b$ individuals
-    }
-    \Function{testNegativeObjPropAssertion}{$R, a, b$}
-      \State $r \gets \Call{testObjectPropertyAssertion}{R, a, b}$
-      \If{$r = \entailed$}
-        \State \Return $\inconsistent$
-      \ElsIf{$r = \inconsistent$}
-        \State \Return $\entailed$
-      \Else
-        \State \Return $\absent$
-      \EndIf
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{theorem}
-  \textproc{testNegativeObjPropAssertion} is correct and terminating.
-\end{theorem}
-\begin{proof}
-  \todo
+  As for theorem \ref{prop:testSameIndividualCorrect}.
 \end{proof}
 
 \end{document}
