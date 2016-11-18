@@ -1,0 +1,143 @@
+%TC:macro \subtitle [header]
+%TC:envir algorithm [] float
+%TC:envir algorithmic [] ignore
+%TC:newcounter todo Number of TODOs
+%TC:macro \todo [option:ignore]
+%TC:macrocount \todo [todo]
+%TC:envir todos [] ignore
+
+\documentclass{sig-alternate}
+
+\usepackage{ifdraft}
+\makeatletter
+\ifdraft{
+  \def\@copyrightspace{\relax}
+  \def\thepage{\arabic{page}}
+}{}
+\makeatother
+
+\usepackage{subfiles}
+
+\usepackage[english]{babel}
+\usepackage[english]{isodate}
+\cleanlookdateon
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
+
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{cancel}
+\usepackage{centernot}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xspace}
+\usepackage{hyphenat}
+\usepackage{array}
+\usepackage{ktodo}
+
+% \allowdisplaybreaks
+
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+% \newcommand{\sementails}{\mathrel{|}\joinrel\mkern-1mu\mathrel{-}}
+% \newcommand{\synentails}{\mathrel{|}\joinrel\mkern-0.5mu\mathrel{=}}
+% \newcommand{\nsementails}{\mathrel{\cancel{\sementails}}}
+% \newcommand{\nsynentails}{\mathrel{\cancel{\synentails}}}
+\newcommand{\sementails}{\vdash}
+\newcommand{\synentails}{\vDash}
+\newcommand{\nsementails}{\nvdash}
+\newcommand{\nsynentails}{\nvDash}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\signature}{\Sigma}
+\newcommand{\signatureC}{\Sigma_C}
+\newcommand{\signatureI}{\Sigma_I}
+\newcommand{\signatureOP}{\Sigma_\mathit{OP}}
+\DeclareMathOperator{\test}{test}
+% \DeclareMathAlphabet{\mathttit}{OT1}{cmtt}{m}{it}
+% \newcommand{\oent}[1]{\mathttit{#1}}
+% \newcommand{\oaxiom}[1]{\mathtt{#1}}
+\newcommand{\oent}[1]{\mathtt{#1}}
+\newcommand{\oaxiom}[1]{\mathrm{#1}}
+% \newcommand{\testresult}[1]{\ifmmode\mathrm{#1}\else#1\fi}
+\newcommand{\testresult}[1]{\mathrm{#1}}
+\newcommand{\entailed}{\testresult{entailed}}
+\newcommand{\inconsistent}{\testresult{inconsistent}}
+\newcommand{\incoherent}{\testresult{incoherent}}
+\newcommand{\absent}{\testresult{absent}}
+\newcommand{\aligncolon}{\makebox[\widthof{${}\sqsubseteq{}$}][c]{:}}
+
+\newdef{definition}{Definition}
+\newdef{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+% \makeatletter
+% \renewenvironment{algorithm}[1][]
+%   {% \begin{breakablealgorithm}
+%    \begin{center}
+%      \refstepcounter{algorithm}% New algorithm
+%      \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+%      \renewcommand{\caption}[2][\relax]{% Make a new \caption
+%        {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+%        \ifx\relax##1\relax % #1 is \relax
+%          \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+%        \else % #1 is not \relax
+%          \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+%        \fi
+%        \kern2pt\hrule\kern2pt
+%      }
+%   }{% \end{breakablealgorithm}
+%      \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+%    \end{center}
+%   }
+% \makeatother
+
+\algnewcommand{\Input}[1]{\item[\textbf{Input:}] \parbox[t]{\linewidth-1cm}{#1}\vspace{3pt}}
+\algnewcommand{\And}{\textbf{and}\xspace}
+\algnewcommand{\Or}{\textbf{or}\xspace}
+\algnewcommand{\Not}{\textbf{not} }
+\algnewcommand{\To}{\textbf{to}\xspace}
+\newcommand{\algindent}[1]{\hskip\dimexpr\algorithmicindent*#1\relax}
+\let\oldtextproc\textproc
+\renewcommand{\textproc}[1]{\nohyphens{\oldtextproc{#1}}}
+
+% This has to go in the preamble to not get counted by texcount
+\numberofauthors{1}
+\title{Towards Test-Driven Development of Ontologies: \\
+  An Analysis of Testing Algorithms}
+\author{
+  \alignauthor
+  Kieren Davies\\
+   \affaddr{University of Cape Town}\\
+   \email{kieren@kdavi.es}
+}
+
+\begin{document}
+
+\ifdraft{}{\subfile{cover}}
+
+\maketitle
+
+\subfile{sec0-abstract}
+\subfile{sec1-intro}
+\subfile{sec2-rationale}
+\subfile{sec3-related}
+\subfile{sec4-reasoners}
+\subfile{sec5-model}
+\subfile{sec6-algorithms}
+\subfile{sec7-examples}
+\subfile{sec8-discussion}
+\subfile{sec9-conclusion}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\appendix
+\subfile{seca-untested}
+% \subfile{secb-code}
+
+\end{document}

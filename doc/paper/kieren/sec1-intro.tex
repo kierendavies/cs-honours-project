@@ -1,0 +1,36 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Introduction}
+\label{sec:intro}
+
+Ontologies, and ontology engineering, have become increasingly relevant in the past decade.
+They are regarded as a critical component of the Semantic Web \cite{BernersLee:SemanticWeb}, and have been employed successfully in fields ranging from genetics \cite{GeneOntology:GoingForward} to news and broadcasting \cite{BBC:LinkedData}.
+
+Despite this, ontologies have not seen widespread adoption within business and industry \cite{Kaczmarek:EnterpriseModelling}.
+We postulate that one of the contributing factors is the state of ontology engineering methodologies, which lag behind software engineering methodologies in terms of both maturity and adoption \cite{Iqbal:Methodologies, Simperl:Maturity}.
+In particular, there are no published methodologies which explicitly incorporate automated testing, which has become a staple of software engineering.
+
+There exist some tools for testing ontologies \cite{Lawrynowicz:TDDontoTool, Warrender:HowWhatWhyTest, Scone:Bitbucket}, but they all share two notable shortcomings: certain axioms cannot be tested even though they are permitted in OWL 2 \cite{W3C:OWL2Syntax}, such as $\forall R.C \sqsubseteq D$, and test results are either ``pass'' or ``fail'' with no further information as to the nature of failure.
+Furthermore, there has been no rigorous analysis of the techniques and algorithms used for ontology testing.
+In this paper we present algorithms to test axioms against ontologies and prove their correctness.
+The algorithms provide new functionality to address the aforementioned shortcomings.
+
+We aim for the algorithms to each handle the general case of an axiom, and avoid having multiple algorithms to handle variants of a single kind of axiom.
+
+We aim for all algorithms to be acceptable fast.
+Specifically, we do not permit reclassification of an ontology in any test, because on typical hardware this commonly takes minutes or hours, which we deem unacceptably slow.
+
+Lastly we require the algorithms to support operation with any reasoner compliant with OWL 2 semantics.
+
+In section \ref{sec:rationale} we justify why testing is applicable to ontologies.
+In section \ref{sec:related} we examine prior work that has been done on this topic, and the shortcomings in the state of the art.
+In section \ref{sec:reasoners} we consider how ontology reasoners may be applied to develop testing algorithms.
+In section \ref{sec:model} we present a formal model of testing, and in section \ref{sec:algorithms} we employ the model to describe and analyse testing algorithms.
+In section \ref{sec:examples} we demonstrate the use cases of these algorithms with examples.
+In section \ref{sec:discussion} we discuss the usefulness of the new algorithms and how they may be implemented in new or existing tools.
+Lastly, in section \ref{sec:conclusion} we conclude and identify scope for future work.
+
+\end{document}

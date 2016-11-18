@@ -1,0 +1,43 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Application of reasoners}
+\label{sec:reasoners}
+
+There are numerous automated reasoners which are compliant with OWL 2, most notably HermiT \cite{Glimm:HermiT}, with several mechanisms for making use of them.  OWL API \cite{OWLAPI} is a Java library which defines a widely-supported standard interface for reasoners.  OWL-BGP \cite{OWLBGP} is a Java library which implements SPARQL, an ontology query language.
+
+As mentioned in section \ref{sec:related}, evaluation of TDDonto identified that OWL-BGP introduces an efficiency overhead which is not present in OWL API \cite{Lawrynowicz:TDDontoTool}.  Therefore we focus only on OWL API and the functionality it provides.
+
+Evaluation of TDDonto also found that implementations which introduced temporary ``mock'' individuals were substantially slower than all others.  The cause was not explicitly identified, but it is likely due to the need for reclassification of the ontology to include the new assertions.  As stipulated in section \ref{sec:intro}, we do not permit reclassification and therefore we cannot introduce new axioms in our testing algorithms.  Instead, after the ontology is initially classified, we only make queries, which are assumed to be acceptably efficient.
+
+The OWL API reasoner interface specifies a ``convenience'' method named \textproc{isEntailed} which accepts any axiom and returns a boolean indicating whether or not that axiom is entailed.  However, it is not mandatory for reasoners to implement this method.  We therefore do not permit its use.
+
+In order to make use of reasoner methods and perform rigorous analysis on the algorithms in which they are used, we require a formalisation of available methods and their returned values.  We begin with a prerequisite definition.
+
+\begin{definition}
+  The \emph{signature} $\signature(A)$ of an axiom or ontology $A$, the set of all symbols in its formulae.  The \emph{class signature} $\signatureC(A)$ and \emph{individual signature} $\signatureI(A)$ are the subsets of $\signature(A)$ which respectively contain only classes and individuals.
+\end{definition}
+
+% We now identify relevant methods available from reasoners through the OWL API and formalise their returned values.
+Now we identify relevant methods and their returned values.
+Let $O$ be the ontology under test.
+Here and in the remainder of the paper we use the variables $C$, $D$, and $E$ for class expressions; $N$ for a named class; $a$ and $b$ for individuals; and $R$ for an object property expression.
+
+\begin{definition}
+  The following methods are available from the reasoner.
+  \begin{gather*}
+    \Call{isSatisfiable}{C} \iff O \nsementails C \sqsubseteq \bot \\
+    \Call{getSubClasses}{C} = \{ N \in \signatureC(O) \mid O \sementails N \sqsubseteq C \} \\
+    \Call{getInstances}{C} = \{ a \in \signatureI(O) \mid O \sementails a : C \} \\
+    \Call{getTypes}{a} = \{ N \in \signatureC(O) \mid O \sementails a : N \} \\
+    \Call{getSameIndividuals}{a} = \{ b \in \signatureI(O) \mid O \sementails b \equiv a \} \\
+    \Call{getDifferentIndividuals}{a} = \{ b \in \signatureI(O) \mid O \sementails b \not\equiv a \}
+  \end{gather*}
+  Note that \textproc{getSubClasses} returns the union of equivalent classes and strict subclasses.
+\end{definition}
+
+We make the assumption that reasoners implement these methods correctly and efficiently.  No thorough low-level analysis of any reasoners has been done, but the high-level techniques used by the most popular reasoners, such as HermiT's hypertableau calculus \cite{Glimm:HermiT}, are widely accepted to be correct.  In addition, the popular reasoners have been subject to extensive practical testing.
+
+\end{document}

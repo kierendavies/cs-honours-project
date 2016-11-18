@@ -1,0 +1,103 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\subsection{Object property axioms}
+\label{sec:algorithms:objprop}
+
+We present all algorithms in this section without proof of correctness, as the OWL 2 specification \cite{W3C:OWL2Syntax} describes how the respective object property axioms can be written as class axioms.
+
+Algorithms \ref{alg:testObjectPropertyDomain} and \ref{alg:testObjectPropertyRange} test that an object property expression has a given class expression as its domain and range, respectively.
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{ObjectPropertyDomain}(R, C)$}
+  \label{alg:testObjectPropertyDomain}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression \\
+      $C$ class expression
+    }
+    \Function{testObjectPropertyDomain}{$R, C$}
+      \State \Return \Call{testSubClassOf}{$\exists R . \top, C$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{ObjectPropertyRange}(R, C)$}
+  \label{alg:testObjectPropertyRange}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression \\
+      $C$ class expression
+    }
+    \Function{testObjectPropertyRange}{$R, C$}
+      \State \Return \Call{testSubClassOf}{$\top, \forall R . C$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{alg:FunctionalObjectProperty} tests that an object property expression is functional, and algorithm \ref{alg:InverseFunctionalObjectProperty} that it is inverse-functional.
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{FunctionalObjectProperty}(R)$}
+  \label{alg:FunctionalObjectProperty}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{FunctionalObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectMaxCardinality}(1, R)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{InverseFunctionalObjectProperty}(R)$}
+  \label{alg:InverseFunctionalObjectProperty}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{InverseFunctionalObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectMaxCardinality}(1, R^-)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{alg:ReflexiveObjectProperty} tests that an object property expression is reflexive, and algorithm \ref{alg:IrreflexiveObjectProperty} that it is irreflexive.
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{ReflexiveObjectProperty}(R)$}
+  \label{alg:ReflexiveObjectProperty}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{ReflexiveObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\top, \oaxiom{ObjectHasSelf}(R)$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+  \caption{test $\oaxiom{IrreflexiveObjectProperty}(R)$}
+  \label{alg:IrreflexiveObjectProperty}
+  \begin{algorithmic}[1]
+    \raggedright
+    \Input{
+      $R$ object property expression
+    }
+    \Function{IrreflexiveObjectProperty}{$R$}
+      \State \Return \Call{testSubClassOf}{$\oaxiom{ObjectHasSelf}(R), \bot$}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\end{document}

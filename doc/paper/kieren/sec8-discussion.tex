@@ -1,0 +1,37 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Discussion}
+\label{sec:discussion}
+
+The algorithms we have presented fully cover class axioms and partially cover assertions and object property axioms.
+They lay the groundwork for testing algorithms to be devised for the remaining axioms, and for their correctness to be proven.
+
+These new testing algorithms address the shortcomings of the existing tools TDDonto, Tawny-OWL, and \textsc{Scone}.
+Specifically, they offer greater coverage of OWL 2 axioms, and return more detailed test results.
+The have also been rigorously proven to be correct.
+They will facilitate the development of new tools, or the extension of existing ones, which in turn can aid the adoption of test-driven development within ontology engineering, and then hopefully the adoption of ontologies within business and industry.
+
+TDDonto already implements a testing harness with a broad collection of testing algorithms.
+It could easily be modified to make use of these new algorithms.
+It could then support the testing of those complex axioms which it does not currently support, and report detailed information on the consequences of adding a new axiom.
+This would make it an invaluable component of the ontology development workflow within Prot\'eg\'e.
+
+Even though Tawny-OWL tests are predicates which must only return boolean results, they could still make use of slightly modified versions of the new algorithms so that they support the same complex axioms, only return boolean results, and include detailed results in a full test report.
+
+\textsc{Scone} could likewise be extended to support testing class axioms which contain complex expressions, and object and data properties.
+
+There is scope for ontology testing algorithms to be improved further.
+Firstly, certain constrained cases might be tested more efficiently.
+For example, testing $N \sqsubseteq C$ where $N$ is a named class, it suffices to determine entailment by checking if $N \in \Call{getSubClasses}{C}$, which may be faster.
+Secondly, it may be possible to test axioms more efficiently when the ontology is known to be in a restricted profile of OWL 2.
+Lastly, the algorithms could be extended to generate justifications of inconsistency or incoherence without the need to reclassify the ontology.
+
+When implementing these algorithms, there are certain considerations.
+Most importantly, the consistency and coherence preconditions should be checked once before evaluating a suite of tests, and missing entities should be checked before each test.
+Next, it should be made possible to test $\Call{isSatisfiable}{C}$ directly so as to allow authors to ensure satisfiability of arbitrary class expressions.
+Lastly, since some reasoners support checking $\Call{isEntailed}{A}$, it may make sense to use it where possible.  This merits investigation and benchmarking.
+
+\end{document}

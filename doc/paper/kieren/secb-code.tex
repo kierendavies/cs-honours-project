@@ -1,0 +1,81 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Code for reasoner methods}
+\label{app:code}
+
+In table \ref{tab:code} we present example code snippets corresponding to the methods introduced in section \ref{sec:reasoners}.  All code is in Java 8 and uses OWL API 5.  The following imports and declarations apply as boilerplate for all snippets.
+
+\bigskip
+
+\noindent
+\begin{verbatim}
+import java.util.Stream;
+import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+OWLReasoner reasoner;
+OWLClassExpression C;
+OWLNamedIndividual a;
+OWLPropertyExpression R;
+\end{verbatim}
+
+\begin{table*}
+\center
+\caption{Example code for reasoner methods}
+\label{tab:code}
+
+\makeatletter
+\newcolumntype{V}[1]{>{\topsep=0pt\@minipagetrue}p{#1}<{\vspace{-\baselineskip}}}
+\makeatother
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{l V{8cm}} \hline
+Method call & Code \\ \hline
+
+$\Call{isSatisfiable}{C}$ &
+\begin{verbatim}
+reasoner.isSatisfiable(C)
+\end{verbatim}
+\\
+
+$\Call{getSubClasses}{C}$ &
+\begin{verbatim}
+Stream.concat(
+  reasoner.getEquivalentClasses(C).entities(),
+  reasoner.getSubClasses(C).entities()
+)
+\end{verbatim}
+\\
+
+$\Call{getInstances}{C}$ &
+\begin{verbatim}
+reasoner.getInstances(C).entities()
+\end{verbatim}
+\\
+
+$\Call{getTypes}{a}$ &
+\begin{verbatim}
+reasoner.getTypes(a).entities()
+\end{verbatim}
+\\
+
+$\Call{getSameIndividuals}{a}$ &
+\begin{verbatim}
+reasoner.getSameIndividuals(a).entities()
+\end{verbatim}
+\\
+
+$\Call{getDifferentIndividuals}{a}$ &
+\begin{verbatim}
+reasoner.getDifferentIndividuals(a).entities()
+\end{verbatim}
+\\
+
+\hline
+\end{tabular}
+\end{table*}
+
+\end{document}

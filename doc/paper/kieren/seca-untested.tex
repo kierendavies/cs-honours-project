@@ -1,0 +1,59 @@
+% !TEX root = paper.tex
+\documentclass[paper.tex]{subfiles}
+
+\begin{document}
+
+\section{Untested axioms}
+\label{app:untested}
+
+Here we provide a complete list of OWL 2 axioms for which this paper does not describe a testing algorithm.
+
+\begin{itemize}
+  \small
+
+  \item Assertions
+  \begin{itemize}[noitemsep]
+    \item $\oaxiom{ObjectPropertyAssertion}$
+    \item $\oaxiom{NegativeObjectPropertyAssertion}$
+    \item $\oaxiom{DataPropertyAssertion}$
+    \item $\oaxiom{NegativeDataPropertyAssertion}$
+  \end{itemize}
+
+  \item Object property axioms
+  \begin{itemize}[noitemsep]
+    \item $\oaxiom{SubObjectPropertyOf}$
+    \item $\oaxiom{EquivalentObjectProperties}$
+    \item $\oaxiom{DisjointObjectProperties}$
+    \item $\oaxiom{InverseObjectProperties}$
+    \item $\oaxiom{SymmetricObjectProperty}$
+    \item $\oaxiom{AsymmetricObjectProperty}$
+    \item $\oaxiom{TransitiveObjectProperty}$
+  \end{itemize}
+
+  \item Data property axioms
+  \begin{itemize}[noitemsep]
+    \item $\oaxiom{SubDataPropertyOf}$
+    \item $\oaxiom{EquivalentDataProperties}$
+    \item $\oaxiom{DisjointDataProperties}$
+    \item $\oaxiom{DataPropertyDomain}$
+    \item $\oaxiom{DataPropertyRange}$
+    \item $\oaxiom{FunctionalDataProperty}$
+  \end{itemize}
+
+  \item Annotation axioms
+  \begin{itemize}[noitemsep]
+    \item $\oaxiom{AnnotationAssertion}$
+    \item $\oaxiom{SubAnnotationPropertyOf}$
+    \item $\oaxiom{AnnotationPropertyDomain}$
+    \item $\oaxiom{AnnotationPropertyRange}$
+  \end{itemize}
+
+  \item Other
+  \begin{itemize}[noitemsep]
+    \item $\oaxiom{Declaration}$
+    \item $\oaxiom{DatatypeDefinition}$
+    \item $\oaxiom{HasKey}$
+  \end{itemize}
+\end{itemize}
+
+\end{document}
