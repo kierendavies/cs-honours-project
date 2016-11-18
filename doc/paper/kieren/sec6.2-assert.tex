@@ -5,16 +5,15 @@
 \subsection{Assertions}
 \label{sec:algorithms:assert}
 
-Begin by noting that the addition of an ABox axiom does not affect satisfiability of classes, so $O$ cannot become incoherent.  We take this as given, without proof, for all axioms tested in this section.
+Begin by noting that the addition of an assertion does not affect satisfiability of classes, so $O$ cannot become incoherent.  We take this as given, without proof, for all axioms tested in this section.
 
-Throughout this section, when an algorithm accepts $n$ individuals as arguments, we use the shorthand
-\[\mathbf{a} = \{a_1, \ldots, a_n\}\]
+In this section, when an algorithm accepts $n$ individuals as arguments, we use the shorthand $\mathbf{a} = \{a_1, \ldots, a_n\}$.
 
-\todo[connect, ref]
-\todo[notation]
+Algorithm \ref{alg:testSameIndividual} tests equivalence of individuals.  We use the integer variable $i$ to iterate over the indices of individuals given as arguments, and the variable $\delta$ to temporarily store a set of individuals.
 
 \begin{algorithm}[H]
   \caption{test $a_1 \equiv \ldots \equiv a_n$}
+  \label{alg:testSameIndividual}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -88,10 +87,11 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
   The algorithm is sound and complete with respect to entailment and inconsistency, and by default also absence.  All loops are bounded.
 \end{proof}
 
-\todo[connect, ref]
+Algorithm \ref{alg:testDifferentIndividuals} tests difference of individuals.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{DifferentIndividuals}(a_1, \ldots, a_n)$}
+  \label{alg:testDifferentIndividuals}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -119,7 +119,7 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{algorithm}
 
 \begin{proposition}
-  \sloppy~
+  \sloppy
   \textproc{testDifferentIndividuals} is sound and complete with respect to entailment.
 \end{proposition}
 \begin{proof}
@@ -140,7 +140,7 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
 \end{proof}
 
 \begin{proposition}
-  \sloppy~
+  \sloppy
   \textproc{testDifferentIndividuals} is sound with respect to inconsistency.
 \end{proposition}
 \begin{proof}
@@ -173,10 +173,11 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
   As for theorem \ref{thm:testSameIndividual}.
 \end{proof}
 
-\todo[connect, ref]
+Algorithm \ref{alg:testClassAssertion} tests the assertion that an individual is an instance of a class expression.
 
 \begin{algorithm}[H]
   \caption{test $a : C$}
+  \label{alg:testClassAssertion}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -185,9 +186,11 @@ Throughout this section, when an algorithm accepts $n$ individuals as arguments,
     }
     \Function{testClassAssertion}{$C, a$}
       \If{$a \in \Call{getInstances}{C}$}
+        \label{alg:testClassAssertion:checkEntailed}
         \State \Return $\entailed$
         \label{alg:testClassAssertion:returnEntailed}
       \ElsIf{$a \in \Call{getInstances}{\neg C}$}
+        \label{alg:testClassAssertion:checkInconsistent}
         \State \Return $\inconsistent$
         \label{alg:testClassAssertion:returnInconsistent}
       \Else

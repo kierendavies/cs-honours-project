@@ -6,23 +6,27 @@
 \subsection{Class axioms}
 \label{sec:algorithms:class}
 
-In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, in implementing testing algorithms, \textproc{getSubClasses} is not generally useful because it returns only named classes.  To resolve this, we build larger class expressions from the arguments and query them for satisfiability and instances.  \todo[contradictory wording]
+In the class axioms permitted by OWL 2, all arguments may be arbitrary class expressions, not only named classes, except $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$ in which $N$ must be a named class.  Consequently, to determine if $C \sqsubseteq D$ it is not sufficient to check if $C \in \Call{getSubClasses}{D}$, because $C$ will not occur in this set if it is not a named class.  To resolve this, we build class expressions from the arguments and query them for satisfiability and instances.
 
-\todo[connect, ref]
+Algorithm \ref{alg:testSubClassOf} tests subsumption of class expressions.
 
 \begin{algorithm}[H]
   \caption{test $C \sqsubseteq D$}
+  \label{alg:testSubClassOf}
   \begin{algorithmic}[1]
     \raggedright
     \Input{$C, D$ class expressions}
     \Function{testSubClassOf}{$C, D$}
       \If{$\Call{getInstances}{C \sqcap \neg D} \ne \emptyset$}
+        \label{alg:testSubClassOf:checkInconsistent}
         \State \Return $\inconsistent$
         \label{alg:testSubClassOf:returnInconsistent}
       \ElsIf{$\Call{getSubClasses}{C \sqcap \neg D} \ne \emptyset$}
+        \label{alg:testSubClassOf:checkIncoherent}
         \State \Return $\incoherent$
         \label{alg:testSubClassOf:returnIncoherent}
       \ElsIf{\Call{isSatisfiable}{$C \sqcap \neg D$}}
+        \label{alg:testSubClassOf:checkAbsent}
         \State \Return $\absent$
       \Else
         \State \Return $\entailed$
@@ -54,11 +58,8 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
     \iff{}& \I \:\synentails\: C \sqcap \neg D \sqsubseteq \bot \\
     \iff{}& O \:\sementails\: C \sqcap \neg D \sqsubseteq \bot
   \end{align*}
-  \todo[is this too laborious?]
   The first and last bi-implications hold because we consider every possible interpretation.
 \end{proof}
-
-\todo[exclude or cite]
 
 \begin{proposition}
   \label{prop:testSubClassOfEntailedSound}
@@ -204,11 +205,12 @@ In the class axioms permitted by OWL 2, all arguments may be arbitrary class exp
   Termination is trivial, since the algorithm contains no loops or recursion.
 \end{proof}
 
-\todo[connect, ref]
-\todo[clarify $i$, $j$, $r$, $r'$]
+Algorithm \ref{alg:testEquivalentClasses} tests equivalence if class expressions.
+In the algorithm we use the integer variables $i$ and $j$ to iterate over the indices of the class expressions given as arguments, and the variables $r$ and $r'$ to store intermediate test results.
 
 \begin{algorithm}[H]
   \caption{test $C_1 \equiv \ldots \equiv C_n$}
+  \label{alg:testEquivalentClasses}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -264,10 +266,11 @@ It is not sufficient to implement \textproc{testEquivalentClasses} by simply tes
 \[ O = \{ N \equiv C_2 \sqcap \neg C_3 \} \]
 It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but this would not be reporting by testing only $C_1 \sqsubseteq C_2$, $C_2 \sqsubseteq C_1$, $C_1 \sqsubseteq C_3$, and $C_3 \sqsubseteq C_1$.
 
-\todo[connect, ref]
+Algorithm \ref{alg:testDisjointClasses} tests pairwise disjointness of class expressions.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{DisjointClasses}(C_1, \ldots, C_n)$}
+  \label{alg:testDisjointClasses}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -319,7 +322,8 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
 \end{proof}
 
 \begin{proposition}
-  \sloppy~
+  \label{prop:testDisjointClassesInconsistentComplete}
+  \sloppy
   \textproc{testDisjointClasses} is complete with respect to inconsistency.
 \end{proposition}
 \begin{proof}
@@ -374,10 +378,11 @@ It can be seen that $\Call{testSubClassOf}{C_2, C_3}$ returns incoherent, but th
   Correctness is shown as in the proof of theorem \ref{thm:testSubClassOf}.  The algorithm terminates because all loops are bounded by $n$ and all calls to \textproc{testSubClassOf} terminate.
 \end{proof}
 
-\todo[connect, ref]
+Algorithm \ref{alg:testDisjointUnion} tests the disjoint union axiom.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{DisjointUnion}(N, C_1, \ldots, C_n)$}
+  \label{alg:testDisjointUnion}
   \begin{algorithmic}[1]
     \raggedright
     \Input{

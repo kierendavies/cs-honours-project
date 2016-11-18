@@ -6,7 +6,7 @@
 \section{Related work}
 \label{sec:related}
 
-We have found only three existing tools which implement ontology testing.
+To the best of our knowledge, there are only three existing tools which implement ontology testing.
 
 TDDonto \cite{Lawrynowicz:TDDontoTool} is a Prot\'eg\'e plugin which allows test axioms to be specified in Prot\'eg\'e's expression syntax.
 % Several implementation strategies were tried, and in evaluation it was found that making direct reasoner queries with OWL API is faster than making SPARQL queries with OWL-BGP or introducing ``mock'' individual assertions.
@@ -26,13 +26,13 @@ It is also separated from the usual ontology development tools.  It does not sup
 None of these three support the full range of axioms permitted in OWL 2.
 Most notably, in none of them is it possible to directly test axioms of the form $C \sqsubseteq D$ where $C$ is not a named class, such as $\forall R.E \sqsubseteq D$.
 
-Additionally, in each of the three tools, the result of any test is either pass or fail.
-No further information is reported.
-\todo[TDDonto has ``unknown'' for missing entity]
-This severly limits their usefulness as a means to explore an ontology or aid in development.
+% Additionally, in each of the three tools, the result of any test is either pass or fail.
+Additionally, all three of these tools give only limited information about the result of any test.
+Tawny-OWL and \textsc{Scone} report only pass or fail; TDDonto further reports if any entity in the axiom under test is not declared in the ontology.
+This hinders their usefulness as a means to explore an ontology or aid in development.
 
-\todo[no proofs]
+Furthermore, no attempt has been made to rigorously prove the correctness of the testing algorithms used by these any of tools.
 
-There is clear scope for these shortcomings to be addressed by new algorithms and tools which provide full coverage of OWL 2 axioms and which return detailed test results.
+There is clear scope for these shortcomings to be addressed by new algorithms and tools which provide full coverage of OWL 2 axioms and which return detailed test results, as well as proofs of their correctness.
 
 \end{document}

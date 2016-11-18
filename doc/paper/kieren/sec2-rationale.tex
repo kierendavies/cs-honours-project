@@ -18,8 +18,6 @@ The process is usually facilitated with a test harness which runs tests automati
 TDD has been shown to improve code quality \cite{Rafique:TDD}, especially in complex projects, and it is also believed to improve productivity and morale \cite{Beck:TDD}.
 In light of this, it has been proposed that TDD should be incorporated into new or existing ontology development methodologies \cite{Keet:TDDOntologies}.
 
-\todo[the argument of competency questions]
-
 Ontologies, like computer programs, can become complex to the point that it is difficult for a human author to predict the consequences of changes, especially if the author is inexperienced.
 Automated tests are therefore useful to detect unintended consequences.
 As an illustrative example, suppose an author creates the following classes:
@@ -35,7 +33,7 @@ Adding only a test instead ensures correctness without bloating the ontology.
 Tests may also be used outside of an automated test suite to explore and understand an ontology.
 For example, an author might be assessing an ontology of animals for reuse and wants to verify that $\oent{Giraffe} \sqsubseteq \oent{Mammal}$.
 The author can simply create a corresponding temporary test and observe the result.
-This saves the time it would take to browse the inferred class heirarchy in a development environment such as Prot\'eg\'e.
+This saves the time it would take to browse the inferred class hierarchy in a development environment such as Prot\'eg\'e.
 
 A similar approach can be employed when developing a new ontology.
 Before adding a new axiom, the author can create a temporary test to determine if the axiom is already entailed, if it will result in a contradiction or unsatisfiable class, or if it can be safely added.

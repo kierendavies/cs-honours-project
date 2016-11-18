@@ -8,10 +8,11 @@
 
 We present all algorithms in this section without proof of correctness, as the OWL 2 specification \cite{W3C:OWL2Syntax} describes how the respective object property axioms can be written as class axioms.
 
-\todo[connect, ref]
+Algorithms \ref{alg:testObjectPropertyDomain} and \ref{alg:testObjectPropertyRange} test that an object property expression has a given class expression as its domain and range, respectively.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ObjectPropertyDomain}(R, C)$}
+  \label{alg:testObjectPropertyDomain}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -24,10 +25,9 @@ We present all algorithms in this section without proof of correctness, as the O
   \end{algorithmic}
 \end{algorithm}
 
-\todo[connect, ref]
-
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ObjectPropertyRange}(R, C)$}
+  \label{alg:testObjectPropertyRange}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -40,10 +40,11 @@ We present all algorithms in this section without proof of correctness, as the O
   \end{algorithmic}
 \end{algorithm}
 
-\todo[connect, ref]
+Algorithm \ref{alg:FunctionalObjectProperty} tests that an object property expression is functional, and algorithm \ref{alg:InverseFunctionalObjectProperty} that it is inverse-functional.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{FunctionalObjectProperty}(R)$}
+  \label{alg:FunctionalObjectProperty}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -55,10 +56,9 @@ We present all algorithms in this section without proof of correctness, as the O
   \end{algorithmic}
 \end{algorithm}
 
-\todo[connect, ref]
-
 \begin{algorithm}[H]
   \caption{test $\oaxiom{InverseFunctionalObjectProperty}(R)$}
+  \label{alg:InverseFunctionalObjectProperty}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -70,10 +70,11 @@ We present all algorithms in this section without proof of correctness, as the O
   \end{algorithmic}
 \end{algorithm}
 
-\todo[connect, ref]
+Algorithm \ref{alg:ReflexiveObjectProperty} tests that an object property expression is reflexive, and algorithm \ref{alg:IrreflexiveObjectProperty} that it is irreflexive.
 
 \begin{algorithm}[H]
   \caption{test $\oaxiom{ReflexiveObjectProperty}(R)$}
+  \label{alg:ReflexiveObjectProperty}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
@@ -85,10 +86,9 @@ We present all algorithms in this section without proof of correctness, as the O
   \end{algorithmic}
 \end{algorithm}
 
-\todo[connect, ref]
-
 \begin{algorithm}[H]
   \caption{test $\oaxiom{IrreflexiveObjectProperty}(R)$}
+  \label{alg:IrreflexiveObjectProperty}
   \begin{algorithmic}[1]
     \raggedright
     \Input{
