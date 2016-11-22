@@ -1,0 +1,129 @@
+\ProvidesPackage{beamerthemeposter}
+
+\RequirePackage{graphicx}
+\RequirePackage{epstopdf}
+
+\makeatletter
+
+\newcommand{\supervisor}{\@dblarg\beamer@supervisor}
+\long\def\beamer@supervisor[#1]#2{%
+  \def\insertsupervisor{#2}%
+  \def\insertshortsupervisor{#1}%
+}
+
+\newcommand{\website}{\beamer@website}
+\long\def\beamer@website#1{%
+  \def\insertwebsite{#1}%
+}
+
+\makeatother
+
+\mode<presentation>
+
+\usecolortheme{poster}
+\usefonttheme[stillsansseriflarge,stillsansserifsmall]{serif}
+\useoutertheme{default}
+\useinnertheme{default}
+
+
+% Fonts
+
+\setbeamerfont{title in head/foot}{
+  family=\sffamily,
+  size=\veryHuge,
+  series=\bfseries
+}
+\setbeamerfont{subtitle in head/foot}{family=\sffamily, size=\Large}
+\setbeamerfont{author in head/foot}{family=\sffamily, size=\normalsize}
+\setbeamerfont{supervisor in head/foot}{parent=author in head/foot}
+\setbeamerfont{institute in head/foot}{parent=author in head/foot}
+\setbeamerfont{website in head/foot}{family=\ttfamily, size=\normalsize}
+
+
+% Outer theme
+
+\setbeamersize{
+  text margin left=5cm,
+  text margin right=5cm,
+}
+
+\setbeamertemplate{headline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \normalbaselines
+    \centering
+
+    \usebeamercolor[fg]{title in head/foot}
+    \usebeamerfont*{title in head/foot}%
+    \inserttitle
+
+    \ifx\insertsubtitle\empty\else
+    \vskip 1.5cm
+    \usebeamercolor[fg]{subtitle in head/foot}
+    \usebeamerfont*{subtitle in head/foot}%
+    \insertsubtitle
+    \fi
+
+    \vskip 1.5cm
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{\paperwidth}{2pt}
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[wd=\paperwidth]{footline}
+    \vskip 1cm
+    \begin{columns}[totalwidth=\paperwidth]
+      \begin{column}{2cm}
+      \end{column}
+      \begin{column}{5cm}
+        \raggedright
+        \includegraphics[height=5cm,viewport=43 28 125 136,clip=true]{../uctlogocirc}
+      \end{column}
+      \begin{column}{\paperwidth-15cm}
+        \begin{columns}[totalwidth={\dimexpr\paperwidth-15cm}]
+          \begin{column}{.4\paperwidth-7cm}
+            \normalbaselines
+            \raggedright
+            \usebeamercolor[fg]{institute in head/foot}
+            \usebeamerfont*{institute in head/foot}%
+            \insertinstitute
+          \end{column}
+          \begin{column}{.6\paperwidth-8cm}
+            \normalbaselines
+            \raggedleft
+            \usebeamercolor[fg]{author in head/foot}
+            \usebeamerfont*{author in head/foot}%
+            \insertauthor
+
+            \usebeamercolor[fg]{supervisor in head/foot}
+            \usebeamerfont*{supervisor in head/foot}%
+            Supervised by \insertsupervisor
+          \end{column}
+        \end{columns}
+
+        \vskip 1cm
+        \centering
+        \usebeamercolor[fg]{website in head/foot}
+        \usebeamerfont*{website in head/foot}%
+        \insertwebsite
+      \end{column}
+      \begin{column}{6cm}
+        \raggedleft
+        \colorbox{white}{\includegraphics[height=5cm]{../uctcslogo}}
+      \end{column}
+      \begin{column}{2cm}
+      \end{column}
+    \end{columns}
+    \vskip 1cm
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{sidebar left}{}
+\setbeamertemplate{sidebar right}{}
+
+\mode<all>
