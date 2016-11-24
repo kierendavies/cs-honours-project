@@ -1,17 +1,28 @@
-\documentclass[final]{beamer}
+\documentclass[final,fleqn]{beamer}
 \usepackage[
   size=a1,
   orientation=portrait,
-  scale=2,
+  scale=1.5,
 ]{beamerposter}
 \usetheme{poster}
 \epstopdfsetup{outdir=./}
 
-\usepackage[english]{babel}
-\usepackage[english]{isodate}
-\cleanlookdateon
+% \usepackage[english]{babel}
+% \usepackage[english]{isodate}
+% \cleanlookdateon
 
+\usepackage{ragged2e}
 \usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{patterns}
+
+\pgfdeclarepatternformonly{unsatisfiable}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{37pt}{37pt}}{\pgfqpoint{36pt}{36pt}}{
+  \pgfsetlinewidth{3pt}
+  \pgfpathmoveto{\pgfqpoint{0pt}{0pt}}
+  \pgfpathlineto{\pgfqpoint{36.1pt}{36.1pt}}
+  \pgfusepath{stroke}
+}
 
 \title{Towards\\Test-Driven Development\\of Ontologies}
 \author{Kieren Davies\hspace{0.5em}\nolinkurl{<kieren@kdavi.es>}}
@@ -24,6 +35,144 @@
 
 \begin{document}
 \begin{frame}{}
+
+\begin{columns}[onlytextwidth]
+  \begin{column}{.45\linewidth}
+    \begin{minipage}[t][.65\paperheight][s]{\columnwidth}
+      \begin{block}{Ontologies and TDD}
+        \justifying
+        \setlength{\parskip}{1ex}\vspace{-1ex}
+        An ontology is a formal, machine-readable representation of knowledge about entities, used with automated reasoning.
+
+        Test-Driven Development (TDD) is a software engineering methodology with two rules:
+        \vspace{-1ex}
+        \begin{itemize}
+          \item Write new code only if an automated test has failed,
+          \item Eliminate duplication.
+        \end{itemize}
+
+        To apply TDD to ontology engineering, we need sophisiticated tools.
+        Current tools do not support all complex axioms, and only report pass, fail, or missing entity.
+      \end{block}
+      \vfill
+      \begin{block}{Use cases\phantom{y}}
+        \begin{enumerate}
+          \item Permanent test suite: demonstrate quality or detect regressions.
+          \item Temporary tests: explore inferences or predict consequences of a change.
+        \end{enumerate}
+      \end{block}
+      \vfill
+      \begin{block}{Objectives}
+        Support development of ontology testing tools by describing new algorithms, which
+        \begin{itemize}
+          \item Allow testing of any possible axiom,
+          \item Use fast reasoner queries,
+          \item Report detailed results,
+          \item Are proven to be correct.
+        \end{itemize}
+      \end{block}
+      \vfill
+      \begin{block}{Formal model\phantom{y}}
+        % \justifying
+        \setlength{\parskip}{1ex}\vspace{-1ex}
+        Given an ontology $O$ which is consistent (no contradictions) and coherent (all classes satisfiable), and an axiom $A$ containing only entities from $O$.
+
+        To test, determine if $A$ is already entailed by $O$, would make it inconsistent or incoherent, or none of these.
+        \vspace{1ex}
+        \[
+          \mathrm{test}_O(A) =
+          \begin{cases}
+            \text{entailed} &
+              \text{if } O \vdash A \\
+            \text{inconsistent} &
+              \text{if } O \cup A \vdash \bot \\
+            \text{incoherent} &
+              \text{if } (\exists C)\; O \cup A \vdash C \sqsubseteq \bot \\
+            \text{absent} &
+              \text {otherwise} \\
+          \end{cases}
+        \]
+      \end{block}
+    \end{minipage}
+  \end{column}
+  \begin{column}{.45\linewidth}
+    \begin{minipage}[t][.65\paperheight][s]{\columnwidth}
+      \begin{block}{Algorithm example}
+        \begin{center}
+          To test a subclass axiom $C \sqsubseteq D$, \\
+          call $\textsc{testSubClassOf}(C, D)$
+        \end{center}
+
+        \vspace{1cm}
+        \hspace{\dimexpr.5\linewidth-6.5cm}
+        \begin{tikzpicture}[line width=2pt]
+          \draw[fill=prill!30,rounded corners=2cm] (0, 0) rectangle (13, 10);
+          \fill[fill=sec,fill opacity=0.5] (4.5, 5) circle[radius=3.5];
+          \draw (4.5, 7) node{$C$};
+          \draw[fill=ter,fill opacity=0.5,text opacity=1] (9.5, 5) circle[radius=2.5] node{$D$};
+          \draw (4.5, 5) circle[radius=3.5];
+
+          \coordinate (a) at (5, 3.5);
+          \filldraw (a) circle[radius=4pt] node[right]{$a$};
+          \draw[fill=sec!80] (3, 5) circle[radius=1] node(N){$N$};
+
+          \draw[-{Latex[length=5mm]}, dashed] (a) .. controls (0, 2) and (0.5, -1) .. (2, -1);
+          \node[right,align=left] at (2, -1.5) {
+            1. $C \sqcap \neg D$ has instances? \\
+            \hspace{1em}$\rightarrow$ \textbf{inconsistent}
+          };
+          \draw[-{Latex[length=5mm]}, dashed] (N) .. controls (0, 3) and (0, -3.5) .. (2, -3.5);
+          \node[right,align=left] at (2, -4) {
+            2. $C \sqcap \neg D$ has named subclasses? \\
+            \hspace{1em}$\rightarrow$ \textbf{incoherent}
+          };
+        \end{tikzpicture}
+
+        \vspace{1cm}
+        \hspace{\dimexpr.5\linewidth-6.5cm}
+        \begin{tikzpicture}[line width=2pt]
+          \draw[fill=prill!30,rounded corners=2cm] (0, 0) rectangle (13, 10);
+          \fill[fill=sec,fill opacity=0.5] (4.5, 5) circle[radius=3];
+          \begin{scope}[even odd rule]
+            \clip (8.5, 5) circle[radius=3] (0, 0) rectangle (13, 10);
+            \fill[pattern=unsatisfiable,pattern color=red] (4.5, 5) circle[radius=3];
+          \end{scope}
+          \draw[fill=ter,fill opacity=0.5] (8.5, 5) circle[radius=3];
+          \node at (9, 5) {$D$};
+          \draw (4.5, 5) circle[radius=3];
+          \node at (4, 5) {$C$};
+
+          \node[right,align=left] at (2, -1.5) {
+            3. $C \sqcap \neg D$ unsatisfiable? \\
+            \hspace{1em}$\rightarrow$ \textbf{entailed}
+          };
+          % \node[align=left] at (2, -4) {\phantom{X}\\\phantom{X}};
+          \node[right,align=left] at (2, -4.5) {
+            4. None of the above? \\
+            \hspace{1em}$\rightarrow$ \textbf{absent}
+          };
+        \end{tikzpicture}
+      \end{block}
+      \vfill
+      \begin{block}{Conclusion\phantom{y}}
+        \begin{itemize}
+          \item Novel formal model of ontology testing.
+          \vspace{1ex}
+          \item New algorithms satisfy use cases and objectives.
+          \vspace{1ex}
+          \item Model used to prove correctness of algorithms.
+          \vspace{1ex}
+          \item Algorithms can easily be implemented in new or existing tools.
+        \end{itemize}
+      \end{block}
+      % \vfill
+      % \begin{block}{}
+      %   Benchmarking with different reasoners to be completed by Ameerah Allie.
+      % \end{block}
+      \vspace{2cm}
+    \end{minipage}
+  \end{column}
+\end{columns}
 
 \end{frame}
 \end{document}

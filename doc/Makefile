@@ -6,8 +6,8 @@ default:
 %.pdf: FORCE
 	TEXINPUTS="$(rootdir):" latexmk -pdf $(basename $@)
 
-clean:
+clean::
 	latexmk -C -bibtex
-	rm *-eps-converted-to.pdf
+	-rm *-eps-converted-to.pdf
 
 FORCE:

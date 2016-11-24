@@ -1,12 +1,44 @@
 \ProvidesPackage{beamercolorthemeposter}
 
-% \selectcolormodel{cmyk}
+\RequirePackage{xcolor}
+\selectcolormodel{cmyk}
+
+% \definecolor{prill}{HTML}{FFD1AA}
+% \definecolor{pril}{HTML}{D49A6A}
+% \definecolor{pri}{HTML}{AA6C39}
+% \definecolor{prid}{HTML}{804515}
+% \definecolor{pridd}{HTML}{552700}
+\definecolor{prill}{cmyk}{0, 0.18, 0.333, 0}
+\definecolor{pri}{cmyk}{0, 0.365, 0.665, 0.333}
+\definecolor{prid}{cmyk}{0, 0.461, 0.836, 0.498}
+\definecolor{pridd}{cmyk}{0, 0.541, 1, 0.667}
+
+% \definecolor{secll}{HTML}{2D882D}
+% \definecolor{secl}{HTML}{88CC88}
+% \definecolor{sec}{HTML}{55AA55}
+% \definecolor{secd}{HTML}{116611}
+% \definecolor{secdd}{HTML}{004400}
+\definecolor{sec}{cmyk}{0.669, 0, 0.669, 0.467}
+\definecolor{secd}{cmyk}{0.833, 0, 0.833, 0.6}
+
+% \definecolor{terll}{HTML}{2E4272}
+% \definecolor{terl}{HTML}{7887AB}
+% \definecolor{ter}{HTML}{4F628E}
+% \definecolor{terd}{HTML}{162955}
+% \definecolor{terdd}{HTML}{061539}
+\definecolor{ter}{cmyk}{0.596, 0.421, 0, 0.553}
+
 \usecolortheme{whale}
 
-\setbeamercolor{headline}{parent=palette primary}
+\setbeamercolor{background canvas}{bg=prill!50}
+\setbeamercolor{headline}{bg=pridd, fg=white}
+\setbeamercolor{footline}{bg=pridd, fg=white}
+\setbeamercolor{lower separation line head}{fg=black}
+\setbeamercolor{upper separation line foot}{fg=black}
+
+\setbeamercolor{title in head/foot}{fg=white}
 \setbeamercolor{subtitle in head/foot}{parent=title in head/foot}
+\setbeamercolor{institute in head/foot}{parent=title in head/foot}
 
-\setbeamercolor{footline}{parent=palette primary}
-
-\setbeamercolor{block title}{parent=palette primary}
-\setbeamercolor{block body}{parent=normal text, use=block title, bg=block title.bg!25!bg}
+\setbeamercolor{block title}{bg=prid!40!secd, fg=white}
+\setbeamercolor{block body}{bg=white, fg=black}
